@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography, Grid } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { postDish } from "apis/dish";
@@ -28,6 +28,7 @@ export const DishesComponent = () => {
     const [description, setDescription] = useState("");
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState(0)
+    const [thumbnailUrl, setThumbnailUrl] = useState(null); 
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -42,17 +43,19 @@ export const DishesComponent = () => {
 
     const onDrop = async (acceptedFiles) => {
         setImage(acceptedFiles[0]);
-        setLoading(true); // Set loading to true when waiting for image upload
+        setLoading(true);
         try {
             await uploadFile(acceptedFiles[0], getAccessTokenSilently);
+            const fileUrl = URL.createObjectURL(acceptedFiles[0]);
+            setThumbnailUrl(fileUrl);
         } catch (error) {
             console.error("Error uploading file:", error);
         }
-        setLoading(false); // Set loading back to false after upload completes
+        setLoading(false);
     };
 
     const handleSubmit = async () => {
-        setLoading(true); // Set loading to true when waiting for submission
+        setLoading(true);
         try {
             const formData = {
                 name: dishName,
@@ -61,15 +64,13 @@ export const DishesComponent = () => {
             };
 
             await postDish(formData, image, getAccessTokenSilently);
-            setDishName("");
-            setDescription("");
-            setImage(null);
-            setPrice(0)
+            // route to dash boards after adding
+
 
         } catch (error) {
             console.error("Error:", error);
         }
-        setLoading(false); // Set loading back to false after submission completes
+        setLoading(false);
     };
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -83,14 +84,18 @@ export const DishesComponent = () => {
             <Spinner loading={loading} />
             <Grid container direction="column" alignItems="center">
                 <Grid item>
-                    <div {...getRootProps()} style={dropzoneStyles}>
-                        <input {...getInputProps()} />
-                        {
-                            isDragActive ?
-                                <Typography variant="subtitle1">Drop the image here</Typography> :
+                    {thumbnailUrl ? (
+                        <img src={thumbnailUrl} alt="Thumbnail" style={{ maxWidth: "100%", maxHeight: "200px" }} />
+                    ) : (
+                        <div {...getRootProps()} style={dropzoneStyles}>
+                            <input {...getInputProps()} />
+                            {isDragActive ? (
+                                <Typography variant="subtitle1">Drop the image here</Typography>
+                            ) : (
                                 <Typography variant="subtitle1">Drag 'n' drop an image here, or click to select a file</Typography>
-                        }
-                    </div>
+                            )}
+                        </div>
+                    )}
                 </Grid>
                 <Grid item>
                     <TextField

@@ -14,9 +14,6 @@ const uploadFile = async (file, getAccessTokenSilently) => {
       },
     });
 
-    // Handle successful response
-    console.log('File uploaded successfully:', response.data);
-
     return response.data;
   } catch (error) {
     // Handle error
