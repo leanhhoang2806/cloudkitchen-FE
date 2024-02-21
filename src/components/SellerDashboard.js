@@ -17,10 +17,12 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-
+import { DashboardComponent } from './DashboardComponent';
+import { OrdersComponent } from './OrdersComponent';
+import { DishesComponent } from './DishesComponent';
 import { styled } from '@mui/material/styles';
+
+
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     '& .MuiDrawer-paper': {
@@ -50,9 +52,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mainListItems = [
   { icon: <DashboardIcon />, text: "Dashboard" },
   { icon: <ShoppingCartIcon />, text: "Orders" },
-  { icon: <PeopleIcon />, text: "Customers" },
-  { icon: <BarChartIcon />, text: "Reports" },
-  { icon: <LayersIcon />, text: "Integrations" }
+  { icon: <PeopleIcon />, text: "Dishes" }
 ];
 
 const Dashboard = () => {
@@ -65,6 +65,19 @@ const Dashboard = () => {
 
   const handleItemClick = (text) => {
     setSelectedItem(text);
+  };
+
+  const renderComponent = () => {
+    switch(selectedItem) {
+      case "Dashboard":
+        return <DashboardComponent />;
+      case "Orders":
+        return <OrdersComponent />;
+      case "Dishes":
+        return <DishesComponent />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -127,6 +140,7 @@ const Dashboard = () => {
                     height: '100vh',
                   }}
                 >
+                    {renderComponent()}
                 </Paper>
               </Grid>
             </Grid>
