@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import AppBar from '@mui/material/AppBar';
@@ -7,10 +7,31 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 
 function Theme({ children }) {
     const navigate = useNavigate();
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0(); // Access user object
+    const [isSeller, setIsSeller] = useState(false);
+
+    // Sample function to check if the user is a seller
+    const checkIfSeller = () => {
+        // Replace this with your logic to determine if the user is a seller
+        // For demonstration, let's assume the user is a seller if their email contains "seller"
+        const userEmail = user?.email || '';
+        setIsSeller(userEmail.includes('seller'));
+    };
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            checkIfSeller();
+        }
+    }, [isAuthenticated]);
+    
+    const onRegisterHandler = () => {
+        navigate('/seller/register')
+    }
 
     const handleLogout = () => {
       localStorage.removeItem('auth0.auth.redirect');
@@ -27,17 +48,23 @@ function Theme({ children }) {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black' }}>
                         PoPo24
                     </Typography>
-                    {isAuthenticated && (
-                        <React.Fragment>
-                            {/* Display user's name if authenticated */}
-                            <Typography variant="body1" color="black" sx={{ mr: 1 }}>
-                                {user.name}
-                            </Typography>
-                            <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={handleLogout}>
-                                <ExitToAppIcon sx={{ fontSize: '100%' }} />
-                            </IconButton>
-                        </React.Fragment>
+                    {/* Display user's name if authenticated */}
+                    {isAuthenticated && 
+                    <Typography variant="body1" color="black" sx={{ mr: 1 }}>
+                        {user.name}
+                    </Typography>}
+                    
+                    <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                    {isAuthenticated && !isSeller && (
+                        <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={onRegisterHandler}>
+                            Seller Register
+                        </Button>
                     )}
+
+                    <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                    <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={handleLogout}>
+                        <ExitToAppIcon sx={{ fontSize: '100%' }} />
+                    </IconButton>
                     {!isAuthenticated && (
                         <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={loginWithRedirect}>
                             <AccountCircleIcon sx={{ fontSize: '100%' }} />

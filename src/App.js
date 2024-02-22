@@ -7,6 +7,7 @@ import { ProfilePage } from 'components/Profile';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingOverlay from 'components/Loading';
 import Dashboard from 'components/SellerDashboard';
+import SellerRegistration from 'components/SellerRegister';
 
 
 const AllRoutes = () => {
@@ -20,6 +21,7 @@ const AllRoutes = () => {
       <Route exact path="/" element={<LandingPage/>}/> 
       <Route path="/profile" element={isAuthenticated ? <ProfilePage />: <Navigate to="/"/>} />
       <Route path="/seller/dashboard" element={isAuthenticated ? <Dashboard />: <Navigate to="/"/>} />
+      <Route path="/seller/register" element={isAuthenticated ? <SellerRegistration />: <Navigate to="/"/>} />
       <Route path="*" element={<NotFoundPage />} />
   </Routes>
   )

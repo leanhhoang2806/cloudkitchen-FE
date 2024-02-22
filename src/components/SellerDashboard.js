@@ -57,7 +57,7 @@ const mainListItems = [
 
 const Dashboard = () => {
   const [open, setOpen] = useState(true);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("Dashboard");
 
   const toggleDrawer = () => {
     setOpen(!open);

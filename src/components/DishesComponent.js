@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Grid } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { postDish } from "apis/dish";
 import { useAuth0 } from '@auth0/auth0-react';
 import uploadFile from 'apis/mediaUpload';
 import Spinner from "./SpinnerComponent";
+import { useNavigate } from 'react-router-dom';
 
 const dropzoneStyles = {
     width: "100%",
@@ -23,6 +24,7 @@ const dropzoneStyles = {
 
 export const DishesComponent = () => {
     const { getAccessTokenSilently } = useAuth0();
+    const navigate = useNavigate();
     const [dishName, setDishName] = useState("");
     const [loading, setLoading] = useState(false);
     const [description, setDescription] = useState("");
@@ -64,7 +66,7 @@ export const DishesComponent = () => {
             };
 
             await postDish(formData, image, getAccessTokenSilently);
-            // route to dash boards after adding
+            navigate("/seller/dashboard");
 
 
         } catch (error) {
