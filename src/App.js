@@ -3,7 +3,7 @@ import LandingPage from 'components/LandingPage';
 import { Auth0ProviderWithNavigate } from 'components/Auth0';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { NotFoundPage } from 'components/NotFound';
-import { ProfilePage } from 'components/Profile';
+import ProfilePage from 'components/Profile';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingOverlay from 'components/Loading';
 import Dashboard from 'components/SellerDashboard';

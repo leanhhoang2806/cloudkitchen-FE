@@ -62,13 +62,18 @@ function Theme({ children }) {
                     )}
 
                     <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                    {isAuthenticated && 
                     <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={handleLogout}>
                         <ExitToAppIcon sx={{ fontSize: '100%' }} />
                     </IconButton>
+                    }
+
+                    
                     {!isAuthenticated && (
                         <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={loginWithRedirect}>
                             <AccountCircleIcon sx={{ fontSize: '100%' }} />
                         </IconButton>
+                        
                     )}
                 </Toolbar>
             </AppBar>
