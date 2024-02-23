@@ -8,10 +8,12 @@ import { useAuth0 } from '@auth0/auth0-react';
 import LoadingOverlay from 'components/Loading';
 import Dashboard from 'components/SellerDashboard';
 import SellerRegistration from 'components/SellerRegister';
+import { useSelector } from 'react-redux';
 
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0();
+  const user = useSelector(state => state.user);
 
   if (isLoading) {
     return <LoadingOverlay />
@@ -20,7 +22,7 @@ const AllRoutes = () => {
     <Routes>
       <Route exact path="/" element={<LandingPage/>}/> 
       <Route path="/profile" element={isAuthenticated ? <ProfilePage />: <Navigate to="/"/>} />
-      <Route path="/seller/dashboard" element={isAuthenticated ? <Dashboard />: <Navigate to="/"/>} />
+      <Route path="/seller/dashboard" element={isAuthenticated && user.isSeller ? <Dashboard />: <Navigate to="/"/>} />
       <Route path="/seller/register" element={isAuthenticated ? <SellerRegistration />: <Navigate to="/"/>} />
       <Route path="*" element={<NotFoundPage />} />
   </Routes>

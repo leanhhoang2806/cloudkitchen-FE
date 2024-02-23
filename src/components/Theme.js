@@ -9,18 +9,17 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import { useSelector } from 'react-redux'; 
 
 function Theme({ children }) {
     const navigate = useNavigate();
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0(); // Access user object
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0(); 
+
+    const mainUser = useSelector(state => state.user)
     const [isSeller, setIsSeller] = useState(false);
 
-    // Sample function to check if the user is a seller
     const checkIfSeller = () => {
-        // Replace this with your logic to determine if the user is a seller
-        // For demonstration, let's assume the user is a seller if their email contains "seller"
-        const userEmail = user?.email || '';
-        setIsSeller(userEmail.includes('seller'));
+        setIsSeller(mainUser.isSeller)
     };
 
     useEffect(() => {
@@ -60,8 +59,14 @@ function Theme({ children }) {
                             Seller Register
                         </Button>
                     )}
+                     {isAuthenticated && isSeller && (
+                        <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={() => navigate("/seller/dashboard")}>
+                            Dashboard
+                        </Button>
+                    )}
 
                     <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                    
                     {isAuthenticated && 
                     <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={handleLogout}>
                         <ExitToAppIcon sx={{ fontSize: '100%' }} />

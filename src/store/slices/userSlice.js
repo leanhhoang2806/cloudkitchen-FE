@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    email: ""
+    email: "",
+    isSeller: false
 }
 
 export const userSlice = createSlice({
@@ -10,11 +11,15 @@ export const userSlice = createSlice({
     reducers: {
         changeEmail: (state, action) => {
             state.email = action.payload
+        },
+        updateSeller: (state, action) => {
+            const isUUID = /^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i.test(action.payload);
+            state.isSeller = isUUID;
         }
     }
 
 })
 
-export const { changeEmail } = userSlice.actions
+export const { changeEmail, updateSeller } = userSlice.actions
 
 export default userSlice.reducer

@@ -8,8 +8,8 @@ import Image3 from "media/images/r1.jpg"
 import { useAuth0 } from '@auth0/auth0-react';
 import { buyerGetByEmail } from 'apis/buyer';
 import Theme from './Theme';
-import { useDispatch } from 'react-redux';
-import { changeEmail } from 'store/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeEmail, updateSeller } from 'store/slices/userSlice';
 
 const orders = [
   { id: 1, image: Image1, status: 'Delivered', time: '2024-02-16 10:30 AM', price: '$15.99' },
@@ -21,7 +21,6 @@ const orders = [
 const ProfilePage = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  // const mainUser = useSelector(state => state.user)
   const dispatch = useDispatch();
 
   const { getAccessTokenSilently, user } = useAuth0();
@@ -37,6 +36,7 @@ const ProfilePage = () => {
     const fetchUser = async () => {
       const getUser  = await buyerGetByEmail(getAccessTokenSilently, user.email)
       dispatch(changeEmail(getUser.email))
+      dispatch(updateSeller(getUser.seller_id))
     }
     fetchUser()
   }, []);
