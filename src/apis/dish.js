@@ -1,17 +1,19 @@
 import axios from 'axios';
 
-const postDish = async (data, file, authToken) => {
+const postDish = async (data, s3Path, authToken, sellerId) => {
     if (!authToken) {
       throw new Error('No authentication token found');
+    }
+
+    if (!s3Path){
+        throw new Error('No valid s3 path before posting dishes');
     }
 
     const accessToken = await authToken()
 
     const payload = {
-            "name": "Spaghetti Carbonara",
-            "description": "Classic Italian pasta dish with eggs, cheese, pancetta, and black pepper.",
-            "price": 12.99,
-            "seller_id": "6506cee7-a5f2-42e5-92fa-1e6088815891"
+            ...data,
+            "seller_id": sellerId
         }
     
 

@@ -6,6 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import uploadFile from 'apis/mediaUpload';
 import Spinner from "./SpinnerComponent";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const dropzoneStyles = {
     width: "100%",
@@ -22,7 +23,7 @@ const dropzoneStyles = {
     margin: "16px 0",
 };
 
-export const DishesComponent = () => {
+export const DishesComponent = ({setSelectedItem}) => {
     const { getAccessTokenSilently } = useAuth0();
     const navigate = useNavigate();
     const [dishName, setDishName] = useState("");
@@ -31,6 +32,9 @@ export const DishesComponent = () => {
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState(0)
     const [thumbnailUrl, setThumbnailUrl] = useState(null); 
+    const [uploadedS3Path, setUploadedS3Path] = useState("")
+
+    const mainUser = useSelector(state => state.user)
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -47,7 +51,8 @@ export const DishesComponent = () => {
         setImage(acceptedFiles[0]);
         setLoading(true);
         try {
-            await uploadFile(acceptedFiles[0], getAccessTokenSilently);
+            const s3Path = await uploadFile(acceptedFiles[0], getAccessTokenSilently);
+            setUploadedS3Path(s3Path)
             const fileUrl = URL.createObjectURL(acceptedFiles[0]);
             setThumbnailUrl(fileUrl);
         } catch (error) {
@@ -65,8 +70,8 @@ export const DishesComponent = () => {
                 price: price,
             };
 
-            await postDish(formData, image, getAccessTokenSilently);
-            navigate("/seller/dashboard");
+            await postDish(formData, uploadedS3Path, getAccessTokenSilently, mainUser.sellerId);
+            setSelectedItem("Dashboard")
 
 
         } catch (error) {

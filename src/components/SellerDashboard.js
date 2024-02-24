@@ -70,11 +70,11 @@ const Dashboard = () => {
   const renderComponent = () => {
     switch(selectedItem) {
       case "Dashboard":
-        return <DashboardComponent />;
+        return <DashboardComponent setSelectedItem={setSelectedItem}/>;
       case "Orders":
-        return <OrdersComponent />;
+        return <OrdersComponent setSelectedItem={setSelectedItem}/>;
       case "Dishes":
-        return <DishesComponent />;
+        return <DishesComponent setSelectedItem={setSelectedItem}/>;
       default:
         return null;
     }

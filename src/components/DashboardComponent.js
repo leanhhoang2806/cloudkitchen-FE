@@ -6,22 +6,15 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useSelector } from 'react-redux';
 import { getDishBySellerId } from 'apis/dish';
 
-const orders = [
-  { id: 1, status: 'Delivered', time: '2024-02-16 10:30 AM', price: '$15.99' },
-  { id: 2, status: 'Pending', time: '2024-02-15 05:45 PM', price: '$10.50' },
-  { id: 3, status: 'Delivered', time: '2024-02-14 08:20 AM', price: '$20.75' },
-  // Add more orders as needed
-];
 
-export const DashboardComponent = () => {
+export const DashboardComponent = ({setSelectedItem}) => {
+    const [dishes, setDishes] = useState([])
 
     const mainUser = useSelector(state => state.user)
 
     const { getAccessTokenSilently } = useAuth0();
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-
-  const { user } = useAuth0();
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -32,7 +25,11 @@ export const DashboardComponent = () => {
 
   useEffect(() => {
     const getDish = async () => {
-      return await getDishBySellerId(mainUser.sellerId, getAccessTokenSilently)
+        const dishes = await getDishBySellerId(mainUser.sellerId, getAccessTokenSilently)
+        if (dishes) {
+            setDishes(dishes)
+        }
+      return dishes
     }
     getDish()
   }, []);
@@ -44,16 +41,13 @@ export const DashboardComponent = () => {
       </Typography>
       <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
       <List>
-        {orders.slice(startIndex, endIndex).map(order => (
+        {dishes.slice(startIndex, endIndex).map(order => (
           <React.Fragment key={order.id}>
             <ListItem alignItems="flex-start">
               <ListItemText
                 primary={<Typography variant="subtitle1" style={{ color: '#4287f5' }}>{`Status: ${order.status}`}</Typography>}
                 secondary={
                   <React.Fragment>
-                    <Typography variant="body2" component="span" color="textPrimary" style={{ paddingLeft: '10px' }}>
-                      Time: {order.time}
-                    </Typography>
                     <Typography variant="body2" component="span" color="textPrimary" style={{ marginLeft: '20px' }}>
                       Price: {order.price}
                     </Typography>
@@ -72,7 +66,7 @@ export const DashboardComponent = () => {
         ))}
       </List>
       <Pagination
-        count={Math.ceil(orders.length / itemsPerPage)}
+        count={Math.ceil(dishes.length / itemsPerPage)}
         page={page}
         onChange={handlePageChange}
         color="primary"
