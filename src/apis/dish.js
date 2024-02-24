@@ -24,6 +24,23 @@ const postDish = async (data, file, authToken) => {
     return response;
 }
 
+const getDishBySellerId = async (sellerId, authToken) => {
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+
+    const accessToken = await authToken()
+
+    const response = await axios.get(`http://localhost:8000/api/v1/dish/seller/${sellerId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    return response.data;
+}
+
 export {
-    postDish
+    postDish,
+    getDishBySellerId
 }

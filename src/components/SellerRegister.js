@@ -4,11 +4,14 @@ import Theme from './Theme';
 import { sellerPost } from 'apis/sellerRegister';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateSeller } from 'store/slices/userSlice';
 
 function SellerRegistration() {
+    const mainUser = useSelector(state => state.user)
+    const dispatch =  useDispatch()
     const [formData, setFormData] = useState({
         name: '',
-        email: '',
         phone: '',
         address: ''
     });
@@ -16,6 +19,8 @@ function SellerRegistration() {
     const navigate = useNavigate();
 
     const { getAccessTokenSilently } = useAuth0();
+
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,7 +33,8 @@ function SellerRegistration() {
         // Perform form validation here if needed
         
         try {
-            await sellerPost(formData, getAccessTokenSilently)
+            const seller = await sellerPost(formData, getAccessTokenSilently, mainUser.email)
+            dispatch(updateSeller(seller.id))
             navigate("/seller/dashboard")
         } catch (error) {
             console.error('Error:', error);
@@ -46,16 +52,6 @@ function SellerRegistration() {
                     label="Name"
                     name="name"
                     value={formData.name}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    sx={{ marginBottom: '20px' }}
-                />
-                <TextField
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
                     onChange={handleChange}
                     required
                     fullWidth
