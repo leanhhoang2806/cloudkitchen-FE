@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import AppBar from '@mui/material/AppBar';
@@ -16,17 +16,6 @@ function Theme({ children }) {
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0(); 
 
     const mainUser = useSelector(state => state.user)
-    const [isSeller, setIsSeller] = useState(false);
-
-    const checkIfSeller = () => {
-        setIsSeller(mainUser.isSeller)
-    };
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            checkIfSeller();
-        }
-    }, [isAuthenticated]);
     
     const onRegisterHandler = () => {
         navigate('/seller/register')
@@ -54,12 +43,12 @@ function Theme({ children }) {
                     </Typography>}
                     
                     <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
-                    {isAuthenticated && !isSeller && (
+                    {isAuthenticated && !mainUser.isSeller && (
                         <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={onRegisterHandler}>
                             Seller Register
                         </Button>
                     )}
-                     {isAuthenticated && isSeller && (
+                     {isAuthenticated && mainUser.isSeller && (
                         <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={() => navigate("/seller/dashboard")}>
                             Dashboard
                         </Button>

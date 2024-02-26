@@ -42,7 +42,28 @@ const getDishBySellerId = async (sellerId, authToken) => {
     return response.data;
 }
 
+const getDishesPagination = async (skip, authToken) => {
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+
+    const accessToken = await authToken()
+
+    const response = await axios.get(`http://localhost:8000/api/v1/dish/`, {
+        params: {
+            skip: skip,
+            limit: 10
+        },
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return response.data;
+}
+
 export {
     postDish,
-    getDishBySellerId
+    getDishBySellerId,
+    getDishesPagination
 }

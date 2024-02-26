@@ -1,23 +1,72 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-
+import { getDishesPagination } from 'apis/dish';
+import { getFeaturedDishPagination } from 'apis/featured_dish';
+import Spinner from "./SpinnerComponent";
 import Carousel from 'components/Carousel';
-import SearchResultsGrid from 'components/GridDisplay';
+import DisplayPaginatedDishResults from 'components/GridDisplay';
 import BackGroundImage from 'media/images/background_image.jpg';
 import Theme from 'components/Theme';
+import { useAuth0 } from '@auth0/auth0-react';
+import { searchDishesByNameOrZipcode } from 'apis/search';
 
-const items = [
-  { title: "Item 1", content: "Content for Item 1" },
-  { title: "Item 2", content: "Content for Item 2" },
-  { title: "Item 3", content: "Content for Item 3" },
-];
 
 function LandingPage() {
+  const [skip, setSkip] = useState(0)
+  const [dishes, setDishes] = useState([])
+  const [featuredDishes, setFeaturedDishes] = useState([]);
+  const [zipCode, setZipCode] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const getDish = async () => {
+        const dishes = await getDishesPagination(skip, getAccessTokenSilently)
+        if (dishes) {
+            setDishes(dishes)
+        }
+      return dishes
+    }
+    const getFeaturedDishes = async () => {
+      const dishes = await getFeaturedDishPagination(skip, getAccessTokenSilently)
+      if (dishes) {
+        setFeaturedDishes(dishes)
+      }
+    return dishes
+  }
+    getDish()
+    getFeaturedDishes()
+  }, []);
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true)
+      const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode, getAccessTokenSilently);
+      setDishes(dishes);
+      setLoading(false)
+    } catch (error) {
+      console.error('Error searching for dishes:', error);
+      setLoading(false)
+    }
+  };
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const handleZipCodeChange = (event) => {
+    setZipCode(event.target.value);
+  };
+
+
   return (
     <Theme>
+
+      <Spinner loading={loading} />
 
       {/* Background Image with Title */}
       <div
@@ -47,13 +96,15 @@ function LandingPage() {
           {/* Search Bar Row */}
           <Grid item xs={9} sm={6}>
             <TextField
-              label="Restaurants"
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{ borderRadius: '20px', bgcolor: 'white' }} 
-              InputProps={{ sx: { borderRadius: '20px'} }}
-            />
+                label="Restaurants"
+                variant="outlined"
+                size="small"
+                fullWidth
+                sx={{ borderRadius: '20px', bgcolor: 'white' }}
+                InputProps={{ sx: { borderRadius: '20px' } }}
+                value={searchTerm}
+                onChange={handleChange}
+              />
           </Grid>
           <Grid item xs={6} sm={3}>
             <TextField
@@ -63,6 +114,8 @@ function LandingPage() {
               fullWidth
               sx={{ borderRadius: '20px', bgcolor: 'white' }} 
               InputProps={{ sx: { borderRadius: '20px'} }}
+              value={zipCode}
+              onChange={handleZipCodeChange}
             />
           </Grid>
           <Grid item xs={12} sm={2}>
@@ -71,19 +124,22 @@ function LandingPage() {
               color="primary"
               size="small"
               sx={{ borderRadius: '20px' }}
+              onClick={handleSearch}
             >
               Search
             </Button>
           </Grid>
         </Grid>
       </div>
-      {/* Carousel Row */}
-      <div style={{ marginTop: '50px', width: '70%' }}>
-        <Carousel items={items} />
-      </div>
+      {/* Render Carousel only when featuredDishes is not empty */}
+      {featuredDishes.length > 0 && (
+        <div style={{ marginTop: '50px', width: '70%' }}>
+          <Carousel items={featuredDishes} />
+        </div>
+      )}
       {/* Search Results */}
       <div style={{ marginTop: '50px' }}>
-        <SearchResultsGrid />
+        <DisplayPaginatedDishResults dishes={dishes}/>
       </div>
 
       </Theme>

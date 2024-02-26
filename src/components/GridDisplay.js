@@ -12,35 +12,32 @@ function SearchResultCard({ imageUrl, price }) {
         sx={{ width: '70%' }}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary" align="right">
-          Price: {price}
+        <Typography variant="body2" color="text.secondary" align="center">
+          Name: {price}
         </Typography>
       </CardContent>
     </Card>
   );
 }
 
-function SearchResultsGrid() {
-  // Dummy data for now
-  const dummyData = [
-    { imageUrl: 'https://via.placeholder.com/150', price: 10 },
-    { imageUrl: 'https://via.placeholder.com/150', price: 20 },
-    { imageUrl: 'https://via.placeholder.com/150', price: 30 },
-    { imageUrl: 'https://via.placeholder.com/150', price: 40 },
-
-    { imageUrl: 'https://via.placeholder.com/150', price: 50 },
-    // Add more dummy data as needed
-  ];
+function DisplayPaginatedDishResults({ dishes }) {
+  const numItems = dishes.length;
+  const gridProps = {
+    xs: 12,
+    sm: 6,
+    lg: numItems === 1 ? 12 : 4, // Set to 12 for single item, otherwise 4
+    xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
+  };
 
   return (
     <Grid container spacing={4}>
-      {dummyData.map((item, index) => (
-        <Grid item xs={6} sm={4} lg={3} xl={3} key={index}>
-          <SearchResultCard imageUrl={item.imageUrl} price={item.price} />
+      {dishes.map((item, index) => (
+        <Grid item {...gridProps} key={index}>
+          <SearchResultCard imageUrl={'https://via.placeholder.com/150'} price={item.price} />
         </Grid>
       ))}
     </Grid>
   );
 }
 
-export default SearchResultsGrid;
+export default DisplayPaginatedDishResults;
