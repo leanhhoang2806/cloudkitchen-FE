@@ -22,18 +22,16 @@ function LandingPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { getAccessTokenSilently } = useAuth0();
-
   useEffect(() => {
     const getDish = async () => {
-        const dishes = await getDishesPagination(skip, getAccessTokenSilently)
+        const dishes = await getDishesPagination(skip)
         if (dishes) {
             setDishes(dishes)
         }
       return dishes
     }
     const getFeaturedDishes = async () => {
-      const dishes = await getFeaturedDishPagination(skip, getAccessTokenSilently)
+      const dishes = await getFeaturedDishPagination(skip)
       if (dishes) {
         setFeaturedDishes(dishes)
       }
@@ -46,7 +44,7 @@ function LandingPage() {
   const handleSearch = async () => {
     try {
       setLoading(true)
-      const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode, getAccessTokenSilently);
+      const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode);
       setDishes(dishes);
       setLoading(false)
     } catch (error) {

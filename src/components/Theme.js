@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import AppBar from '@mui/material/AppBar';
@@ -9,52 +10,69 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { useSelector } from 'react-redux'; 
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
+
 
 function Theme({ children }) {
     const navigate = useNavigate();
     const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0(); 
-
-    const mainUser = useSelector(state => state.user)
+    const location = useLocation();
     
     const onRegisterHandler = () => {
         navigate('/seller/register')
     }
 
     const handleLogout = () => {
-      localStorage.removeItem('auth0.auth.redirect');
-      localStorage.removeItem('auth0.is.authenticated');
-      localStorage.removeItem('auth0.spajs.txs');
       logout({ returnTo: window.location.origin });
       navigate('/');
     };
+
+    const mainUser = useSelector(state => state.user)
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'Roboto, sans-serif', backgroundColor: '#f0f0f0' }}>
             <AppBar position="static" sx={{ backgroundColor: 'hsl(50, 85%, 75%)', boxShadow: 'none' }}>
                 <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black' }}>
+                    {/* Wrap "PoPo24" with Link */}
+                    <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, color: 'black', textDecoration: 'none' }}>
                         PoPo24
                     </Typography>
                     {/* Display user's name if authenticated */}
                     {isAuthenticated && 
-                    <Typography variant="body1" color="black" sx={{ mr: 1 }}>
+                    <Typography variant="body1" color="black" component={Link} to="/profile" sx={{ mr: 1 }}>
                         {user.name}
                     </Typography>}
                     
                     <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
-                    {isAuthenticated && !mainUser.isSeller && (
+                    {isAuthenticated && !mainUser.isSeller && location.pathname === "/profile" && (
+                        <>                        
                         <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={onRegisterHandler}>
-                            Seller Register
+                        Seller Register
                         </Button>
+
+                        <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                        </>
                     )}
                      {isAuthenticated && mainUser.isSeller && (
+                        <>
                         <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={() => navigate("/seller/dashboard")}>
                             Dashboard
                         </Button>
+                        <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                        </>
                     )}
 
+                    {isAuthenticated &&
+                    <>
+                    <IconButton color="inherit" component={Link} to={`/buyer/${mainUser.buyerId}/cart`} style={{ fontSize: '2rem', color: 'darkgray' }}>
+                        <ShoppingCartIcon />
+                    </IconButton>
+
                     <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
+                    </>
+                    }
                     
                     {isAuthenticated && 
                     <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={handleLogout}>

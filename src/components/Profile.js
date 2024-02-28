@@ -2,25 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Typography, List, ListItem, ListItemText, ListItemAvatar, Avatar, Divider, Pagination } from '@mui/material';
 import Button from '@mui/material/Button';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import Image1 from "media/images/n1.jpg"
-import Image2 from "media/images/n2.jpg"
-import Image3 from "media/images/r1.jpg"
 import { useAuth0 } from '@auth0/auth0-react';
-import { buyerGetByEmail } from 'apis/buyer';
+import { getBuyerByEmail } from 'apis/buyer';
 import Theme from './Theme';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeEmail, updateSeller } from 'store/slices/userSlice';
-
-const orders = [
-  { id: 1, image: Image1, status: 'Delivered', time: '2024-02-16 10:30 AM', price: '$15.99' },
-  { id: 2, image: Image2, status: 'Pending', time: '2024-02-15 05:45 PM', price: '$10.50' },
-  { id: 3, image: Image3, status: 'Delivered', time: '2024-02-14 08:20 AM', price: '$20.75' },
-  // Add more orders as needed
-];
+import { useDispatch } from 'react-redux';
+import { changeEmail } from 'store/slices/userSlice';
+import { getOrderByBuyerId } from 'apis/orders.';
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
+  const [orders, setOrders] = useState([])
   const dispatch = useDispatch();
 
   const { getAccessTokenSilently, user } = useAuth0();
@@ -34,9 +26,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const getUser  = await buyerGetByEmail(getAccessTokenSilently, user.email)
-      dispatch(changeEmail(getUser.email))
-      dispatch(updateSeller(getUser.seller_id))
+      const getUser  = await getBuyerByEmail(getAccessTokenSilently, user.email)
+      const getOrders = await getOrderByBuyerId(getUser.id, getAccessTokenSilently)
+      setOrders(getOrders)
+      dispatch(changeEmail(getUser))
     }
     fetchUser()
   }, []);

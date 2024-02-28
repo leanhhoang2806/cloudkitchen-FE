@@ -9,6 +9,7 @@ import LoadingOverlay from 'components/Loading';
 import Dashboard from 'components/SellerDashboard';
 import SellerRegistration from 'components/SellerRegister';
 import { useSelector } from 'react-redux';
+import CheckoutOrdersPage from 'components/CheckoutPage';
 
 
 const AllRoutes = () => {
@@ -24,6 +25,16 @@ const AllRoutes = () => {
       <Route path="/profile" element={isAuthenticated ? <ProfilePage />: <Navigate to="/"/>} />
       <Route path="/seller/dashboard" element={isAuthenticated && user.isSeller ? <Dashboard />: <Navigate to="/"/>} />
       <Route path="/seller/register" element={isAuthenticated ? <SellerRegistration />: <Navigate to="/"/>} />
+      <Route
+        path="/buyer/:buyer_id/cart"
+        element={
+          isAuthenticated ? (
+            <CheckoutOrdersPage />
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
       <Route path="*" element={<NotFoundPage />} />
   </Routes>
   )

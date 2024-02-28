@@ -24,22 +24,24 @@ export const DashboardComponent = ({setSelectedItem}) => {
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
+  const getDish = async () => {
+    const dishes = await getDishBySellerId(mainUser.sellerId, getAccessTokenSilently)
+    if (dishes) {
+        setDishes(dishes)
+    }
+  return dishes
+}
+
   const handleFeatureClick = async (dishId) => {
     try {
         await postFeatureDish(dishId, getAccessTokenSilently);
+        await getDish()
     }catch (error) {
         console.error('Error featuring dish:', error);
       }
     }
 
   useEffect(() => {
-    const getDish = async () => {
-        const dishes = await getDishBySellerId(mainUser.sellerId, getAccessTokenSilently)
-        if (dishes) {
-            setDishes(dishes)
-        }
-      return dishes
-    }
     getDish()
   }, []);
 
@@ -65,12 +67,15 @@ export const DashboardComponent = ({setSelectedItem}) => {
                 style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
               />
               <ListItemSecondaryAction>
-                <Button variant="contained" color="error" size="small">
+                <Button variant="contained" color="error" size="small" sx={{ marginRight: '10px' }}>
                   DELETE
                 </Button>
-                <Button variant="contained" color="primary" size="small" onClick={() => handleFeatureClick(dish.id)}> {/* Add onClick handler */}
+                {!dish.is_featured && <Button variant="contained" color="primary" size="small" onClick={() => handleFeatureClick(dish.id)}> {/* Add onClick handler */}
                   FEATURE
-                </Button>
+                </Button>}
+                {dish.is_featured && <Button variant="contained" color="inherit" size="small" onClick={() => handleFeatureClick(dish.id)}> {/* Add onClick handler */}
+                  UNFEATURE
+                </Button>}
               </ListItemSecondaryAction>
             </ListItem>
             <Divider variant="inset" component="li" />
