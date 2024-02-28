@@ -43,7 +43,7 @@ export const DashboardComponent = ({setSelectedItem}) => {
 
   useEffect(() => {
     getDish()
-  }, []);
+  });
 
   return (
     <div style={{ width: '80%', margin: 'auto', backgroundColor: 'white', padding: '20px', marginTop: '20px' }}>

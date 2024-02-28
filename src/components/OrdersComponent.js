@@ -30,7 +30,7 @@ export const OrdersComponent = () => {
       return orders
     }
     getOrders()
-  }, []);
+  });
 
   return (
     <div style={{ width: '80%', margin: 'auto', backgroundColor: 'white', padding: '20px', marginTop: '20px' }}>

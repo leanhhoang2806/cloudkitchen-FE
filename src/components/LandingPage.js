@@ -10,12 +10,11 @@ import Carousel from 'components/Carousel';
 import DisplayPaginatedDishResults from 'components/GridDisplay';
 import BackGroundImage from 'media/images/background_image.jpg';
 import Theme from 'components/Theme';
-import { useAuth0 } from '@auth0/auth0-react';
 import { searchDishesByNameOrZipcode } from 'apis/search';
 
 
 function LandingPage() {
-  const [skip, setSkip] = useState(0)
+  const skip = 0
   const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([]);
   const [zipCode, setZipCode] = useState('');
@@ -39,7 +38,7 @@ function LandingPage() {
   }
     getDish()
     getFeaturedDishes()
-  }, []);
+  });
 
   const handleSearch = async () => {
     try {

@@ -5,7 +5,6 @@ import { postDish } from "apis/dish";
 import { useAuth0 } from '@auth0/auth0-react';
 import uploadFile from 'apis/mediaUpload';
 import Spinner from "./SpinnerComponent";
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const dropzoneStyles = {
@@ -25,11 +24,9 @@ const dropzoneStyles = {
 
 export const DishesComponent = ({setSelectedItem}) => {
     const { getAccessTokenSilently } = useAuth0();
-    const navigate = useNavigate();
     const [dishName, setDishName] = useState("");
     const [loading, setLoading] = useState(false);
     const [description, setDescription] = useState("");
-    const [image, setImage] = useState(null);
     const [price, setPrice] = useState(0)
     const [thumbnailUrl, setThumbnailUrl] = useState(null); 
     const [uploadedS3Path, setUploadedS3Path] = useState("")
@@ -48,7 +45,6 @@ export const DishesComponent = ({setSelectedItem}) => {
     };
 
     const onDrop = async (acceptedFiles) => {
-        setImage(acceptedFiles[0]);
         setLoading(true);
         try {
             const s3Path = await uploadFile(acceptedFiles[0], getAccessTokenSilently);
@@ -83,11 +79,7 @@ export const DishesComponent = ({setSelectedItem}) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         acceptedFiles: "image/jpeg, image/png",
-        multiple: false,
-        onDropRejected: (rejectedFiles) => {
-            console.warn(`Unsupported file type: ${rejectedFiles[0].type}`);
-            // You can optionally provide user feedback here, such as displaying a message
-        },
+        multiple: false
     });
 
     return (

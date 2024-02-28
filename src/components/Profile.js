@@ -32,7 +32,7 @@ const ProfilePage = () => {
       dispatch(changeEmail(getUser))
     }
     fetchUser()
-  }, []);
+  });
 
   return (
     <Theme>
