@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { addToCart } from 'store/slices/userSlice';
+import PropTypes from 'prop-types';
 
 function SearchResultCard({ imageUrl, price, dishId }) {
 
@@ -42,6 +43,12 @@ function SearchResultCard({ imageUrl, price, dishId }) {
     );
   }
 
+SearchResultCard.propTypes = {
+    imageUrl: PropTypes.string.isRequired,
+    price : PropTypes.number.isRequired,
+    dishId: PropTypes.string.isRequired
+}
+
 function DisplayPaginatedDishResults({ dishes }) {
   const numItems = dishes.length;
   const gridProps = {
@@ -50,8 +57,6 @@ function DisplayPaginatedDishResults({ dishes }) {
     lg: numItems === 1 ? 12 : 4, // Set to 12 for single item, otherwise 4
     xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
   };
-
-  console.log(dishes)
 
   return (
     <Grid container spacing={4}>
@@ -62,6 +67,10 @@ function DisplayPaginatedDishResults({ dishes }) {
       ))}
     </Grid>
   );
+}
+
+DisplayPaginatedDishResults.propTypes = {
+    dishes: PropTypes.array.isRequired
 }
 
 export default DisplayPaginatedDishResults;

@@ -1,84 +1,83 @@
-import React, { useState } from 'react';
-import Theme from './Theme';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import { DashboardComponent } from './DashboardComponent';
-import { OrdersComponent } from './OrdersComponent';
-import { DishesComponent } from './DishesComponent';
-import { styled } from '@mui/material/styles';
+import React, { useState } from 'react'
+import Theme from './Theme'
+import CssBaseline from '@mui/material/CssBaseline'
+import MuiDrawer from '@mui/material/Drawer'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import PeopleIcon from '@mui/icons-material/People'
+import { DashboardComponent } from './DashboardComponent'
+import { OrdersComponent } from './OrdersComponent'
+import { DishesComponent } from './DishesComponent'
+import { styled } from '@mui/material/styles'
 
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    '& .MuiDrawer-paper': {
-      position: 'relative',
-      whiteSpace: 'nowrap',
-      width: 240,
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  '& .MuiDrawer-paper': {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: 240,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: 'border-box',
+    ...(!open && {
+      overflowX: 'hidden',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        duration: theme.transitions.duration.leavingScreen,
       }),
-      boxSizing: 'border-box',
-      ...(!open && {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
-      }),
-    },
-  }),
-);
+      width: theme.spacing(7),
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+}))
 
 const mainListItems = [
-  { icon: <DashboardIcon />, text: "Dashboard" },
-  { icon: <ShoppingCartIcon />, text: "Orders" },
-  { icon: <PeopleIcon />, text: "Dishes" }
-];
+  { icon: <DashboardIcon />, text: 'Dashboard' },
+  { icon: <ShoppingCartIcon />, text: 'Orders' },
+  { icon: <PeopleIcon />, text: 'Dishes' },
+]
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(true);
-  const [selectedItem, setSelectedItem] = useState("Dashboard");
+  const [open, setOpen] = useState(true)
+  const [selectedItem, setSelectedItem] = useState('Dashboard')
 
   const toggleDrawer = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   const handleItemClick = (text) => {
-    setSelectedItem(text);
-  };
+    setSelectedItem(text)
+  }
 
   const renderComponent = () => {
-    switch(selectedItem) {
-      case "Dashboard":
-        return <DashboardComponent setSelectedItem={setSelectedItem}/>;
-      case "Orders":
-        return <OrdersComponent setSelectedItem={setSelectedItem}/>;
-      case "Dishes":
-        return <DishesComponent setSelectedItem={setSelectedItem}/>;
+    switch (selectedItem) {
+      case 'Dashboard':
+        return <DashboardComponent setSelectedItem={setSelectedItem} />
+      case 'Orders':
+        return <OrdersComponent setSelectedItem={setSelectedItem} />
+      case 'Dishes':
+        return <DishesComponent setSelectedItem={setSelectedItem} />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <Theme>
@@ -100,10 +99,11 @@ const Dashboard = () => {
           <Divider />
           <List component="nav">
             {mainListItems.map((item, index) => (
-              <ListItemButton key={index} onClick={() => handleItemClick(item.text)}>
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
+              <ListItemButton
+                key={index}
+                onClick={() => handleItemClick(item.text)}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItemButton>
             ))}
@@ -121,16 +121,26 @@ const Dashboard = () => {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
-            width: '70vw'
+            width: '70vw',
           }}
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 2, mb: 2 }}>
-            <Grid container spacing={3} justifyContent="center" alignItems="center">
-
-            <div style={{fontSize: '24px', fontWeight: 'bold', textAlign: 'center'}}>
-                    {selectedItem}
-                  </div>
+            <Grid
+              container
+              spacing={3}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <div
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}
+              >
+                {selectedItem}
+              </div>
               <Grid item xs={12} md={12} lg={12}>
                 <Paper
                   sx={{
@@ -140,7 +150,7 @@ const Dashboard = () => {
                     height: '100vh',
                   }}
                 >
-                    {renderComponent()}
+                  {renderComponent()}
                 </Paper>
               </Grid>
             </Grid>
@@ -148,7 +158,7 @@ const Dashboard = () => {
         </Box>
       </Box>
     </Theme>
-  );
+  )
 }
 
-export default Dashboard;
+export default Dashboard

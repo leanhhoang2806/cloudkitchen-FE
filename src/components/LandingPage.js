@@ -1,32 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import { getDishesPagination } from 'apis/dish';
-import { getFeaturedDishPagination } from 'apis/featured_dish';
-import Spinner from "./SpinnerComponent";
-import Carousel from 'components/Carousel';
-import DisplayPaginatedDishResults from 'components/GridDisplay';
-import BackGroundImage from 'media/images/background_image.jpg';
-import Theme from 'components/Theme';
-import { searchDishesByNameOrZipcode } from 'apis/search';
-
+import React, { useEffect, useState } from 'react'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
+import { getDishesPagination } from 'apis/dish'
+import { getFeaturedDishPagination } from 'apis/featured_dish'
+import Spinner from './SpinnerComponent'
+import Carousel from 'components/Carousel'
+import DisplayPaginatedDishResults from 'components/GridDisplay'
+import BackGroundImage from 'media/images/background_image.jpg'
+import Theme from 'components/Theme'
+import { searchDishesByNameOrZipcode } from 'apis/search'
 
 function LandingPage() {
   const skip = 0
   const [dishes, setDishes] = useState([])
-  const [featuredDishes, setFeaturedDishes] = useState([]);
-  const [zipCode, setZipCode] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [featuredDishes, setFeaturedDishes] = useState([])
+  const [zipCode, setZipCode] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getDish = async () => {
-        const dishes = await getDishesPagination(skip)
-        if (dishes) {
-            setDishes(dishes)
-        }
+      const dishes = await getDishesPagination(skip)
+      if (dishes) {
+        setDishes(dishes)
+      }
       return dishes
     }
     const getFeaturedDishes = async () => {
@@ -34,35 +33,33 @@ function LandingPage() {
       if (dishes) {
         setFeaturedDishes(dishes)
       }
-    return dishes
-  }
+      return dishes
+    }
     getDish()
     getFeaturedDishes()
-  });
+  })
 
   const handleSearch = async () => {
     try {
       setLoading(true)
-      const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode);
-      setDishes(dishes);
+      const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode)
+      setDishes(dishes)
       setLoading(false)
     } catch (error) {
-      console.error('Error searching for dishes:', error);
+      console.error('Error searching for dishes:', error)
       setLoading(false)
     }
-  };
+  }
 
   const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+    setSearchTerm(event.target.value)
+  }
   const handleZipCodeChange = (event) => {
-    setZipCode(event.target.value);
-  };
-
+    setZipCode(event.target.value)
+  }
 
   return (
     <Theme>
-
       <Spinner loading={loading} />
 
       {/* Background Image with Title */}
@@ -70,12 +67,20 @@ function LandingPage() {
         style={{
           backgroundImage: `url(${BackGroundImage})`,
           backgroundSize: 'cover',
-          width: '90%', height: '500px', marginTop: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative',
+          width: '90%',
+          height: '500px',
+          marginTop: '20px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
           overflow: 'hidden',
-          borderRadius: "50px"
+          borderRadius: '50px',
         }}
       >
-        <Typography variant="h1" component="div"
+        <Typography
+          variant="h1"
+          component="div"
           style={{
             color: 'gold',
             backgroundImage: 'linear-gradient(to bottom, gold, #fff)',
@@ -83,8 +88,9 @@ function LandingPage() {
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
             fontSize: '6rem',
-            letterSpacing: '2px'
-          }}>
+            letterSpacing: '2px',
+          }}
+        >
           PoPo24
         </Typography>
       </div>
@@ -93,15 +99,15 @@ function LandingPage() {
           {/* Search Bar Row */}
           <Grid item xs={9} sm={6}>
             <TextField
-                label="Restaurants"
-                variant="outlined"
-                size="small"
-                fullWidth
-                sx={{ borderRadius: '20px', bgcolor: 'white' }}
-                InputProps={{ sx: { borderRadius: '20px' } }}
-                value={searchTerm}
-                onChange={handleChange}
-              />
+              label="Restaurants"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{ borderRadius: '20px', bgcolor: 'white' }}
+              InputProps={{ sx: { borderRadius: '20px' } }}
+              value={searchTerm}
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item xs={6} sm={3}>
             <TextField
@@ -109,8 +115,8 @@ function LandingPage() {
               variant="outlined"
               size="small"
               fullWidth
-              sx={{ borderRadius: '20px', bgcolor: 'white' }} 
-              InputProps={{ sx: { borderRadius: '20px'} }}
+              sx={{ borderRadius: '20px', bgcolor: 'white' }}
+              InputProps={{ sx: { borderRadius: '20px' } }}
               value={zipCode}
               onChange={handleZipCodeChange}
             />
@@ -136,12 +142,10 @@ function LandingPage() {
       )}
       {/* Search Results */}
       <div style={{ marginTop: '50px' }}>
-        <DisplayPaginatedDishResults dishes={dishes}/>
+        <DisplayPaginatedDishResults dishes={dishes} />
       </div>
-
-      </Theme>
-
-  );
+    </Theme>
+  )
 }
 
-export default LandingPage;
+export default LandingPage

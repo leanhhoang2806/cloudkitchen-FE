@@ -1,24 +1,22 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const getBuyerByEmail = async (authToken, email) => {
-    if (!authToken) {
-        throw new Error('No authentication token found');
-    }
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
 
-    const accessToken = await authToken();
+  const accessToken = await authToken()
 
-    const response = await axios.get(`http://localhost:8000/api/v1/buyer/`, {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        },
-        params: {
-            email: email
-        }
-    });
+  const response = await axios.get(`http://localhost:8000/api/v1/buyer/`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: {
+      email: email,
+    },
+  })
 
-    return response.data;
+  return response.data
 }
 
-export {
-    getBuyerByEmail
-}
+export { getBuyerByEmail }

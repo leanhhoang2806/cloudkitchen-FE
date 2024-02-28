@@ -1,17 +1,14 @@
-import axios from "axios";
+import axios from 'axios'
 
 const searchDishesByNameOrZipcode = async (sellerName, zipcode) => {
+  const response = await axios.get(`http://localhost:8000/api/v1/search`, {
+    params: {
+      seller_name: sellerName,
+      zip_code: zipcode,
+    },
+  })
 
-    const response = await axios.get(`http://localhost:8000/api/v1/search`, {
-        params: {
-            seller_name: sellerName,
-            zip_code : zipcode
-        }
-    });
-
-    return response.data;
+  return response.data
 }
 
-export {
-    searchDishesByNameOrZipcode
-}
+export { searchDishesByNameOrZipcode }

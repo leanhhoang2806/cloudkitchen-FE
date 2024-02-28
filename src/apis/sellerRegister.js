@@ -1,43 +1,42 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const sellerPost = async (data, authToken, userEmail) => {
-    if (!authToken) {
-      throw new Error('No authentication token found');
-    }
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
 
-    const accessToken = await authToken()
+  const accessToken = await authToken()
 
-    const response = await axios.post('http://localhost:8000/api/v1/seller_info', {...data, email: userEmail}, {
+  const response = await axios.post(
+    'http://localhost:8000/api/v1/seller_info',
+    { ...data, email: userEmail },
+    {
       headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
 
-    return response.data;
+  return response.data
 }
 
 const getSellerByEmail = async (email, authToken) => {
-    if (!authToken) {
-        throw new Error('No authentication token found');
-    }
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
 
-    const accessToken = await authToken();
+  const accessToken = await authToken()
 
-    const response = await axios.get(`http://localhost:8000/api/v1/seller_info`, {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        },
-        params: {
-            email: email
-        }
-    });
+  const response = await axios.get(`http://localhost:8000/api/v1/seller_info`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: {
+      email: email,
+    },
+  })
 
-    return response.data;
+  return response.data
 }
 
-
-
-export {
-    sellerPost,
-    getSellerByEmail
-}
+export { sellerPost, getSellerByEmail }

@@ -1,106 +1,179 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link
-import { useNavigate } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; 
-
+import React from 'react'
+import { Link } from 'react-router-dom' // Import Link
+import { useNavigate } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import PropTypes from 'prop-types';
 
 function Theme({ children }) {
-    const navigate = useNavigate();
-    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0(); 
-    const location = useLocation();
-    
-    const onRegisterHandler = () => {
-        navigate('/seller/register')
-    }
+  const navigate = useNavigate()
+  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
+  const location = useLocation()
 
-    const handleLogout = () => {
-      logout({ returnTo: window.location.origin });
-      navigate('/');
-    };
+  const onRegisterHandler = () => {
+    navigate('/seller/register')
+  }
 
-    const mainUser = useSelector(state => state.user)
+  const handleLogout = () => {
+    logout({ returnTo: window.location.origin })
+    navigate('/')
+  }
 
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'Roboto, sans-serif', backgroundColor: '#f0f0f0' }}>
-            <AppBar position="static" sx={{ backgroundColor: 'hsl(50, 85%, 75%)', boxShadow: 'none' }}>
-                <Toolbar>
-                    {/* Wrap "PoPo24" with Link */}
-                    <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, color: 'black', textDecoration: 'none' }}>
-                        PoPo24
-                    </Typography>
-                    {/* Display user's name if authenticated */}
-                    {isAuthenticated && 
-                    <Typography variant="body1" color="black" component={Link} to="/profile" sx={{ mr: 1 }}>
-                        {user.name}
-                    </Typography>}
-                    
-                    <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
-                    {isAuthenticated && !mainUser.isSeller && location.pathname === "/profile" && (
-                        <>                        
-                        <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={onRegisterHandler}>
-                        Seller Register
-                        </Button>
+  const mainUser = useSelector((state) => state.user)
 
-                        <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
-                        </>
-                    )}
-                     {isAuthenticated && mainUser.isSeller && (
-                        <>
-                        <Button color="inherit" style={{ fontSize: '0.8rem', color: 'black' }} onClick={() => navigate("/seller/dashboard")}>
-                            Dashboard
-                        </Button>
-                        <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
-                        </>
-                    )}
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontFamily: 'Roboto, sans-serif',
+        backgroundColor: '#f0f0f0',
+      }}
+    >
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: 'hsl(50, 85%, 75%)', boxShadow: 'none' }}
+      >
+        <Toolbar>
+          {/* Wrap "PoPo24" with Link */}
+          <Typography
+            variant="h6"
+            component={Link}
+            to="/"
+            sx={{ flexGrow: 1, color: 'black', textDecoration: 'none' }}
+          >
+            PoPo24
+          </Typography>
+          {/* Display user's name if authenticated */}
+          {isAuthenticated && (
+            <Typography
+              variant="body1"
+              color="black"
+              component={Link}
+              to="/profile"
+              sx={{ mr: 1 }}
+            >
+              {user.name}
+            </Typography>
+          )}
 
-                    {isAuthenticated &&
-                    <>
-                    <IconButton color="inherit" component={Link} to={`/buyer/${mainUser.buyerId}/cart`} style={{ fontSize: '2rem', color: 'darkgray' }}>
-                        <ShoppingCartIcon />
-                    </IconButton>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ borderWidth: '2px' }}
+          />
+          {isAuthenticated &&
+            !mainUser.isSeller &&
+            location.pathname === '/profile' && (
+              <>
+                <Button
+                  color="inherit"
+                  style={{ fontSize: '0.8rem', color: 'black' }}
+                  onClick={onRegisterHandler}
+                >
+                  Seller Register
+                </Button>
 
-                    <Divider orientation="vertical" flexItem sx={{ borderWidth: '2px'}}/>
-                    </>
-                    }
-                    
-                    {isAuthenticated && 
-                    <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={handleLogout}>
-                        <ExitToAppIcon sx={{ fontSize: '100%' }} />
-                    </IconButton>
-                    }
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ borderWidth: '2px' }}
+                />
+              </>
+            )}
+          {isAuthenticated && mainUser.isSeller && (
+            <>
+              <Button
+                color="inherit"
+                style={{ fontSize: '0.8rem', color: 'black' }}
+                onClick={() => navigate('/seller/dashboard')}
+              >
+                Dashboard
+              </Button>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ borderWidth: '2px' }}
+              />
+            </>
+          )}
 
-                    
-                    {!isAuthenticated && (
-                        <IconButton color="inherit" style={{ fontSize: '2rem', color: 'darkgray' }} onClick={loginWithRedirect}>
-                            <AccountCircleIcon sx={{ fontSize: '100%' }} />
-                        </IconButton>
-                        
-                    )}
-                </Toolbar>
-            </AppBar>
+          {isAuthenticated && (
+            <>
+              <IconButton
+                color="inherit"
+                component={Link}
+                to={`/buyer/${mainUser.buyerId}/cart`}
+                style={{ fontSize: '2rem', color: 'darkgray' }}
+              >
+                <ShoppingCartIcon />
+              </IconButton>
 
-            {children}
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ borderWidth: '2px' }}
+              />
+            </>
+          )}
 
-            <AppBar position="static" sx={{ backgroundColor: 'hsl(50, 85%, 75%)', boxShadow: 'none', top: 'auto', bottom: 0, marginTop: '20px' }}>
-                <Toolbar>
-                    <Typography variant="body1" color="black" sx={{ flexGrow: 1 }}>
-                        This is the footer.
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-        </div>
-    );
+          {isAuthenticated && (
+            <IconButton
+              color="inherit"
+              style={{ fontSize: '2rem', color: 'darkgray' }}
+              onClick={handleLogout}
+            >
+              <ExitToAppIcon sx={{ fontSize: '100%' }} />
+            </IconButton>
+          )}
+
+          {!isAuthenticated && (
+            <IconButton
+              color="inherit"
+              style={{ fontSize: '2rem', color: 'darkgray' }}
+              onClick={loginWithRedirect}
+            >
+              <AccountCircleIcon sx={{ fontSize: '100%' }} />
+            </IconButton>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      {children}
+
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: 'hsl(50, 85%, 75%)',
+          boxShadow: 'none',
+          top: 'auto',
+          bottom: 0,
+          marginTop: '20px',
+        }}
+      >
+        <Toolbar>
+          <Typography variant="body1" color="black" sx={{ flexGrow: 1 }}>
+            This is the footer.
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </div>
+  )
 }
 
-export default Theme;
+Theme.propTypes = {
+    children: PropTypes.node.isRequired
+}
+
+export default Theme

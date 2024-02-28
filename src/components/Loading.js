@@ -1,6 +1,6 @@
-import React from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import React from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
 
 const LoadingOverlay = () => {
   return (
@@ -20,7 +20,7 @@ const LoadingOverlay = () => {
     >
       <CircularProgress color="primary" />
     </Box>
-  );
-};
+  )
+}
 
-export default LoadingOverlay;
+export default LoadingOverlay
