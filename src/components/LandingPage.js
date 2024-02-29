@@ -37,7 +37,7 @@ function LandingPage() {
     }
     getDish()
     getFeaturedDishes()
-  })
+  }, [])
 
   const handleSearch = async () => {
     try {

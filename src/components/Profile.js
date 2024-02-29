@@ -44,7 +44,8 @@ const ProfilePage = () => {
       dispatch(changeEmail(getUser))
     }
     fetchUser()
-  })
+     // eslint-disable-next-line
+  }, [])
 
   return (
     <Theme>
@@ -61,6 +62,10 @@ const ProfilePage = () => {
           My Orders
         </Typography>
         <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
+        {orders.length == 0 && 
+        <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', color: 'red', marginTop: "10px" }}>
+          No order is found
+        </Typography>}
         <List>
           {orders.slice(startIndex, endIndex).map((order) => (
             <React.Fragment key={order.id}>
