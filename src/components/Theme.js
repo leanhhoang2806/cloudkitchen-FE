@@ -19,6 +19,7 @@ function Theme({ children }) {
   const navigate = useNavigate()
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
   const location = useLocation()
+  const regexBuyerCart = /^\/buyer\/[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}\/cart$/i;
 
   const onRegisterHandler = () => {
     navigate('/seller/register')
@@ -39,6 +40,7 @@ function Theme({ children }) {
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
         backgroundColor: '#f0f0f0',
+        minHeight: '100vh'
       }}
     >
       <AppBar
@@ -109,7 +111,7 @@ function Theme({ children }) {
             </>
           )}
 
-          {isAuthenticated && (
+          {isAuthenticated && !regexBuyerCart.test(location.pathname) && (
             <>
               <IconButton
                 color="inherit"

@@ -7,7 +7,7 @@ import {
   Divider,
   Pagination,
 } from '@mui/material'
-import Button from '@mui/material/Button'
+// import Button from '@mui/material/Button'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useSelector } from 'react-redux'
@@ -91,9 +91,9 @@ export const OrdersComponent = () => {
                 style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
               />
               <ListItemSecondaryAction>
-                <Button variant="contained" color="error" size="small">
+                {/* <Button variant="contained" color="error" size="small">
                   DELETE
-                </Button>
+                </Button> */}
               </ListItemSecondaryAction>
             </ListItem>
             <Divider variant="inset" component="li" />

@@ -25,12 +25,11 @@ function CheckoutOrdersPage() {
   const dispatch = useDispatch()
 
   // Function to handle deletion of an order
-  const handleDelete = (orderId) => {
-    dispatch(removeItemFromCart(orderId)) // Dispatch the action to delete the order
+  const handleDelete = (index) => {
+    dispatch(removeItemFromCart(index)) // Dispatch the action to delete the order
   }
 
   const { getAccessTokenSilently } = useAuth0()
-  console.log(orders)
   const handleCheckout = async () => {
     setLoading(true)
     await postOrderByBuyer(user.buyerId, orders, getAccessTokenSilently)
@@ -54,8 +53,8 @@ function CheckoutOrdersPage() {
         </Typography>
         <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
         <List>
-          {orders.map((order) => (
-            <React.Fragment key={order}>
+          {orders.map((order, index) => (
+            <React.Fragment key={index}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar
@@ -90,7 +89,7 @@ function CheckoutOrdersPage() {
                     variant="contained"
                     color="error"
                     size="small"
-                    onClick={() => handleDelete(order.id)}
+                    onClick={() => handleDelete(index)}
                   >
                     DELETE
                   </Button>
@@ -100,7 +99,7 @@ function CheckoutOrdersPage() {
             </React.Fragment>
           ))}
         </List>
-        {/* Checkout button */}
+        {orders.length !== 0 && 
         <Button
           variant="contained"
           color="primary"
@@ -109,6 +108,7 @@ function CheckoutOrdersPage() {
         >
           CHECKOUT
         </Button>
+        }
       </div>
     </Theme>
   )

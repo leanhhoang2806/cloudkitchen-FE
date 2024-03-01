@@ -27,7 +27,7 @@ export const userSlice = createSlice({
       state.cart = [...state.cart, action.payload]
     },
     removeItemFromCart: (state, action) => {
-      state.cart = state.cart.filter((order) => order.id !== action.payload)
+      state.cart = state.cart.filter((order, index) => index !== action.payload)
     },
   },
 })

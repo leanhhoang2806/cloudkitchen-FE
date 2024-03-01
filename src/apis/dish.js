@@ -14,6 +14,7 @@ const postDish = async (data, s3Path, authToken, sellerId) => {
   const payload = {
     ...data,
     seller_id: sellerId,
+    s3_path: s3Path
   }
 
   const response = await axios.post(
@@ -52,7 +53,7 @@ const getDishesPagination = async (skip) => {
   const response = await axios.get(`http://localhost:8000/api/v1/dish/`, {
     params: {
       skip: skip,
-      limit: 10,
+      limit: 20,
     },
   })
 

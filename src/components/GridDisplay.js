@@ -17,11 +17,11 @@ function SearchResultCard({ imageUrl, price, dishId }) {
           height="240" // Increased height for bigger cards
           image={imageUrl}
           alt="Placeholder"
-          sx={{ width: '70%' }}
+          sx={{ width: '100%' }}
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary" align="center">
-            Name: {price}
+            Price: {price}
           </Typography>
           <Button
             variant="contained"
@@ -54,15 +54,17 @@ function DisplayPaginatedDishResults({ dishes }) {
   const gridProps = {
     xs: 12,
     sm: 6,
-    lg: numItems === 1 ? 12 : 4, // Set to 12 for single item, otherwise 4
-    xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
+    lg: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 4
+    xl: numItems === 1 ? 12 : 2, // Set to 12 for single item, otherwise 3
   };
 
+  console.log(dishes)
+
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={4} style={{ paddingLeft: 200, paddingRight: 200 }}>
       {dishes.map((item, index) => (
         <Grid item {...gridProps} key={index}>
-          <SearchResultCard imageUrl={'https://via.placeholder.com/150'} price={item.price} dishId={item.id} />
+          <SearchResultCard imageUrl={item.s3_path} price={item.price} dishId={item.id} />
         </Grid>
       ))}
     </Grid>

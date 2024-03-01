@@ -6,7 +6,7 @@ const getFeaturedDishPagination = async (skip) => {
     {
       params: {
         skip: skip,
-        limit: 10,
+        limit: 20,
       },
     },
   )

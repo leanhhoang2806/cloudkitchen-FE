@@ -49,7 +49,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
     setLoading(true)
     try {
       const s3Path = await uploadFile(acceptedFiles[0], getAccessTokenSilently)
-      setUploadedS3Path(s3Path)
+      setUploadedS3Path(s3Path.s3_path)
       const fileUrl = URL.createObjectURL(acceptedFiles[0])
       setThumbnailUrl(fileUrl)
     } catch (error) {
