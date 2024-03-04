@@ -36,4 +36,6 @@ const postFeatureDish = async (dishId, authToken) => {
   return response.data
 }
 
+
+
 export { getFeaturedDishPagination, postFeatureDish }

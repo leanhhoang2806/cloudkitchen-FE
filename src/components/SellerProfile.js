@@ -1,0 +1,99 @@
+import React, { useEffect, useState } from 'react';
+import { Typography, Divider, TextField, Button } from '@mui/material';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useSelector } from 'react-redux';
+import { getSellerByEmail } from 'apis/sellerRegister';
+import { updateSeller } from 'apis/sellerRegister';
+import PropTypes from 'prop-types';
+
+function SellerInfoUpdateForm({setSelectedItem}) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [sellerId, setSellerId] = useState("");
+
+  const mainUser = useSelector((state) => state.user)
+
+  const { getAccessTokenSilently } = useAuth0()
+  useEffect(() => {
+    getSellerByEmail(mainUser.email, getAccessTokenSilently).then(response => {
+      setName(response.name || '');
+      setPhone(response.phone || '');
+      setAddress(response.address || '');
+      setZipcode(response.zipcode || '');
+      setSellerId(response.id)
+    });
+  }, [])
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = {
+      name,
+      phone,
+      address,
+      zipcode,
+    };
+    try {
+        updateSeller(sellerId, formData, getAccessTokenSilently).then(setSelectedItem("Dashboard"))
+    } catch(error) {
+        console.log(error);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        width: '80%',
+        margin: 'auto',
+        backgroundColor: 'white',
+        padding: '20px',
+        marginTop: '20px',
+      }}
+    >
+      <Typography variant="h4" gutterBottom>
+        Update Seller Information
+      </Typography>
+      <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Zipcode"
+          value={zipcode}
+          onChange={(e) => setZipcode(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>
+          Update
+        </Button>
+      </form>
+    </div>
+  );
+}
+
+SellerInfoUpdateForm.propTypes = {
+    setSelectedItem: PropTypes.func.isRequired
+}
+
+export default SellerInfoUpdateForm;

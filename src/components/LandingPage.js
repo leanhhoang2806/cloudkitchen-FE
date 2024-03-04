@@ -13,7 +13,7 @@ import Theme from 'components/Theme'
 import { searchDishesByNameOrZipcode } from 'apis/search'
 
 function LandingPage() {
-  const skip = 0
+  const [skip, setSkip]= useState(0)
   const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
@@ -21,23 +21,23 @@ function LandingPage() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     const getDish = async () => {
-      const dishes = await getDishesPagination(skip)
-      if (dishes) {
-        setDishes(dishes)
+      const fetchedDishes = await getDishesPagination(skip)
+      if (fetchedDishes) {
+        setDishes((prevDishes) => [...prevDishes, ...fetchedDishes]);
       }
-      return dishes
     }
     const getFeaturedDishes = async () => {
       const dishes = await getFeaturedDishPagination(skip)
       if (dishes) {
         setFeaturedDishes(dishes)
       }
-      return dishes
     }
     getDish()
     getFeaturedDishes()
-  }, [])
+    setLoading(false)
+  }, [skip])
 
   const handleSearch = async () => {
     try {
@@ -57,6 +57,9 @@ function LandingPage() {
   const handleZipCodeChange = (event) => {
     setZipCode(event.target.value)
   }
+  const handleLoadMore = () => {
+    setSkip((prevSkip) => prevSkip + 10); // Adjust the pagination limit as needed
+  };
 
   return (
     <Theme>
@@ -143,6 +146,11 @@ function LandingPage() {
       {/* Search Results */}
       <div style={{ marginTop: '50px' }}>
         <DisplayPaginatedDishResults dishes={dishes} />
+      </div>
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <Button variant="contained" color="primary" onClick={handleLoadMore}>
+          Load More
+        </Button>
       </div>
     </Theme>
   )

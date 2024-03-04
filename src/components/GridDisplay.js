@@ -5,7 +5,6 @@ import { addToCart } from 'store/slices/userSlice';
 import PropTypes from 'prop-types';
 
 function SearchResultCard({ imageUrl, price, dishId }) {
-
      const dispatch = useDispatch();
     const handleAddToCart = () => {
         dispatch(addToCart(dishId))
@@ -16,7 +15,7 @@ function SearchResultCard({ imageUrl, price, dishId }) {
           component="img"
           height="240" // Increased height for bigger cards
           image={imageUrl}
-          alt="Placeholder"
+          alt="Default Image"
           sx={{ width: '100%' }}
         />
         <CardContent>
@@ -50,19 +49,23 @@ SearchResultCard.propTypes = {
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
-  const numItems = dishes.length;
+  const isImageEndInJpgOrPng = (path) => {
+    const regex = /\.(jpg|png)$/i;
+    return regex.test(path);
+  }
+  const filterdDishes = dishes.filter(item => isImageEndInJpgOrPng(item.s3_path))
+  const numItems = filterdDishes.length;
+  
   const gridProps = {
     xs: 12,
     sm: 6,
-    lg: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 4
-    xl: numItems === 1 ? 12 : 2, // Set to 12 for single item, otherwise 3
+    lg: numItems === 1 ? 12 : 4, // Set to 12 for single item, otherwise 4
+    xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
   };
-
-  console.log(dishes)
 
   return (
     <Grid container spacing={4} style={{ paddingLeft: 200, paddingRight: 200 }}>
-      {dishes.map((item, index) => (
+      {filterdDishes.map((item, index) => (
         <Grid item {...gridProps} key={index}>
           <SearchResultCard imageUrl={item.s3_path} price={item.price} dishId={item.id} />
         </Grid>

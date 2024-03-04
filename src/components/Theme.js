@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PropTypes from 'prop-types';
+import { Badge } from '@mui/material';
 
 function Theme({ children }) {
   const navigate = useNavigate()
@@ -57,6 +58,26 @@ function Theme({ children }) {
           >
             PoPo24
           </Typography>
+          {isAuthenticated && !regexBuyerCart.test(location.pathname) && (
+            <>
+              <IconButton
+                color="inherit"
+                component={Link}
+                to={`/buyer/${mainUser.buyerId}/cart`}
+                style={{ fontSize: '2rem', color: 'darkgray', paddingLeft: '50px', paddingRight: '50px' }}
+              >
+                <Badge badgeContent={mainUser.cart.length} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ borderWidth: '2px' }}
+              />
+            </>
+          )}
           {/* Display user's name if authenticated */}
           {isAuthenticated && (
             <Typography
@@ -64,7 +85,7 @@ function Theme({ children }) {
               color="black"
               component={Link}
               to="/profile"
-              sx={{ mr: 1 }}
+              sx={{ mr: 1 , paddingLeft: 3, paddingRight: 3}}
             >
               {user.name}
             </Typography>
@@ -103,25 +124,6 @@ function Theme({ children }) {
               >
                 Dashboard
               </Button>
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{ borderWidth: '2px' }}
-              />
-            </>
-          )}
-
-          {isAuthenticated && !regexBuyerCart.test(location.pathname) && (
-            <>
-              <IconButton
-                color="inherit"
-                component={Link}
-                to={`/buyer/${mainUser.buyerId}/cart`}
-                style={{ fontSize: '2rem', color: 'darkgray' }}
-              >
-                <ShoppingCartIcon />
-              </IconButton>
-
               <Divider
                 orientation="vertical"
                 flexItem

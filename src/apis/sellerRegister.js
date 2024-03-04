@@ -39,4 +39,21 @@ const getSellerByEmail = async (email, authToken) => {
   return response.data
 }
 
-export { sellerPost, getSellerByEmail }
+const updateSeller = async(sellerId, formData, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.put(`http://localhost:8000/api/v1/seller_info/${sellerId}`, {...formData}, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  })
+
+  return response.data
+}
+
+
+export { sellerPost, getSellerByEmail, updateSeller }

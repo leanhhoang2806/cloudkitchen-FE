@@ -16,10 +16,12 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PeopleIcon from '@mui/icons-material/People'
 import { DashboardComponent } from './DashboardComponent'
 import { OrdersComponent } from './OrdersComponent'
 import { DishesComponent } from './DishesComponent'
+import SellerInfoUpdateForm from './SellerProfile'
 import { styled } from '@mui/material/styles'
 
 const Drawer = styled(MuiDrawer, {
@@ -51,7 +53,8 @@ const Drawer = styled(MuiDrawer, {
 const mainListItems = [
   { icon: <DashboardIcon />, text: 'Dashboard' },
   { icon: <ShoppingCartIcon />, text: 'Orders' },
-  { icon: <PeopleIcon />, text: 'Dishes' },
+  { icon: <RestaurantIcon />, text: 'Dishes' },
+  { icon: <PeopleIcon />, text: 'Profile' },
 ]
 
 const Dashboard = () => {
@@ -74,6 +77,8 @@ const Dashboard = () => {
         return <OrdersComponent setSelectedItem={setSelectedItem} />
       case 'Dishes':
         return <DishesComponent setSelectedItem={setSelectedItem} />
+      case 'Profile':
+        return <SellerInfoUpdateForm setSelectedItem={setSelectedItem} />
       default:
         return null
     }

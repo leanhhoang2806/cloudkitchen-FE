@@ -14,6 +14,7 @@ function SellerRegistration() {
     name: '',
     phone: '',
     address: '',
+    zipcode: ''
   })
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -74,6 +75,15 @@ function SellerRegistration() {
           value={formData.address}
           onChange={handleChange}
           fullWidth
+          sx={{ marginBottom: '20px' }}
+        />
+        <TextField
+          label="Zipcode (This is how the customer find you)"
+          name="zipcode"
+          value={formData.zipcode}
+          onChange={handleChange}
+          fullWidth
+          required
           sx={{ marginBottom: '20px' }}
         />
         <Button
