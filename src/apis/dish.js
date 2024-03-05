@@ -60,4 +60,25 @@ const getDishesPagination = async (skip) => {
   return response.data
 }
 
-export { postDish, getDishBySellerId, getDishesPagination }
+const getAllFeaturedDish = async (dishIds, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const stringifiedIds = dishIds.join(',');
+
+  const accessToken = await authToken()
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/dish/featured/ids`,
+    {
+      params: { dish_ids: stringifiedIds },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+}
+
+export { postDish, getDishBySellerId, getDishesPagination, getAllFeaturedDish }
