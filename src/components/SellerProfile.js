@@ -24,6 +24,7 @@ function SellerInfoUpdateForm({setSelectedItem}) {
       setZipcode(response.zipcode || '');
       setSellerId(response.id)
     });
+     // eslint-disable-next-line
   }, [])
 
   const handleSubmit = (e) => {

@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-const uploadFile = async (file, getAccessTokenSilently) => {
+const uploadFile = async (file, sellerId, getAccessTokenSilently) => {
   try {
     const accessToken = await getAccessTokenSilently()
     const formData = new FormData()
     formData.append('file', file)
 
     const response = await axios.post(
-      'http://localhost:8000/api/v1/s3/upload/',
+      `http://localhost:8000/api/v1/s3/upload/${sellerId}`,
       formData,
       {
         headers: {
