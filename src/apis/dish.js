@@ -14,7 +14,7 @@ const postDish = async (data, s3Path, authToken, sellerId) => {
   const payload = {
     ...data,
     seller_id: sellerId,
-    s3_path: s3Path
+    s3_path: s3Path,
   }
 
   const response = await axios.post(
@@ -60,21 +60,13 @@ const getDishesPagination = async (skip) => {
   return response.data
 }
 
-const getAllFeaturedDish = async (dishIds, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
+const getAllFeaturedDish = async (dishIds) => {
+  const stringifiedIds = dishIds.join(',')
 
-  const stringifiedIds = dishIds.join(',');
-
-  const accessToken = await authToken()
   const response = await axios.get(
     `http://localhost:8000/api/v1/dish/featured/ids`,
     {
       params: { dish_ids: stringifiedIds },
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     },
   )
 

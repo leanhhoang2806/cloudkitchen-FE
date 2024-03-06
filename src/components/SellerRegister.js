@@ -14,7 +14,7 @@ function SellerRegistration() {
     name: '',
     phone: '',
     address: '',
-    zipcode: ''
+    zipcode: '',
   })
   const [error, setError] = useState('')
   const navigate = useNavigate()

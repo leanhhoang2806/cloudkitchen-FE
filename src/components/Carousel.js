@@ -5,21 +5,23 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import Slide from '@mui/material/Slide'
 import Card from '@mui/material/Card'
-import {CardMedia} from '@mui/material';
+import { CardMedia, Modal, Button } from '@mui/material'
 import { getAllFeaturedDish } from 'apis/dish'
-import { useAuth0 } from '@auth0/auth0-react'
-import PropTypes from 'prop-types';
-
+import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { addToCart } from 'store/slices/userSlice'
 
 function Carousel({ items }) {
   const isImageEndInJpgOrPng = (path) => {
-    const regex = /\.(jpg|png)$/i;
-    return regex.test(path);
+    const regex = /\.(jpg|png)$/i
+    return regex.test(path)
   }
+
   const [filteredDish, setFilteredDish] = useState([])
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
-
-  const { getAccessTokenSilently } = useAuth0()
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedDishId, setSelectedDishId] = useState('')
 
   const goToPrevious = () => {
     setCurrentItemIndex((prevIndex) =>
@@ -33,60 +35,160 @@ function Carousel({ items }) {
     )
   }
 
+  const openModal = (image) => {
+    console.log(image)
+    setSelectedImage(image.s3_path)
+    setSelectedDishId(image.id)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setSelectedImage(null)
+    setSelectedDishId('')
+    setIsModalOpen(false)
+  }
+
   // Calculate indices for the three items to display
   const currentIndex = currentItemIndex % filteredDish.length
-  const previousIndex = (currentItemIndex - 1 + filteredDish.length) % filteredDish.length
+  const previousIndex =
+    (currentItemIndex - 1 + filteredDish.length) % filteredDish.length
   const nextIndex = (currentItemIndex + 1) % filteredDish.length
 
   // Calculate width for the cards to occupy approximately 70% of the screen width
   const cardWidth = `${70 / 3}%`
   const cardHeight = `250px` // Increase the card height by 50%
-  
+
+  const dispatch = useDispatch()
+  const handleAddToCart = () => {
+    dispatch(addToCart(selectedDishId))
+    closeModal()
+  }
+
   useEffect(() => {
     const getFeaturedDish = async () => {
-      const ids = items.map(item => item.dish_id)
-      const dishes = await getAllFeaturedDish( ids,getAccessTokenSilently)
-      dishes.filter(item => "s3_path" in item).filter(item => isImageEndInJpgOrPng(item.s3_path))
-      setFilteredDish(dishes)
+      const ids = items.map((item) => item.dish_id)
+      const dishes = await getAllFeaturedDish(ids)
+      const filtered = dishes.filter(
+        (item) => 's3_path' in item && isImageEndInJpgOrPng(item.s3_path),
+      )
+      setFilteredDish(filtered)
     }
     getFeaturedDish()
-
-  }, [items, getAccessTokenSilently])
+  }, [items])
 
   return (
-    
-  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-    {filteredDish.length !== 0 && (
-      <>
-      <IconButton onClick={goToPrevious}>
-        <NavigateBeforeIcon />
-      </IconButton>
-      <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-        <Card sx={{ width: cardWidth, height: cardHeight, marginRight: '10rem' }}>
-          <CardMedia component="img" image={filteredDish[previousIndex].s3_path} alt={filteredDish[previousIndex].title} />
-        </Card>
-      </Slide>
-      <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-        <Card sx={{ width: cardWidth, height: cardHeight, marginRight: '10rem' }}>
-          <CardMedia component="img" image={filteredDish[currentIndex].s3_path} alt={filteredDish[currentIndex].title} />
-        </Card>
-      </Slide>
-      <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-        <Card sx={{ width: cardWidth, height: cardHeight }}>
-          <CardMedia component="img" image={filteredDish[nextIndex].s3_path} alt={filteredDish[nextIndex].title} />
-        </Card>
-      </Slide>
-      <IconButton onClick={goToNext}>
-        <NavigateNextIcon />
-      </IconButton>
-      </>
+    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      {filteredDish.length !== 0 && (
+        <>
+          {filteredDish.length > 3 && (
+            <IconButton onClick={goToPrevious}>
+              <NavigateBeforeIcon />
+            </IconButton>
+          )}
+          <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+            <Card
+              sx={{
+                width: cardWidth,
+                height: cardHeight,
+                marginRight: '10rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => openModal(filteredDish[previousIndex])}
+            >
+              <CardMedia
+                component="img"
+                image={filteredDish[previousIndex].s3_path}
+                alt={filteredDish[previousIndex].title}
+              />
+            </Card>
+          </Slide>
+          {filteredDish.length >= 2 && (
+            <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+              <Card
+                sx={{
+                  width: cardWidth,
+                  height: cardHeight,
+                  marginRight: '10rem',
+                  cursor: 'pointer',
+                }}
+                onClick={() => openModal(filteredDish[currentIndex])}
+              >
+                <CardMedia
+                  component="img"
+                  image={filteredDish[currentIndex].s3_path}
+                  alt={filteredDish[currentIndex].title}
+                />
+              </Card>
+            </Slide>
+          )}
+          {filteredDish.length >= 3 && (
+            <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+              <Card
+                sx={{ width: cardWidth, height: cardHeight, cursor: 'pointer' }}
+                onClick={() => openModal(filteredDish[nextIndex])}
+              >
+                <CardMedia
+                  component="img"
+                  image={filteredDish[nextIndex].s3_path}
+                  alt={filteredDish[nextIndex].title}
+                />
+              </Card>
+            </Slide>
+          )}
+          {filteredDish.length > 3 && (
+            <IconButton onClick={goToNext}>
+              <NavigateNextIcon />
+            </IconButton>
+          )}
+        </>
       )}
+      <Modal
+        open={isModalOpen}
+        onClose={closeModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            width: 400,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={selectedImage}
+            alt=""
+            sx={{ width: '100%' }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: '#FFEB3B', // Yellow background
+              color: 'black', // Black text color
+              '&:hover': {
+                backgroundColor: '#FFD600', // Darker yellow on hover
+              },
+            }}
+            onClick={handleAddToCart}
+            fullWidth
+          >
+            Add to Cart
+          </Button>
+        </Box>
+      </Modal>
     </Box>
   )
 }
 
 Carousel.propTypes = {
-  items: PropTypes.array
+  items: PropTypes.array,
 }
 
 export default Carousel

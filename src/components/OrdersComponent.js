@@ -40,8 +40,8 @@ export const OrdersComponent = () => {
       return orders
     }
     getOrders()
-     // eslint-disable-next-line
-  },[])
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div

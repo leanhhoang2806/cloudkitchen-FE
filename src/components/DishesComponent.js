@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, Grid } from '@mui/material';
-import { useDropzone } from 'react-dropzone';
-import { postDish } from 'apis/dish';
-import { useAuth0 } from '@auth0/auth0-react';
-import uploadFile from 'apis/mediaUpload';
-import Spinner from './SpinnerComponent';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import { TextField, Button, Box, Typography, Grid } from '@mui/material'
+import { useDropzone } from 'react-dropzone'
+import { postDish } from 'apis/dish'
+import { useAuth0 } from '@auth0/auth0-react'
+import uploadFile from 'apis/mediaUpload'
+import Spinner from './SpinnerComponent'
+import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
 const dropzoneStyles = {
   width: '100%',
@@ -21,79 +21,81 @@ const dropzoneStyles = {
   justifyContent: 'center',
   cursor: 'pointer',
   margin: '16px 0',
-};
+}
 
 export const DishesComponent = ({ setSelectedItem }) => {
-  const { getAccessTokenSilently } = useAuth0();
-  const [dishName, setDishName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [thumbnailUrl, setThumbnailUrl] = useState(null);
-  const [uploadedS3Path, setUploadedS3Path] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const { getAccessTokenSilently } = useAuth0()
+  const [dishName, setDishName] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState(0)
+  const [thumbnailUrl, setThumbnailUrl] = useState(null)
+  const [uploadedS3Path, setUploadedS3Path] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const mainUser = useSelector((state) => state.user);
+  const mainUser = useSelector((state) => state.user)
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     if (name === 'dishName') {
-      setDishName(value);
+      setDishName(value)
     } else if (name === 'description') {
-      setDescription(value);
+      setDescription(value)
     } else if (name === 'price') {
-      setPrice(parseFloat(value));
+      setPrice(parseFloat(value))
     }
-  };
+  }
 
   const onDrop = async (acceptedFiles) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const s3Path = await uploadFile(acceptedFiles[0], mainUser.sellerId, getAccessTokenSilently);
-      setUploadedS3Path(s3Path.s3_path);
-      const fileUrl = URL.createObjectURL(acceptedFiles[0]);
-      setThumbnailUrl(fileUrl);
+      const s3Path = await uploadFile(
+        acceptedFiles[0],
+        mainUser.sellerId,
+        getAccessTokenSilently,
+      )
+      setUploadedS3Path(s3Path.s3_path)
+      const fileUrl = URL.createObjectURL(acceptedFiles[0])
+      setThumbnailUrl(fileUrl)
     } catch (error) {
-      setErrorMessage(error.response?.data?.detail || 'Failed to upload file');
+      setErrorMessage(error.response?.data?.detail || 'Failed to upload file')
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const handleSubmit = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const formData = {
         name: dishName,
         description: description,
         price: price,
-      };
+      }
 
       await postDish(
         formData,
         uploadedS3Path,
         getAccessTokenSilently,
         mainUser.sellerId,
-      );
-      setSelectedItem('Dashboard');
+      )
+      setSelectedItem('Dashboard')
     } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage(error.response?.data?.message || 'Failed to submit dish');
+      setErrorMessage(error.response?.data?.message || 'Failed to submit dish')
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     acceptedFiles: 'image/jpeg, image/png',
     multiple: false,
-  });
+  })
 
   return (
     <Box>
       <Spinner loading={loading} />
       <Grid container direction="column" alignItems="center">
-
-      {errorMessage && (
+        {errorMessage && (
           <Grid item>
             <Typography variant="body1" color="error">
               {errorMessage}
@@ -157,11 +159,11 @@ export const DishesComponent = ({ setSelectedItem }) => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
 DishesComponent.propTypes = {
   setSelectedItem: PropTypes.func.isRequired,
-};
+}
 
-export default DishesComponent;
+export default DishesComponent

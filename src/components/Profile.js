@@ -17,7 +17,7 @@ import Theme from './Theme'
 import { useDispatch } from 'react-redux'
 import { changeEmail } from 'store/slices/userSlice'
 import { getOrderByBuyerId } from 'apis/orders.'
-import { getSellerByEmail } from 'apis/sellerRegister';
+import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 
 const ProfilePage = () => {
@@ -36,7 +36,6 @@ const ProfilePage = () => {
   const endIndex = startIndex + itemsPerPage
 
   useEffect(() => {
-    
     const fetchUser = async () => {
       const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
       const getOrders = await getOrderByBuyerId(
@@ -54,7 +53,7 @@ const ProfilePage = () => {
     }
     fetchUser()
     getPossibleSeller()
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [])
 
   return (
@@ -72,10 +71,15 @@ const ProfilePage = () => {
           My Orders
         </Typography>
         <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
-        {orders.length == 0 && 
-        <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', color: 'red', marginTop: "10px" }}>
-          No order is found
-        </Typography>}
+        {orders.length == 0 && (
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ textAlign: 'center', color: 'red', marginTop: '10px' }}
+          >
+            No order is found
+          </Typography>
+        )}
         <List>
           {orders.slice(startIndex, endIndex).map((order) => (
             <React.Fragment key={order.id}>

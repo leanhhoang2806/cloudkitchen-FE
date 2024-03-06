@@ -52,7 +52,7 @@ export const DashboardComponent = () => {
 
   useEffect(() => {
     getDish()
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [])
 
   return (

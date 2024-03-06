@@ -1,46 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Divider, TextField, Button } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
-import { useSelector } from 'react-redux';
-import { getSellerByEmail } from 'apis/sellerRegister';
-import { updateSeller } from 'apis/sellerRegister';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react'
+import { Typography, Divider, TextField, Button } from '@mui/material'
+import { useAuth0 } from '@auth0/auth0-react'
+import { useSelector } from 'react-redux'
+import { getSellerByEmail } from 'apis/sellerRegister'
+import { updateSeller } from 'apis/sellerRegister'
+import PropTypes from 'prop-types'
 
-function SellerInfoUpdateForm({setSelectedItem}) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [sellerId, setSellerId] = useState("");
+function SellerInfoUpdateForm({ setSelectedItem }) {
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [zipcode, setZipcode] = useState('')
+  const [sellerId, setSellerId] = useState('')
 
   const mainUser = useSelector((state) => state.user)
 
   const { getAccessTokenSilently } = useAuth0()
   useEffect(() => {
-    getSellerByEmail(mainUser.email, getAccessTokenSilently).then(response => {
-      setName(response.name || '');
-      setPhone(response.phone || '');
-      setAddress(response.address || '');
-      setZipcode(response.zipcode || '');
-      setSellerId(response.id)
-    });
-     // eslint-disable-next-line
+    getSellerByEmail(mainUser.email, getAccessTokenSilently).then(
+      (response) => {
+        setName(response.name || '')
+        setPhone(response.phone || '')
+        setAddress(response.address || '')
+        setZipcode(response.zipcode || '')
+        setSellerId(response.id)
+      },
+    )
+    // eslint-disable-next-line
   }, [])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const formData = {
       name,
       phone,
       address,
       zipcode,
-    };
-    try {
-        updateSeller(sellerId, formData, getAccessTokenSilently).then(setSelectedItem("Dashboard"))
-    } catch(error) {
-        console.log(error);
     }
-  };
+    try {
+      updateSeller(sellerId, formData, getAccessTokenSilently).then(
+        setSelectedItem('Dashboard'),
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div
@@ -85,16 +89,21 @@ function SellerInfoUpdateForm({setSelectedItem}) {
           fullWidth
           margin="normal"
         />
-        <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ marginTop: '20px' }}
+        >
           Update
         </Button>
       </form>
     </div>
-  );
+  )
 }
 
 SellerInfoUpdateForm.propTypes = {
-    setSelectedItem: PropTypes.func.isRequired
+  setSelectedItem: PropTypes.func.isRequired,
 }
 
-export default SellerInfoUpdateForm;
+export default SellerInfoUpdateForm

@@ -21,7 +21,8 @@
     "document": "readonly",
     "console": "readonly",
     "FormData": "readonly",
-    "URL": "readonly"
+    "URL": "readonly",
+    "localStorage": "readonly"
     
     // Add more global variables as needed
   }

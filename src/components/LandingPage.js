@@ -12,7 +12,7 @@ import Theme from 'components/Theme'
 import { searchDishesByNameOrZipcode } from 'apis/search'
 
 function LandingPage() {
-  const [skip, setSkip]= useState(0)
+  const [skip, setSkip] = useState(0)
   const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
@@ -50,8 +50,8 @@ function LandingPage() {
     setZipCode(event.target.value)
   }
   const handleLoadMore = () => {
-    setSkip((prevSkip) => prevSkip + 10); // Adjust the pagination limit as needed
-  };
+    setSkip((prevSkip) => prevSkip + 10) // Adjust the pagination limit as needed
+  }
 
   return (
     <Theme>

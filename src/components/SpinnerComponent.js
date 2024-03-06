@@ -1,6 +1,6 @@
 import React from 'react'
 import { CircularProgress, Box } from '@mui/material'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const Spinner = ({ loading }) => {
   return (
@@ -24,7 +24,7 @@ const Spinner = ({ loading }) => {
 }
 
 Spinner.propTypes = {
-    loading: PropTypes.bool.isRequired, // Specifies that 'loading' prop is required and must be a boolean
-  };
+  loading: PropTypes.bool.isRequired, // Specifies that 'loading' prop is required and must be a boolean
+}
 
 export default Spinner

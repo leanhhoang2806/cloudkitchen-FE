@@ -99,16 +99,16 @@ function CheckoutOrdersPage() {
             </React.Fragment>
           ))}
         </List>
-        {orders.length !== 0 && 
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ alignSelf: 'flex-end' }}
-          onClick={handleCheckout}
-        >
-          CHECKOUT
-        </Button>
-        }
+        {orders.length !== 0 && (
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ alignSelf: 'flex-end' }}
+            onClick={handleCheckout}
+          >
+            CHECKOUT
+          </Button>
+        )}
       </div>
     </Theme>
   )

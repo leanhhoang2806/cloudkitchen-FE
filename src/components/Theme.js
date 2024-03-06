@@ -13,14 +13,15 @@ import Divider from '@mui/material/Divider'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import PropTypes from 'prop-types';
-import { Badge } from '@mui/material';
+import PropTypes from 'prop-types'
+import { Badge } from '@mui/material'
 
 function Theme({ children }) {
   const navigate = useNavigate()
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
   const location = useLocation()
-  const regexBuyerCart = /^\/buyer\/[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}\/cart$/i;
+  const regexBuyerCart =
+    /^\/buyer\/[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}\/cart$/i
 
   const onRegisterHandler = () => {
     navigate('/seller/register')
@@ -33,7 +34,6 @@ function Theme({ children }) {
 
   const mainUser = useSelector((state) => state.user)
 
-
   return (
     <div
       style={{
@@ -42,7 +42,7 @@ function Theme({ children }) {
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
         backgroundColor: '#f0f0f0',
-        minHeight: '100vh'
+        minHeight: '100vh',
       }}
     >
       <AppBar
@@ -65,7 +65,12 @@ function Theme({ children }) {
                 color="inherit"
                 component={Link}
                 to={`/buyer/${mainUser.buyerId}/cart`}
-                style={{ fontSize: '2rem', color: 'darkgray', paddingLeft: '50px', paddingRight: '50px' }}
+                style={{
+                  fontSize: '2rem',
+                  color: 'darkgray',
+                  paddingLeft: '50px',
+                  paddingRight: '50px',
+                }}
               >
                 <Badge badgeContent={mainUser.cart.length} color="secondary">
                   <ShoppingCartIcon />
@@ -86,7 +91,7 @@ function Theme({ children }) {
               color="black"
               component={Link}
               to="/profile"
-              sx={{ mr: 1 , paddingLeft: 3, paddingRight: 3}}
+              sx={{ mr: 1, paddingLeft: 3, paddingRight: 3 }}
             >
               {user.name}
             </Typography>
@@ -178,7 +183,7 @@ function Theme({ children }) {
 }
 
 Theme.propTypes = {
-    children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 }
 
 export default Theme
