@@ -3,7 +3,6 @@ import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { getDishesPagination } from 'apis/dish'
 import { getFeaturedDishPagination } from 'apis/featured_dish'
 import Spinner from './SpinnerComponent'
 import Carousel from 'components/Carousel'
@@ -22,19 +21,12 @@ function LandingPage() {
 
   useEffect(() => {
     setLoading(true)
-    const getDish = async () => {
-      const fetchedDishes = await getDishesPagination(skip)
-      if (fetchedDishes) {
-        setDishes((prevDishes) => [...prevDishes, ...fetchedDishes]);
-      }
-    }
     const getFeaturedDishes = async () => {
       const dishes = await getFeaturedDishPagination(skip)
       if (dishes) {
         setFeaturedDishes(dishes)
       }
     }
-    getDish()
     getFeaturedDishes()
     setLoading(false)
   }, [skip])

@@ -17,6 +17,8 @@ import Theme from './Theme'
 import { useDispatch } from 'react-redux'
 import { changeEmail } from 'store/slices/userSlice'
 import { getOrderByBuyerId } from 'apis/orders.'
+import { getSellerByEmail } from 'apis/sellerRegister';
+import { updateSeller } from 'store/slices/userSlice'
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1)
@@ -34,6 +36,7 @@ const ProfilePage = () => {
   const endIndex = startIndex + itemsPerPage
 
   useEffect(() => {
+    
     const fetchUser = async () => {
       const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
       const getOrders = await getOrderByBuyerId(
@@ -43,7 +46,13 @@ const ProfilePage = () => {
       setOrders(getOrders)
       dispatch(changeEmail(getUser))
     }
+    const getPossibleSeller = async () => {
+      const seller = await getSellerByEmail(user.email, getAccessTokenSilently)
+
+      dispatch(updateSeller(seller.id))
+    }
     fetchUser()
+    getPossibleSeller()
      // eslint-disable-next-line
   }, [])
 
