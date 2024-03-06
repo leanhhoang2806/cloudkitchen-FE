@@ -48,8 +48,9 @@ const ProfilePage = () => {
     }
     const getPossibleSeller = async () => {
       const seller = await getSellerByEmail(user.email, getAccessTokenSilently)
-
-      dispatch(updateSeller(seller.id))
+      if (seller) {
+        dispatch(updateSeller(seller.id))
+      }
     }
     fetchUser()
     getPossibleSeller()

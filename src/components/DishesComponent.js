@@ -54,7 +54,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
       const fileUrl = URL.createObjectURL(acceptedFiles[0]);
       setThumbnailUrl(fileUrl);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Failed to upload file');
+      setErrorMessage(error.response?.data?.detail || 'Failed to upload file');
     }
     setLoading(false);
   };

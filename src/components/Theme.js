@@ -158,7 +158,7 @@ function Theme({ children }) {
       {children}
 
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
           backgroundColor: 'hsl(50, 85%, 75%)',
           boxShadow: 'none',

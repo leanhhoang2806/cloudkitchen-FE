@@ -124,7 +124,7 @@ const Dashboard = () => {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            height: '85vh',
             overflow: 'auto',
             width: '70vw',
           }}
