@@ -63,6 +63,8 @@ function DisplayPaginatedDishResults({ dishes }) {
     xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
   };
 
+  console.log(dishes)
+
   return (
     <Grid container spacing={4} style={{ paddingLeft: 200, paddingRight: 200 }}>
       {filterdDishes.map((item, index) => (

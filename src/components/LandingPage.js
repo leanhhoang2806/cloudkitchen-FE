@@ -63,7 +63,7 @@ function LandingPage() {
           backgroundImage: `url(${BackGroundImage})`,
           backgroundSize: 'cover',
           width: '90%',
-          height: '500px',
+          height: '200px',
           marginTop: '20px',
           display: 'flex',
           justifyContent: 'center',
