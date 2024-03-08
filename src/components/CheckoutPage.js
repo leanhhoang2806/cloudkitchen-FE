@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Typography,
@@ -11,16 +11,33 @@ import {
   Avatar,
   Button,
 } from '@mui/material'
-import { removeItemFromCart } from 'store/slices/userSlice'
+import { removeItemFromCart, clearCart } from 'store/slices/userSlice'
 import Theme from './Theme'
 import { postOrderByBuyer } from 'apis/orders.'
 import Spinner from './SpinnerComponent'
 import { useAuth0 } from '@auth0/auth0-react'
+import { postStripePayment } from 'apis/stripe'
+import { loadStripe } from '@stripe/stripe-js'
+import CheckoutForm from './CheckoutForm'
+import { Elements } from '@stripe/react-stripe-js'
+
+const stripePromise = loadStripe(
+  'pk_test_51OrlfSJDu1ygRJcYQYwCOhk8qGe1uioqkaDoeAPwNAPvpVzeowySDjfuJFjN75wmB1LZqieLBDze9ymBX0fCqp9j00L4pVYKeQ',
+)
 
 function CheckoutOrdersPage() {
   const [loading, setLoading] = useState(false)
+  const [clientSecret, setClientSecret] = useState('')
+  const [loadPaymentPlatform, setLoadPaymentPlatform] = useState(false)
   const orders = useSelector((state) => state.user.cart) // Get orders from Redux state
   const user = useSelector((state) => state.user)
+  const appearance = {
+    theme: 'stripe',
+  }
+  const options = {
+    clientSecret,
+    appearance,
+  }
 
   const dispatch = useDispatch()
 
@@ -33,8 +50,21 @@ function CheckoutOrdersPage() {
   const handleCheckout = async () => {
     setLoading(true)
     await postOrderByBuyer(user.buyerId, orders, getAccessTokenSilently)
+    dispatch(clearCart([]))
     setLoading(false)
   }
+
+  const handleClickOnCheckout = () => {
+    setLoadPaymentPlatform(true)
+  }
+
+  useEffect(() => {
+    if (orders.length > 0) {
+      postStripePayment(orders, getAccessTokenSilently).then((data) =>
+        setClientSecret(data.client_secret),
+      )
+    }
+  }, [orders, getAccessTokenSilently])
 
   return (
     <Theme>
@@ -78,12 +108,13 @@ function CheckoutOrdersPage() {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        OrderId: {order}
+                        DishId: {order}
                       </Typography>
                     </React.Fragment>
                   }
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />
+                {!loadPaymentPlatform &&
                 <ListItemSecondaryAction>
                   <Button
                     variant="contained"
@@ -93,21 +124,26 @@ function CheckoutOrdersPage() {
                   >
                     DELETE
                   </Button>
-                </ListItemSecondaryAction>
+                </ListItemSecondaryAction>}
               </ListItem>
-              <Divider variant="inset" component="li" />
             </React.Fragment>
           ))}
         </List>
-        {orders.length !== 0 && (
+        {orders.length !== 0 && !loadPaymentPlatform && (
           <Button
             variant="contained"
             color="primary"
             style={{ alignSelf: 'flex-end' }}
-            onClick={handleCheckout}
+            onClick={handleClickOnCheckout}
           >
-            CHECKOUT
+            Check out
           </Button>
+        )}
+        {loadPaymentPlatform && (<Divider variant="inset" sx={{marginTop: "20px", marginBottom: "20px"}} />)}
+        {clientSecret && loadPaymentPlatform && (
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm handleCheckout={handleCheckout} />
+          </Elements>
         )}
       </div>
     </Theme>

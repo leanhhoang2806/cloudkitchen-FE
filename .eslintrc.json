@@ -22,7 +22,8 @@
     "console": "readonly",
     "FormData": "readonly",
     "URL": "readonly",
-    "localStorage": "readonly"
+    "localStorage": "readonly",
+    "URLSearchParams": "readonly"
     
     // Add more global variables as needed
   }

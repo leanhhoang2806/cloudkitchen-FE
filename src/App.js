@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import LandingPage from 'components/LandingPage'
 import { Auth0ProviderWithNavigate } from 'components/Auth0'
 import {
@@ -15,25 +15,11 @@ import Dashboard from 'components/SellerDashboard'
 import SellerRegistration from 'components/SellerRegister'
 import { useSelector } from 'react-redux'
 import CheckoutOrdersPage from 'components/CheckoutPage'
+import ThankYouPage from 'components/CompleteCheckoutStaticPage'
 
 const AllRoutes = () => {
-  const { isLoading, isAuthenticated, logout } = useAuth0()
+  const { isLoading, isAuthenticated } = useAuth0()
   const user = useSelector((state) => state.user)
-  useEffect(() => {
-    // Add an event listener for unload
-    const handleUnload = () => {
-      logout()
-    }
-
-    window.addEventListener('unload', handleUnload)
-
-    // Cleanup the event listeners when the component is unmounted
-    return () => {
-      window.removeEventListener('unload', handleUnload)
-    }
-
-    // eslint-disable-next-line
-  }, [])
 
   if (isLoading) {
     return <LoadingOverlay />
@@ -41,6 +27,7 @@ const AllRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<LandingPage />} />
+      <Route exact path="/thanks" element={<ThankYouPage />} />      
       <Route
         path="/profile"
         element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
