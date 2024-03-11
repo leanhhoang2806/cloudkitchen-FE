@@ -12,7 +12,8 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useSelector } from 'react-redux'
 import { getDishBySellerId } from 'apis/dish'
-import { postFeatureDish } from 'apis/featured_dish'
+import { postFeatureDish, deleteFeaturedDish } from 'apis/featured_dish'
+import { deleteDishBySeller } from 'apis/dish'
 
 export const DashboardComponent = () => {
   const [dishes, setDishes] = useState([])
@@ -50,10 +51,29 @@ export const DashboardComponent = () => {
     }
   }
 
+  const handleOnDeleteClick = async (dishId) => {
+    try {
+      await deleteDishBySeller(dishId, getAccessTokenSilently)
+      await getDish()
+    } catch (error) {
+      console.error('Error featuring dish:', error)
+    }
+  }
+
+  const handleUnfeatureClick = async (dishId) => {
+    try {
+      await deleteFeaturedDish(dishId, getAccessTokenSilently)
+      await getDish()
+    } catch (error) {
+      console.error('Error featuring dish:', error)
+    }
+  }
+
   useEffect(() => {
     getDish()
     // eslint-disable-next-line
   }, [])
+  console.log(dishes)
 
   return (
     <div
@@ -100,6 +120,7 @@ export const DashboardComponent = () => {
                   color="error"
                   size="small"
                   sx={{ marginRight: '10px' }}
+                  onClick={() => handleOnDeleteClick(dish.id)}
                 >
                   DELETE
                 </Button>
@@ -110,8 +131,6 @@ export const DashboardComponent = () => {
                     size="small"
                     onClick={() => handleFeatureClick(dish.id)}
                   >
-                    {' '}
-                    {/* Add onClick handler */}
                     FEATURE
                   </Button>
                 )}
@@ -120,10 +139,8 @@ export const DashboardComponent = () => {
                     variant="contained"
                     color="inherit"
                     size="small"
-                    onClick={() => handleFeatureClick(dish.id)}
+                    onClick={() => handleUnfeatureClick(dish.id)}
                   >
-                    {' '}
-                    {/* Add onClick handler */}
                     UNFEATURE
                   </Button>
                 )}

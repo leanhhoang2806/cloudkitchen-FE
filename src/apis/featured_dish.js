@@ -36,4 +36,23 @@ const postFeatureDish = async (dishId, authToken) => {
   return response.data
 }
 
-export { getFeaturedDishPagination, postFeatureDish }
+const deleteFeaturedDish = async (dishId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.delete(
+    `http://localhost:8000/api/v1/featured-dish/${dishId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+}
+
+export { getFeaturedDishPagination, postFeatureDish, deleteFeaturedDish }
