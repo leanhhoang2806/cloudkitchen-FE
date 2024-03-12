@@ -11,7 +11,7 @@ import {
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useSelector } from 'react-redux'
-import { getOrderBySellerId } from 'apis/orders.'
+import { getOrderBySellerId } from 'apis/orders'
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState([])
@@ -42,6 +42,8 @@ export const OrdersComponent = () => {
     getOrders()
     // eslint-disable-next-line
   }, [])
+
+  console.log(orders)
 
   return (
     <div

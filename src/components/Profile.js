@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import {
   Typography,
   List,
@@ -17,7 +16,8 @@ import { getBuyerByEmail } from 'apis/buyer'
 import Theme from './Theme'
 import { useDispatch } from 'react-redux'
 import { changeEmail } from 'store/slices/userSlice'
-import { getOrderByBuyerId } from 'apis/orders.'
+import { getOrderByBuyerId } from 'apis/orders'
+import { getOrderDetailsByOrderIds } from 'apis/orders';
 import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 
@@ -25,6 +25,7 @@ const ProfilePage = () => {
   const [page, setPage] = useState(1)
   const itemsPerPage = 10
   const [orders, setOrders] = useState([])
+  const [ orderDetails, setOrderDetails] = useState([])
   const dispatch = useDispatch()
 
   const { getAccessTokenSilently, user } = useAuth0()
@@ -43,6 +44,10 @@ const ProfilePage = () => {
         getUser.id,
         getAccessTokenSilently,
       )
+      const orderIds = getOrders.map(order => order.id)
+      if (orderIds.length > 0) {
+        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data))
+      }
       setOrders(getOrders)
       dispatch(changeEmail(getUser))
     }
@@ -54,8 +59,10 @@ const ProfilePage = () => {
     }
     fetchUser()
     getPossibleSeller()
+    
     // eslint-disable-next-line
   }, [])
+  console.log(orders)
 
   return (
     <Theme>
@@ -82,18 +89,16 @@ const ProfilePage = () => {
           </Typography>
         )}
         <List>
-          {orders.slice(startIndex, endIndex).map((order) => (
+          {orderDetails.slice(startIndex, endIndex).map((order) => (
             <React.Fragment key={order.id}>
               <ListItem alignItems="flex-start">
-              <Link to={`/purchase/details/${order.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <ListItemAvatar>
                   <Avatar
                     alt="Food"
-                    src={order.image}
+                    src={order.s3_path}
                     style={{ width: '150px', height: '150px' }}
                   />
                 </ListItemAvatar>
-                </Link>
                 <ListItemText
                   primary={
                     <Typography

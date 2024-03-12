@@ -1,3 +1,6 @@
+
+// !!!! UNUSED COMPONENT !!!
+
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -12,7 +15,7 @@ import {
 } from '@mui/material'
 import { useParams } from 'react-router-dom';
 import Theme from './Theme'
-import { getOrderDetailsByOrderId } from 'apis/orders.';
+import { getOrderDetailsByOrderIds } from 'apis/orders';
 import { useAuth0 } from '@auth0/auth0-react'
 
 
@@ -31,12 +34,9 @@ const PurchaseDetails = () => {
   }
 
   useEffect(() => {
-    // get dishes given a
-    getOrderDetailsByOrderId(purchaseId, getAccessTokenSilently).then(data => setOrderDetails(data))
+    getOrderDetailsByOrderIds(purchaseId, getAccessTokenSilently).then(data => setOrderDetails(data))
+    // eslint-disable-next-line
   }, [])
-
-  console.log("orderDetails")
-  console.log(orderDetails)
 
   return (
     <Theme>
@@ -61,7 +61,7 @@ const PurchaseDetails = () => {
                 <ListItemAvatar>
                   <Avatar
                     alt="Food"
-                    src={order.image}
+                    src={order.s3_path}
                     style={{ width: '150px', height: '150px' }}
                   />
                 </ListItemAvatar>

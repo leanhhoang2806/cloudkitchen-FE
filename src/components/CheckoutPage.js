@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { removeItemFromCart, clearCart } from 'store/slices/userSlice'
 import Theme from './Theme'
-import { postOrderByBuyer } from 'apis/orders.'
+import { postOrderByBuyer } from 'apis/orders'
 import Spinner from './SpinnerComponent'
 import { useAuth0 } from '@auth0/auth0-react'
 import { postStripePayment } from 'apis/stripe'
