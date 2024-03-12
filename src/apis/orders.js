@@ -85,4 +85,30 @@ const postOrderByBuyer = async (buyerId, orders, authToken) => {
   return response.data
 }
 
-export { getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer, getOrderDetailsByOrderIds }
+
+const updateOrderStatusById = async (updatedOrder, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+  const payload = {
+    status: updatedOrder.status,
+    buyer_id: updatedOrder.buyerId
+  }
+
+  const response = await axios.put(
+    `http://localhost:8000/api/v1/order/${updatedOrder.id}/status`,
+    { ...payload },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+
+}
+
+export { getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer, getOrderDetailsByOrderIds, updateOrderStatusById }

@@ -15,10 +15,11 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { useSelector } from 'react-redux'
 import { getOrderBySellerId } from 'apis/orders'
 import { getOrderDetailsByOrderIds } from 'apis/orders'
-import ENUMS from 'utilities/EnumsConversions'
+import {ENUMS, StatusEnumsGraph} from 'utilities/EnumsConversions'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 import { getBuyerById } from 'apis/buyer'
+import { updateOrderStatusById } from 'apis/orders'
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState([])
@@ -29,36 +30,47 @@ export const OrdersComponent = () => {
 
   const { getAccessTokenSilently } = useAuth0()
 
+  const getOrders = async () => {
+    const orders = await getOrderBySellerId(
+      mainUser.sellerId,
+      getAccessTokenSilently,
+    )
+    if (orders.length > 0) {
+      const orderIds = orders.map(order => order.id)
+      const buyerIds = orders.map(order => order.buyer_id)
+      const buyerInfo = await Promise.all(buyerIds.map(buyerId => getBuyerById(buyerId, getAccessTokenSilently)))
+      getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data.map((object, index) => ({ 
+        ...object, ...orders[index], ...buyerInfo[index],
+        order_id: orders[index].id,
+        buyer_id: orders[index].buyer_id
+      }))))
+      setOrders(orders)
+    }
+    return orders
+    
+  }
+
   const handlePageChange = (event, value) => {
     setPage(value)
   }
-  const handleProcessButtonOnClick = (id) => {
-    console.log(id)
+
+  const getNextStatus = (currentStatus) => StatusEnumsGraph[currentStatus]
+  const handleProcessButtonOnClick = async (id, buyerId, status) => {
+    await updateOrderStatusById({
+      id,
+      status,
+      buyerId
+    }, getAccessTokenSilently)
+    getOrders()
   }
 
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
 
   useEffect(() => {
-    const getOrders = async () => {
-      const orders = await getOrderBySellerId(
-        mainUser.sellerId,
-        getAccessTokenSilently,
-      )
-      if (orders) {
-        const orderIds = orders.map(order => order.id)
-        const buyerIds = orders.map(order => order.buyer_id)
-        const buyerInfo = await Promise.all(buyerIds.map(buyerId => getBuyerById(buyerId, getAccessTokenSilently)))
-        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data.map((object, index) => ({ ...object, ...orders[index], ...buyerInfo[index] }))))
-        setOrders(orders)
-      }
-      return orders
-      
-    }
     getOrders()
     // eslint-disable-next-line
   }, [])
-
 
   return (
     <div
@@ -76,7 +88,7 @@ export const OrdersComponent = () => {
       <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
       <List>
         {orderDetails.slice(startIndex, endIndex).map((order) => (
-          <React.Fragment key={order.id}>
+          <React.Fragment key={order.order_id}>
             <ListItem alignItems="flex-start">
             <ListItemAvatar>
                   <Avatar
@@ -125,8 +137,8 @@ export const OrdersComponent = () => {
                 style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
               />
               <ListItemSecondaryAction>
-                <YelloBackGroundBlackTextButton variant="contained" onClick={() => handleProcessButtonOnClick(order.id)}>
-                  PROCESS
+                <YelloBackGroundBlackTextButton variant="contained" onClick={() => handleProcessButtonOnClick(order.order_id, order.buyer_id, getNextStatus(order.status))} disabled={order.status === "ORDER_COMPLETE"}>
+                  {ENUMS[getNextStatus(order.status)]}
                 </YelloBackGroundBlackTextButton>
               </ListItemSecondaryAction>
             </ListItem>

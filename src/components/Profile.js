@@ -21,7 +21,7 @@ import { getOrderDetailsByOrderIds } from 'apis/orders';
 import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
-import ENUMS from 'utilities/EnumsConversions'
+import {ENUMS } from 'utilities/EnumsConversions'
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1)
@@ -36,6 +36,7 @@ const ProfilePage = () => {
     setPage(value)
   }
 
+
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
 
@@ -46,9 +47,15 @@ const ProfilePage = () => {
         getUser.id,
         getAccessTokenSilently,
       )
+
+  console.log(getOrders)
       const orderIds = getOrders.map(order => order.id)
       if (orderIds.length > 0) {
-        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data.map((object, index) => ({ ...object, ...getOrders[index] }))))
+        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => {
+          console.log("orderDetailsById")
+          console.log(data)
+          
+          setOrderDetails(data.map((object, index) => ({ ...object, ...getOrders[index], order_id: getOrders[index].id })))})
       }
       setOrders(getOrders)
       dispatch(changeEmail(getUser))
@@ -91,7 +98,7 @@ const ProfilePage = () => {
         )}
         <List>
           {orderDetails.slice(startIndex, endIndex).map((order) => (
-            <React.Fragment key={order.id}>
+            <React.Fragment key={order.order_id}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar
