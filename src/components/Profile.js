@@ -21,12 +21,13 @@ import { getOrderDetailsByOrderIds } from 'apis/orders';
 import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
+import ENUMS from 'utilities/EnumsConversions'
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1)
   const itemsPerPage = 10
   const [orders, setOrders] = useState([])
-  const [ orderDetails, setOrderDetails] = useState([])
+  const [orderDetails, setOrderDetails] = useState([])
   const dispatch = useDispatch()
 
   const { getAccessTokenSilently, user } = useAuth0()
@@ -47,7 +48,7 @@ const ProfilePage = () => {
       )
       const orderIds = getOrders.map(order => order.id)
       if (orderIds.length > 0) {
-        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data))
+        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data.map((object, index) => ({ ...object, ...getOrders[index] }))))
       }
       setOrders(getOrders)
       dispatch(changeEmail(getUser))
@@ -63,7 +64,6 @@ const ProfilePage = () => {
     
     // eslint-disable-next-line
   }, [])
-  console.log(orderDetails)
 
   return (
     <Theme>
@@ -105,7 +105,7 @@ const ProfilePage = () => {
                     <Typography
                       variant="subtitle1"
                       style={{ color: '#4287f5' }}
-                    >{`Status: ${order.status}`}</Typography>
+                    >{`Status: ${ENUMS[order.status]}`}</Typography>
                   }
                   secondary={
                     <React.Fragment>
