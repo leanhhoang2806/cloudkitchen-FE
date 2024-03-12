@@ -3,7 +3,7 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 import PropTypes from 'prop-types'
 
-export default function CheckoutForm({handleCheckout}) {
+export default function CheckoutForm({ handleCheckout }) {
   const stripe = useStripe()
   const elements = useElements()
 
@@ -51,16 +51,15 @@ export default function CheckoutForm({handleCheckout}) {
     }
 
     setIsLoading(true)
-
-    console.log("before error")
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: 'http://localhost:3000/profile',
-      },
-    }).then(handleCheckout())
-
+    const { error } = await stripe
+      .confirmPayment({
+        elements,
+        confirmParams: {
+          // Make sure to change this to your payment completion page
+          return_url: 'http://localhost:3000/profile',
+        },
+      })
+      .then(handleCheckout())
 
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
@@ -81,9 +80,13 @@ export default function CheckoutForm({handleCheckout}) {
   }
 
   return (
-    <form id="payment-form" >
+    <form id="payment-form">
       <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <YelloBackGroundBlackTextButton disabled={isLoading || !stripe || !elements} id="submit" onClick={handleSubmit}> 
+      <YelloBackGroundBlackTextButton
+        disabled={isLoading || !stripe || !elements}
+        id="submit"
+        onClick={handleSubmit}
+      >
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : 'Pay now'}
         </span>
@@ -95,5 +98,5 @@ export default function CheckoutForm({handleCheckout}) {
 }
 
 CheckoutForm.propTypes = {
-    handleCheckout: PropTypes.func.isRequired
+  handleCheckout: PropTypes.func.isRequired,
 }

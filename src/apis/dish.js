@@ -92,4 +92,10 @@ const deleteDishBySeller = async (dishId, authToken) => {
   return response.data
 }
 
-export { postDish, getDishBySellerId, getDishesPagination, getAllFeaturedDish, deleteDishBySeller }
+export {
+  postDish,
+  getDishBySellerId,
+  getDishesPagination,
+  getAllFeaturedDish,
+  deleteDishBySeller,
+}

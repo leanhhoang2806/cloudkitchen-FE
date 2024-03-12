@@ -38,6 +38,26 @@ const getOrderByBuyerId = async (buyerId, authToken) => {
   return response.data
 }
 
+
+const getOrderDetailsByOrderId = async (orderId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/order/details/${orderId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+}
+
 const postOrderByBuyer = async (buyerId, orders, authToken) => {
   if (!authToken) {
     throw new Error('No authentication token found')
@@ -62,4 +82,4 @@ const postOrderByBuyer = async (buyerId, orders, authToken) => {
   return response.data
 }
 
-export { getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer }
+export { getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer, getOrderDetailsByOrderId }

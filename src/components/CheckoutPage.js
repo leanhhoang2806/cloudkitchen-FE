@@ -114,17 +114,18 @@ function CheckoutOrdersPage() {
                   }
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />
-                {!loadPaymentPlatform &&
-                <ListItemSecondaryAction>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    onClick={() => handleDelete(index)}
-                  >
-                    DELETE
-                  </Button>
-                </ListItemSecondaryAction>}
+                {!loadPaymentPlatform && (
+                  <ListItemSecondaryAction>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      onClick={() => handleDelete(index)}
+                    >
+                      DELETE
+                    </Button>
+                  </ListItemSecondaryAction>
+                )}
               </ListItem>
             </React.Fragment>
           ))}
@@ -139,7 +140,12 @@ function CheckoutOrdersPage() {
             Check out
           </Button>
         )}
-        {loadPaymentPlatform && (<Divider variant="inset" sx={{marginTop: "20px", marginBottom: "20px"}} />)}
+        {loadPaymentPlatform && (
+          <Divider
+            variant="inset"
+            sx={{ marginTop: '20px', marginBottom: '20px' }}
+          />
+        )}
         {clientSecret && loadPaymentPlatform && (
           <Elements options={options} stripe={stripePromise}>
             <CheckoutForm handleCheckout={handleCheckout} />

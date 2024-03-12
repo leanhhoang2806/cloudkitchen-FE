@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Typography,
@@ -10,52 +10,33 @@ import {
   Divider,
   Pagination,
 } from '@mui/material'
-// import Button from '@mui/material/Button'
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
-import { useAuth0 } from '@auth0/auth0-react'
-import { getBuyerByEmail } from 'apis/buyer'
+import { useParams } from 'react-router-dom';
 import Theme from './Theme'
-import { useDispatch } from 'react-redux'
-import { changeEmail } from 'store/slices/userSlice'
-import { getOrderByBuyerId } from 'apis/orders.'
-import { getSellerByEmail } from 'apis/sellerRegister'
-import { updateSeller } from 'store/slices/userSlice'
+import { getOrderDetailsByOrderId } from 'apis/orders.';
+import { useAuth0 } from '@auth0/auth0-react'
 
-const ProfilePage = () => {
+
+const PurchaseDetails = () => {
+
   const [page, setPage] = useState(1)
+  const { purchaseId } = useParams();
   const itemsPerPage = 10
-  const [orders, setOrders] = useState([])
-  const dispatch = useDispatch()
-
-  const { getAccessTokenSilently, user } = useAuth0()
+  const [ orderDetails, setOrderDetails] = useState([])
+  const startIndex = (page - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const { getAccessTokenSilently } = useAuth0()
 
   const handlePageChange = (event, value) => {
     setPage(value)
   }
 
-  const startIndex = (page - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-
   useEffect(() => {
-    const fetchUser = async () => {
-      const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
-      const getOrders = await getOrderByBuyerId(
-        getUser.id,
-        getAccessTokenSilently,
-      )
-      setOrders(getOrders)
-      dispatch(changeEmail(getUser))
-    }
-    const getPossibleSeller = async () => {
-      const seller = await getSellerByEmail(user.email, getAccessTokenSilently)
-      if (seller) {
-        dispatch(updateSeller(seller.id))
-      }
-    }
-    fetchUser()
-    getPossibleSeller()
-    // eslint-disable-next-line
+    // get dishes given a
+    getOrderDetailsByOrderId(purchaseId, getAccessTokenSilently).then(data => setOrderDetails(data))
   }, [])
+
+  console.log("orderDetails")
+  console.log(orderDetails)
 
   return (
     <Theme>
@@ -69,20 +50,11 @@ const ProfilePage = () => {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          My Purchases
+          Order Details
         </Typography>
         <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
-        {orders.length == 0 && (
-          <Typography
-            variant="h5"
-            gutterBottom
-            sx={{ textAlign: 'center', color: 'red', marginTop: '10px' }}
-          >
-            No order is found
-          </Typography>
-        )}
         <List>
-          {orders.slice(startIndex, endIndex).map((order) => (
+          {orderDetails.slice(startIndex, endIndex).map((order) => (
             <React.Fragment key={order.id}>
               <ListItem alignItems="flex-start">
               <Link to={`/purchase/details/${order.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -123,18 +95,13 @@ const ProfilePage = () => {
                   }
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />
-                <ListItemSecondaryAction>
-                  {/* <Button variant="contained" color="error" size="small">
-                    DELETE
-                  </Button> */}
-                </ListItemSecondaryAction>
               </ListItem>
               <Divider variant="inset" component="li" />
             </React.Fragment>
           ))}
         </List>
         <Pagination
-          count={Math.ceil(orders.length / itemsPerPage)}
+          count={Math.ceil(orderDetails.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           color="primary"
@@ -149,4 +116,4 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+export default PurchaseDetails

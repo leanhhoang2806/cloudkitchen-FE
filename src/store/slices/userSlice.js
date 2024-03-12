@@ -29,13 +29,18 @@ export const userSlice = createSlice({
     removeItemFromCart: (state, action) => {
       state.cart = state.cart.filter((order, index) => index !== action.payload)
     },
-    clearCart: (state, action) =>{
+    clearCart: (state, action) => {
       state.cart = action.payload
-    }
+    },
   },
 })
 
-export const { changeEmail, updateSeller, addToCart, removeItemFromCart, clearCart } =
-  userSlice.actions
+export const {
+  changeEmail,
+  updateSeller,
+  addToCart,
+  removeItemFromCart,
+  clearCart,
+} = userSlice.actions
 
 export default userSlice.reducer

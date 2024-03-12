@@ -73,7 +73,6 @@ export const DashboardComponent = () => {
     getDish()
     // eslint-disable-next-line
   }, [])
-  console.log(dishes)
 
   return (
     <div

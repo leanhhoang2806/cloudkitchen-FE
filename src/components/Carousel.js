@@ -36,7 +36,6 @@ function Carousel({ items }) {
   }
 
   const openModal = (image) => {
-    console.log(image)
     setSelectedImage(image.s3_path)
     setSelectedDishId(image.id)
     setIsModalOpen(true)

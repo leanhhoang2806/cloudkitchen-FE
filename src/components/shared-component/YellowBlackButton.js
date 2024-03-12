@@ -13,8 +13,8 @@ function YelloBackGroundBlackTextButton({ onClick, children, ...props }) {
         '&:hover': {
           backgroundColor: '#FFD600', // Darker yellow on hover
         },
-        marginTop: "20px",
-        marginBottom: "20px"
+        marginTop: '20px',
+        marginBottom: '20px',
       }}
       onClick={onClick}
       fullWidth

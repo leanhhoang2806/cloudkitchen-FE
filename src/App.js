@@ -16,6 +16,7 @@ import SellerRegistration from 'components/SellerRegister'
 import { useSelector } from 'react-redux'
 import CheckoutOrdersPage from 'components/CheckoutPage'
 import ThankYouPage from 'components/CompleteCheckoutStaticPage'
+import PurchaseDetails from 'components/PurchaseDetails'
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0()
@@ -27,10 +28,14 @@ const AllRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<LandingPage />} />
-      <Route exact path="/thanks" element={<ThankYouPage />} />      
+      <Route exact path="/thanks" element={<ThankYouPage />} />
       <Route
         path="/profile"
         element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/purchase/details/:purchaseId"
+        element={isAuthenticated ? <PurchaseDetails /> : <Navigate to="/" />}
       />
       <Route
         path="/seller/dashboard"
