@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
 import { getFeaturedDishPagination } from 'apis/featured_dish'
 import Spinner from './SpinnerComponent'
 import Carousel from 'components/Carousel'
@@ -10,6 +9,7 @@ import DisplayPaginatedDishResults from 'components/GridDisplay'
 import BackGroundImage from 'media/images/background_image.jpg'
 import Theme from 'components/Theme'
 import { searchDishesByNameOrZipcode } from 'apis/search'
+import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
@@ -117,7 +117,7 @@ function LandingPage() {
             />
           </Grid>
           <Grid item xs={12} sm={2}>
-            <Button
+            <YelloBackGroundBlackTextButton
               variant="contained"
               color="primary"
               size="small"
@@ -125,7 +125,7 @@ function LandingPage() {
               onClick={handleSearch}
             >
               Search
-            </Button>
+            </YelloBackGroundBlackTextButton>
           </Grid>
         </Grid>
       </div>
@@ -139,11 +139,11 @@ function LandingPage() {
       <div style={{ marginTop: '50px' }}>
         <DisplayPaginatedDishResults dishes={dishes} />
       </div>
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <Button variant="contained" color="primary" onClick={handleLoadMore}>
+      { dishes.length > 10 && (<div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <YelloBackGroundBlackTextButton variant="contained" color="primary" onClick={handleLoadMore}>
           Load More
-        </Button>
-      </div>
+        </YelloBackGroundBlackTextButton>
+      </div>)}
     </Theme>
   )
 }
