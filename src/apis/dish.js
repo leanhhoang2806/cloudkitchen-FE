@@ -92,10 +92,30 @@ const deleteDishBySeller = async (dishId, authToken) => {
   return response.data
 }
 
+const getDishById = async (dishId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/dish/${dishId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+}
+
 export {
   postDish,
   getDishBySellerId,
   getDishesPagination,
   getAllFeaturedDish,
   deleteDishBySeller,
+  getDishById
 }

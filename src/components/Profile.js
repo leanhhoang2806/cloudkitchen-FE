@@ -20,6 +20,7 @@ import { getOrderByBuyerId } from 'apis/orders'
 import { getOrderDetailsByOrderIds } from 'apis/orders';
 import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
+import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1)
@@ -62,7 +63,7 @@ const ProfilePage = () => {
     
     // eslint-disable-next-line
   }, [])
-  console.log(orders)
+  console.log(orderDetails)
 
   return (
     <Theme>
@@ -114,17 +115,19 @@ const ProfilePage = () => {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        Time: {order.time}
+                        Order at: {convertToHumanReadable(order.created_at)}
                       </Typography>
+                      <br />
                       <Typography
                         variant="body2"
                         component="span"
                         color="textPrimary"
-                        style={{ marginLeft: '20px' }}
+                        style={{ paddingLeft: '10px' }}
                       >
                         Price: {order.price}
                       </Typography>
                     </React.Fragment>
+
                   }
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />

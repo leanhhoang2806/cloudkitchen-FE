@@ -23,7 +23,8 @@
     "FormData": "readonly",
     "URL": "readonly",
     "localStorage": "readonly",
-    "URLSearchParams": "readonly"
+    "URLSearchParams": "readonly",
+    "Promise": "readonly"
     
     // Add more global variables as needed
   }

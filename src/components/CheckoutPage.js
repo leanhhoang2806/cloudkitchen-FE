@@ -20,12 +20,14 @@ import { postStripePayment } from 'apis/stripe'
 import { loadStripe } from '@stripe/stripe-js'
 import CheckoutForm from './CheckoutForm'
 import { Elements } from '@stripe/react-stripe-js'
+import { getDishById } from 'apis/dish'
 
 const stripePromise = loadStripe(
   'pk_test_51OrlfSJDu1ygRJcYQYwCOhk8qGe1uioqkaDoeAPwNAPvpVzeowySDjfuJFjN75wmB1LZqieLBDze9ymBX0fCqp9j00L4pVYKeQ',
 )
 
 function CheckoutOrdersPage() {
+  const [displayOrders, setDisplayOrders] = useState([]);
   const [loading, setLoading] = useState(false)
   const [clientSecret, setClientSecret] = useState('')
   const [loadPaymentPlatform, setLoadPaymentPlatform] = useState(false)
@@ -64,6 +66,21 @@ function CheckoutOrdersPage() {
         setClientSecret(data.client_secret),
       )
     }
+
+    const fetchOrders = async () => {
+
+      // Make multiple requests concurrently
+      const requests = orders.map(orderId => getDishById(orderId,getAccessTokenSilently));
+
+      try {
+        const responses = await Promise.all(requests);
+        setDisplayOrders(responses);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    fetchOrders();
   }, [orders, getAccessTokenSilently])
 
   return (
@@ -79,17 +96,17 @@ function CheckoutOrdersPage() {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          My Orders
+          Cart
         </Typography>
         <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
         <List>
-          {orders.map((order, index) => (
+          {displayOrders.map((order, index) => (
             <React.Fragment key={index}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar
                     alt="Food"
-                    src={order.image}
+                    src={order.s3_path}
                     style={{ width: '150px', height: '150px' }}
                   />
                 </ListItemAvatar>
@@ -98,7 +115,7 @@ function CheckoutOrdersPage() {
                     <Typography
                       variant="subtitle1"
                       style={{ color: '#4287f5' }}
-                    >{`Status: ${order.status}`}</Typography>
+                    >{`Name: ${order.name}`}</Typography>
                   }
                   secondary={
                     <React.Fragment>
@@ -108,7 +125,7 @@ function CheckoutOrdersPage() {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        DishId: {order}
+                        Price: $ {order.price}
                       </Typography>
                     </React.Fragment>
                   }
