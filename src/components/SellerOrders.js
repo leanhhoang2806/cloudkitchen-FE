@@ -14,7 +14,6 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useSelector } from 'react-redux'
 import { getOrderBySellerId } from 'apis/orders'
-import { getOrderDetailsByOrderIds } from 'apis/orders'
 import {ENUMS, StatusEnumsGraph} from 'utilities/EnumsConversions'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
@@ -36,14 +35,14 @@ export const OrdersComponent = () => {
       getAccessTokenSilently,
     )
     if (orders.length > 0) {
-      const orderIds = orders.map(order => order.id)
       const buyerIds = orders.map(order => order.buyer_id)
       const buyerInfo = await Promise.all(buyerIds.map(buyerId => getBuyerById(buyerId, getAccessTokenSilently)))
-      getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => setOrderDetails(data.map((object, index) => ({ 
+
+      setOrderDetails(orders.map((object, index) => ({ 
         ...object, ...orders[index], ...buyerInfo[index],
         order_id: orders[index].id,
         buyer_id: orders[index].buyer_id
-      }))))
+      })))
       setOrders(orders)
     }
     return orders

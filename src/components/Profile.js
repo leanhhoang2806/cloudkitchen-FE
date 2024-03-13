@@ -17,10 +17,10 @@ import Theme from './Theme'
 import { useDispatch } from 'react-redux'
 import { changeEmail } from 'store/slices/userSlice'
 import { getOrderByBuyerId } from 'apis/orders'
-import { getOrderDetailsByOrderIds } from 'apis/orders';
 import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
+import { getDishById } from 'apis/dish'
 import {ENUMS } from 'utilities/EnumsConversions'
 
 const ProfilePage = () => {
@@ -47,15 +47,10 @@ const ProfilePage = () => {
         getUser.id,
         getAccessTokenSilently,
       )
-
-  console.log(getOrders)
-      const orderIds = getOrders.map(order => order.id)
-      if (orderIds.length > 0) {
-        getOrderDetailsByOrderIds(orderIds, getAccessTokenSilently).then(data => {
-          console.log("orderDetailsById")
-          console.log(data)
-          
-          setOrderDetails(data.map((object, index) => ({ ...object, ...getOrders[index], order_id: getOrders[index].id })))})
+      if (getOrders.length > 0) {
+        const orderIds = getOrders.map(order => order.dish_id)
+        const dishesByOrder = await Promise.all(orderIds.map(id => getDishById(id, getAccessTokenSilently)))
+        setOrderDetails(dishesByOrder)
       }
       setOrders(getOrders)
       dispatch(changeEmail(getUser))
@@ -71,6 +66,7 @@ const ProfilePage = () => {
     
     // eslint-disable-next-line
   }, [])
+
 
   return (
     <Theme>
@@ -97,7 +93,7 @@ const ProfilePage = () => {
           </Typography>
         )}
         <List>
-          {orderDetails.slice(startIndex, endIndex).map((order) => (
+          {orderDetails.slice(startIndex, endIndex).map((order, index) => (
             <React.Fragment key={order.order_id}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
@@ -112,7 +108,7 @@ const ProfilePage = () => {
                     <Typography
                       variant="subtitle1"
                       style={{ color: '#4287f5' }}
-                    >{`Status: ${ENUMS[order.status]}`}</Typography>
+                    >{`Status: ${ENUMS[orders[index].status]}`}</Typography>
                   }
                   secondary={
                     <React.Fragment>

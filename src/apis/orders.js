@@ -39,28 +39,6 @@ const getOrderByBuyerId = async (buyerId, authToken) => {
 }
 
 
-const getOrderDetailsByOrderIds = async (orderIds, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const stringifiedIds = orderIds.join(',')
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/order/details/all`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: { order_ids: stringifiedIds },
-    },
-  )
-
-  return response.data
-}
-
 const postOrderByBuyer = async (buyerId, orders, authToken) => {
   if (!authToken) {
     throw new Error('No authentication token found')
@@ -111,4 +89,43 @@ const updateOrderStatusById = async (updatedOrder, authToken) => {
 
 }
 
-export { getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer, getOrderDetailsByOrderIds, updateOrderStatusById }
+const getOrderDetailsByOrderId = async (orderId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/order/${orderId}/dish`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+
+}
+
+const getOrderByOrderId = async (orderId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/order/${orderId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+}
+
+export { getOrderDetailsByOrderId, getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer, updateOrderStatusById, getOrderByOrderId }
