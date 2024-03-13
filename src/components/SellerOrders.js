@@ -14,7 +14,7 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useSelector } from 'react-redux'
 import { getOrderBySellerId } from 'apis/orders'
-import {ENUMS, StatusEnumsGraph} from 'utilities/EnumsConversions'
+import { ENUMS, StatusEnumsGraph } from 'utilities/EnumsConversions'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 import { getBuyerById } from 'apis/buyer'
@@ -36,21 +36,31 @@ export const OrdersComponent = () => {
       getAccessTokenSilently,
     )
     if (orders.length > 0) {
-      const buyerIds = orders.map(order => order.buyer_id)
-      const buyerInfo = await Promise.all(buyerIds.map(buyerId => getBuyerById(buyerId, getAccessTokenSilently)))
-      const dishIds = orders.map(order => order.dish_id)
-      const dishesInfo = await Promise.all(dishIds.map(id => getDishById(id, getAccessTokenSilently) ))
+      const buyerIds = orders.map((order) => order.buyer_id)
+      const buyerInfo = await Promise.all(
+        buyerIds.map((buyerId) =>
+          getBuyerById(buyerId, getAccessTokenSilently),
+        ),
+      )
+      const dishIds = orders.map((order) => order.dish_id)
+      const dishesInfo = await Promise.all(
+        dishIds.map((id) => getDishById(id, getAccessTokenSilently)),
+      )
       setOrderDetails(dishesInfo)
-      setOrderDetails(orders.map((object, index) => ({ 
-        ...object, ...orders[index], ...buyerInfo[index], ...dishesInfo[index],
-        order_id: orders[index].id,
-        buyer_id: orders[index].buyer_id,
-        order_status: orders[index].status
-      })))
+      setOrderDetails(
+        orders.map((object, index) => ({
+          ...object,
+          ...orders[index],
+          ...buyerInfo[index],
+          ...dishesInfo[index],
+          order_id: orders[index].id,
+          buyer_id: orders[index].buyer_id,
+          order_status: orders[index].status,
+        })),
+      )
       setOrders(orders)
     }
     return orders
-    
   }
 
   const handlePageChange = (event, value) => {
@@ -59,11 +69,14 @@ export const OrdersComponent = () => {
 
   const getNextStatus = (currentStatus) => StatusEnumsGraph[currentStatus]
   const handleProcessButtonOnClick = async (id, buyerId, status) => {
-    await updateOrderStatusById({
-      id,
-      status,
-      buyerId
-    }, getAccessTokenSilently)
+    await updateOrderStatusById(
+      {
+        id,
+        status,
+        buyerId,
+      },
+      getAccessTokenSilently,
+    )
     getOrders()
   }
 
@@ -93,13 +106,13 @@ export const OrdersComponent = () => {
         {orderDetails.slice(startIndex, endIndex).map((order) => (
           <React.Fragment key={order.order_id}>
             <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-                  <Avatar
-                    alt="Food"
-                    src={order.s3_path}
-                    style={{ width: '150px', height: '150px' }}
-                  />
-                </ListItemAvatar>
+              <ListItemAvatar>
+                <Avatar
+                  alt="Food"
+                  src={order.s3_path}
+                  style={{ width: '150px', height: '150px' }}
+                />
+              </ListItemAvatar>
               <ListItemText
                 primary={
                   <Typography
@@ -117,7 +130,7 @@ export const OrdersComponent = () => {
                     >
                       Time: {convertToHumanReadable(order.created_at)}
                     </Typography>
-                    <br/>
+                    <br />
                     <Typography
                       variant="body2"
                       component="span"
@@ -126,21 +139,31 @@ export const OrdersComponent = () => {
                     >
                       Price: {order.price}
                     </Typography>
-                    <br/>
+                    <br />
                     <Typography
                       variant="body2"
                       component="span"
                       color="textPrimary"
                       style={{ marginLeft: '10px' }}
                     >
-                      Buyer:  {order.email}
+                      Buyer: {order.email}
                     </Typography>
                   </React.Fragment>
                 }
                 style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
               />
               <ListItemSecondaryAction>
-                <YelloBackGroundBlackTextButton variant="contained" onClick={() => handleProcessButtonOnClick(order.order_id, order.buyer_id, getNextStatus(order.order_status))} disabled={order.order_status === "ORDER_COMPLETE"}>
+                <YelloBackGroundBlackTextButton
+                  variant="contained"
+                  onClick={() =>
+                    handleProcessButtonOnClick(
+                      order.order_id,
+                      order.buyer_id,
+                      getNextStatus(order.order_status),
+                    )
+                  }
+                  disabled={order.order_status === 'ORDER_COMPLETE'}
+                >
                   {ENUMS[getNextStatus(order.order_status)]}
                 </YelloBackGroundBlackTextButton>
               </ListItemSecondaryAction>

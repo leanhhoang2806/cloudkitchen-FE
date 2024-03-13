@@ -4,6 +4,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
+  Avatar,
   Divider,
   Pagination,
 } from '@mui/material'
@@ -74,6 +76,8 @@ export const DashboardComponent = () => {
     // eslint-disable-next-line
   }, [])
 
+  console.log(dishes)
+
   return (
     <div
       style={{
@@ -92,6 +96,13 @@ export const DashboardComponent = () => {
         {dishes.slice(startIndex, endIndex).map((dish) => (
           <React.Fragment key={dish.id}>
             <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar
+                  alt="Food"
+                  src={dish.s3_path}
+                  style={{ width: '150px', height: '150px' }}
+                />
+              </ListItemAvatar>
               <ListItemText
                 primary={
                   <Typography

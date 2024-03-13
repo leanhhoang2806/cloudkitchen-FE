@@ -139,11 +139,17 @@ function LandingPage() {
       <div style={{ marginTop: '50px' }}>
         <DisplayPaginatedDishResults dishes={dishes} />
       </div>
-      { dishes.length > 10 && (<div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <YelloBackGroundBlackTextButton variant="contained" color="primary" onClick={handleLoadMore}>
-          Load More
-        </YelloBackGroundBlackTextButton>
-      </div>)}
+      {dishes.length > 10 && (
+        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+          <YelloBackGroundBlackTextButton
+            variant="contained"
+            color="primary"
+            onClick={handleLoadMore}
+          >
+            Load More
+          </YelloBackGroundBlackTextButton>
+        </div>
+      )}
     </Theme>
   )
 }

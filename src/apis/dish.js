@@ -117,5 +117,5 @@ export {
   getDishesPagination,
   getAllFeaturedDish,
   deleteDishBySeller,
-  getDishById
+  getDishById,
 }

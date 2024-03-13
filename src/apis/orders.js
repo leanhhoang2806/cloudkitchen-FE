@@ -38,7 +38,6 @@ const getOrderByBuyerId = async (buyerId, authToken) => {
   return response.data
 }
 
-
 const postOrderByBuyer = async (buyerId, orders, authToken) => {
   if (!authToken) {
     throw new Error('No authentication token found')
@@ -63,7 +62,6 @@ const postOrderByBuyer = async (buyerId, orders, authToken) => {
   return response.data
 }
 
-
 const updateOrderStatusById = async (updatedOrder, authToken) => {
   if (!authToken) {
     throw new Error('No authentication token found')
@@ -72,7 +70,7 @@ const updateOrderStatusById = async (updatedOrder, authToken) => {
   const accessToken = await authToken()
   const payload = {
     status: updatedOrder.status,
-    buyer_id: updatedOrder.buyerId
+    buyer_id: updatedOrder.buyerId,
   }
 
   const response = await axios.put(
@@ -86,7 +84,6 @@ const updateOrderStatusById = async (updatedOrder, authToken) => {
   )
 
   return response.data
-
 }
 
 const getOrderDetailsByOrderId = async (orderId, authToken) => {
@@ -106,7 +103,6 @@ const getOrderDetailsByOrderId = async (orderId, authToken) => {
   )
 
   return response.data
-
 }
 
 const getOrderByOrderId = async (orderId, authToken) => {
@@ -128,4 +124,11 @@ const getOrderByOrderId = async (orderId, authToken) => {
   return response.data
 }
 
-export { getOrderDetailsByOrderId, getOrderBySellerId, getOrderByBuyerId, postOrderByBuyer, updateOrderStatusById, getOrderByOrderId }
+export {
+  getOrderDetailsByOrderId,
+  getOrderBySellerId,
+  getOrderByBuyerId,
+  postOrderByBuyer,
+  updateOrderStatusById,
+  getOrderByOrderId,
+}

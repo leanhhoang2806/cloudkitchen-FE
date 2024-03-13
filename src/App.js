@@ -32,7 +32,7 @@ const AllRoutes = () => {
         path="/profile"
         element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
       />
-\\
+      \\
       <Route
         path="/seller/dashboard"
         element={

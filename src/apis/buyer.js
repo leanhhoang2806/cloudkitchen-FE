@@ -26,11 +26,14 @@ const getBuyerById = async (buyerId, authToken) => {
 
   const accessToken = await authToken()
 
-  const response = await axios.get(`http://localhost:8000/api/v1/buyer/${buyerId}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    }
-  })
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/buyer/${buyerId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
 
   return response.data
 }

@@ -21,7 +21,7 @@ import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import { getDishById } from 'apis/dish'
-import {ENUMS } from 'utilities/EnumsConversions'
+import { ENUMS } from 'utilities/EnumsConversions'
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1)
@@ -36,7 +36,6 @@ const ProfilePage = () => {
     setPage(value)
   }
 
-
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
 
@@ -48,8 +47,10 @@ const ProfilePage = () => {
         getAccessTokenSilently,
       )
       if (getOrders.length > 0) {
-        const orderIds = getOrders.map(order => order.dish_id)
-        const dishesByOrder = await Promise.all(orderIds.map(id => getDishById(id, getAccessTokenSilently)))
+        const orderIds = getOrders.map((order) => order.dish_id)
+        const dishesByOrder = await Promise.all(
+          orderIds.map((id) => getDishById(id, getAccessTokenSilently)),
+        )
         setOrderDetails(dishesByOrder)
       }
       setOrders(getOrders)
@@ -63,10 +64,9 @@ const ProfilePage = () => {
     }
     fetchUser()
     getPossibleSeller()
-    
+
     // eslint-disable-next-line
   }, [])
-
 
   return (
     <Theme>
@@ -130,7 +130,6 @@ const ProfilePage = () => {
                         Price: {order.price}
                       </Typography>
                     </React.Fragment>
-
                   }
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />

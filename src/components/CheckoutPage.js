@@ -27,7 +27,7 @@ const stripePromise = loadStripe(
 )
 
 function CheckoutOrdersPage() {
-  const [displayOrders, setDisplayOrders] = useState([]);
+  const [displayOrders, setDisplayOrders] = useState([])
   const [loading, setLoading] = useState(false)
   const [clientSecret, setClientSecret] = useState('')
   const [loadPaymentPlatform, setLoadPaymentPlatform] = useState(false)
@@ -68,19 +68,20 @@ function CheckoutOrdersPage() {
     }
 
     const fetchOrders = async () => {
-
       // Make multiple requests concurrently
-      const requests = orders.map(orderId => getDishById(orderId,getAccessTokenSilently));
+      const requests = orders.map((orderId) =>
+        getDishById(orderId, getAccessTokenSilently),
+      )
 
       try {
-        const responses = await Promise.all(requests);
-        setDisplayOrders(responses);
+        const responses = await Promise.all(requests)
+        setDisplayOrders(responses)
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error('Error fetching orders:', error)
       }
-    };
+    }
 
-    fetchOrders();
+    fetchOrders()
   }, [orders, getAccessTokenSilently])
 
   return (
