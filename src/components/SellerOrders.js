@@ -19,6 +19,7 @@ import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 import { getBuyerById } from 'apis/buyer'
 import { updateOrderStatusById } from 'apis/orders'
+import { getDishById } from 'apis/dish'
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState([])
@@ -37,11 +38,14 @@ export const OrdersComponent = () => {
     if (orders.length > 0) {
       const buyerIds = orders.map(order => order.buyer_id)
       const buyerInfo = await Promise.all(buyerIds.map(buyerId => getBuyerById(buyerId, getAccessTokenSilently)))
-
+      const dishIds = orders.map(order => order.dish_id)
+      const dishesInfo = await Promise.all(dishIds.map(id => getDishById(id, getAccessTokenSilently) ))
+      setOrderDetails(dishesInfo)
       setOrderDetails(orders.map((object, index) => ({ 
-        ...object, ...orders[index], ...buyerInfo[index],
+        ...object, ...orders[index], ...buyerInfo[index], ...dishesInfo[index],
         order_id: orders[index].id,
-        buyer_id: orders[index].buyer_id
+        buyer_id: orders[index].buyer_id,
+        order_status: orders[index].status
       })))
       setOrders(orders)
     }
@@ -101,7 +105,7 @@ export const OrdersComponent = () => {
                   <Typography
                     variant="subtitle1"
                     style={{ color: '#4287f5' }}
-                  >{`Status: ${ENUMS[order.status]}`}</Typography>
+                  >{`Status: ${ENUMS[order.order_status]}`}</Typography>
                 }
                 secondary={
                   <React.Fragment>
@@ -136,8 +140,8 @@ export const OrdersComponent = () => {
                 style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
               />
               <ListItemSecondaryAction>
-                <YelloBackGroundBlackTextButton variant="contained" onClick={() => handleProcessButtonOnClick(order.order_id, order.buyer_id, getNextStatus(order.status))} disabled={order.status === "ORDER_COMPLETE"}>
-                  {ENUMS[getNextStatus(order.status)]}
+                <YelloBackGroundBlackTextButton variant="contained" onClick={() => handleProcessButtonOnClick(order.order_id, order.buyer_id, getNextStatus(order.order_status))} disabled={order.order_status === "ORDER_COMPLETE"}>
+                  {ENUMS[getNextStatus(order.order_status)]}
                 </YelloBackGroundBlackTextButton>
               </ListItemSecondaryAction>
             </ListItem>
