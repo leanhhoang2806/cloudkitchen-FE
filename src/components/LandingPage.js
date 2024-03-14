@@ -11,16 +11,19 @@ import BackGroundImage from 'media/images/background_image.jpg'
 import Theme from 'components/Theme'
 import { searchDishesByNameOrZipcode } from 'apis/search'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateSearchResult } from 'store/slices/userSlice'
 import { getDiscountedDish } from 'apis/discountedDish'
 import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
-  const [dishes, setDishes] = useState([])
+  const [dishes, setDishes] = useState(useSelector((state) => state.user.searchResults))
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
+  // const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setLoading(true)
@@ -31,13 +34,14 @@ function LandingPage() {
       }
     }
     getFeaturedDishes()
+
     setLoading(false)
   }, [skip])
 
   const handleSearch = async () => {
     try {
       setLoading(true)
-      const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode)
+      const dishes = await searchDishesByNameOrZipcode(zipCode, '')
       if (dishes.length > 0) {
         const dishIds = dishes.map((dish) => dish.id)
         const discount = await Promise.all(
@@ -48,11 +52,12 @@ function LandingPage() {
         )
         const merge = mergeDishAndDiscountDish(dishes, discountsWithData)
         setDishes(merge)
-
+        dispatch(updateSearchResult(merge))
         setLoading(false)
         return
       }
       setDishes(dishes)
+      dispatch(updateSearchResult(dishes))
       setLoading(false)
     } catch (error) {
       console.error('Error searching for dishes:', error)
@@ -60,9 +65,9 @@ function LandingPage() {
     }
   }
 
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value)
-  }
+  // const handleChange = (event) => {
+  //   setSearchTerm(event.target.value)
+  // }
   const handleZipCodeChange = (event) => {
     setZipCode(event.target.value)
   }
@@ -109,8 +114,8 @@ function LandingPage() {
       <div style={{ marginTop: '50px' }}>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           {/* Search Bar Row */}
-          <Grid item xs={9} sm={6}>
-            <TextField
+          {/* <Grid item xs={9} sm={6}> */}
+            {/* <TextField
               label="Restaurants"
               variant="outlined"
               size="small"
@@ -119,9 +124,9 @@ function LandingPage() {
               InputProps={{ sx: { borderRadius: '20px' } }}
               value={searchTerm}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={6} sm={3}>
+            /> */}
+          {/* </Grid> */}
+          <Grid item xs={6} sm={6}>
             <TextField
               label="Zip Code"
               variant="outlined"
@@ -172,7 +177,7 @@ function LandingPage() {
         </div>
       )}
       {/* Search Results */}
-      <div style={{ marginTop: '50px' }}>
+      {dishes.length > 0 && <div style={{ marginTop: '50px' }}>
         <Typography
           variant="h5"
           component="h4"
@@ -187,6 +192,7 @@ function LandingPage() {
 
         <DisplayPaginatedDishResults dishes={dishes} />
       </div>
+}
       {dishes.length > 10 && (
         <div style={{ marginTop: '20px', textAlign: 'center' }}>
           <YelloBackGroundBlackTextButton

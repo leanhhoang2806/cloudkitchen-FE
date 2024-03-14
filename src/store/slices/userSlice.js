@@ -6,6 +6,7 @@ const initialState = {
   isSeller: false,
   sellerId: '',
   cart: [],
+  searchResults: [],
 }
 
 export const userSlice = createSlice({
@@ -32,6 +33,9 @@ export const userSlice = createSlice({
     clearCart: (state, action) => {
       state.cart = action.payload
     },
+    updateSearchResult: (state, action) => {
+      state.searchResults = [...action.payload]
+    }
   },
 })
 
@@ -41,6 +45,7 @@ export const {
   addToCart,
   removeItemFromCart,
   clearCart,
+  updateSearchResult
 } = userSlice.actions
 
 export default userSlice.reducer

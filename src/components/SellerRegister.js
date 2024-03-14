@@ -29,8 +29,6 @@ function SellerRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Perform form validation here if needed
-
     try {
       const seller = await sellerPost(
         formData,

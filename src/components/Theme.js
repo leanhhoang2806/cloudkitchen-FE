@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PropTypes from 'prop-types'
 import { Badge } from '@mui/material'
+import StoreIcon from '@mui/icons-material/Store';
 
 function Theme({ children }) {
   const navigate = useNavigate()
@@ -66,10 +67,9 @@ function Theme({ children }) {
                 component={Link}
                 to={`/buyer/${mainUser.buyerId}/cart`}
                 style={{
-                  fontSize: '2rem',
+                  fontSize: '1rem',
                   color: 'darkgray',
-                  paddingLeft: '50px',
-                  paddingRight: '50px',
+                  paddingLeft: '5px',
                 }}
               >
                 <Badge badgeContent={mainUser.cart.length} color="secondary">
@@ -80,7 +80,7 @@ function Theme({ children }) {
               <Divider
                 orientation="vertical"
                 flexItem
-                sx={{ borderWidth: '2px' }}
+                sx={{ borderWidth: '1px' }}
               />
             </>
           )}
@@ -100,7 +100,7 @@ function Theme({ children }) {
           <Divider
             orientation="vertical"
             flexItem
-            sx={{ borderWidth: '2px' }}
+            sx={{ borderWidth: '1px' }}
           />
           {isAuthenticated &&
             !mainUser.isSeller &&
@@ -111,13 +111,13 @@ function Theme({ children }) {
                   style={{ fontSize: '0.8rem', color: 'black' }}
                   onClick={onRegisterHandler}
                 >
-                  Seller Register
+                  <StoreIcon />
                 </Button>
 
                 <Divider
                   orientation="vertical"
                   flexItem
-                  sx={{ borderWidth: '2px' }}
+                  sx={{ borderWidth: '1px', color: 'black' }}
                 />
               </>
             )}
@@ -144,7 +144,7 @@ function Theme({ children }) {
               style={{ fontSize: '2rem', color: 'darkgray' }}
               onClick={handleLogout}
             >
-              <ExitToAppIcon sx={{ fontSize: '100%' }} />
+              <ExitToAppIcon sx={{ fontSize: '80%' }} />
             </IconButton>
           )}
 
