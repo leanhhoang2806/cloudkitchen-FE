@@ -24,7 +24,7 @@ import {
   deleteDiscountedDish,
 } from 'apis/discountedDish'
 import Spinner from './SpinnerComponent'
-import { mergeLists } from 'utilities/CombinedListObjects'
+import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 
 export const DashboardComponent = () => {
   const [dishes, setDishes] = useState([])
@@ -55,8 +55,13 @@ export const DashboardComponent = () => {
       const discountedDishes = await Promise.all(
         dishIds.map((id) => getDiscountedDish(id)),
       )
-      setDishes(mergeLists(dishes, discountedDishes, 'id', 'dish_id'))
+      setDishes(mergeDishAndDiscountDish(dishes, discountedDishes))
+
+      setLoading(false)
+      return
     }
+
+    setDishes(dishes)
 
     setLoading(false)
     return dishes
@@ -179,7 +184,7 @@ export const DashboardComponent = () => {
                         variant="contained"
                         color="error"
                         size="small"
-                        onClick={() => onRemoveDiscountClick(dish.id)}
+                        onClick={() => onRemoveDiscountClick(dish.discount_id)}
                       >
                         Remove Discount
                       </Button>
@@ -189,7 +194,9 @@ export const DashboardComponent = () => {
                     <>
                       <Grid item>
                         <YelloBackGroundBlackTextButton
-                          onClick={() => createDiscountOnClick(dish.id, 15)}
+                          onClick={() =>
+                            createDiscountOnClick(dish.dish_id, 15)
+                          }
                           size="small"
                         >
                           15% OFF
@@ -197,7 +204,9 @@ export const DashboardComponent = () => {
                       </Grid>
                       <Grid item>
                         <YelloBackGroundBlackTextButton
-                          onClick={() => createDiscountOnClick(dish.id, 25)}
+                          onClick={() =>
+                            createDiscountOnClick(dish.dish_id, 25)
+                          }
                           size="small"
                         >
                           25% OFF
@@ -205,7 +214,9 @@ export const DashboardComponent = () => {
                       </Grid>
                       <Grid item>
                         <YelloBackGroundBlackTextButton
-                          onClick={() => createDiscountOnClick(dish.id, 50)}
+                          onClick={() =>
+                            createDiscountOnClick(dish.dish_id, 50)
+                          }
                           size="small"
                         >
                           50% OFF
@@ -221,7 +232,7 @@ export const DashboardComponent = () => {
                           variant="contained"
                           color="error"
                           size="small"
-                          onClick={() => handleOnDeleteClick(dish.id)}
+                          onClick={() => handleOnDeleteClick(dish.dish_id)}
                         >
                           DELETE
                         </Button>
@@ -232,7 +243,7 @@ export const DashboardComponent = () => {
                             variant="contained"
                             color="primary"
                             size="small"
-                            onClick={() => handleFeatureClick(dish.id)}
+                            onClick={() => handleFeatureClick(dish.dish_id)}
                           >
                             FEATURE
                           </Button>
@@ -244,7 +255,7 @@ export const DashboardComponent = () => {
                             variant="contained"
                             color="inherit"
                             size="small"
-                            onClick={() => handleUnfeatureClick(dish.id)}
+                            onClick={() => handleUnfeatureClick(dish.dish_id)}
                           >
                             UNFEATURE
                           </Button>

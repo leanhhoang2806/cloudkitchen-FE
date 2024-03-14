@@ -79,11 +79,10 @@ function Carousel({ items }) {
     <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
       {filteredDish.length !== 0 && (
         <>
-          {filteredDish.length > 3 && (
-            <IconButton onClick={goToPrevious}>
-              <NavigateBeforeIcon />
-            </IconButton>
-          )}
+          <IconButton onClick={goToPrevious}>
+            <NavigateBeforeIcon />
+          </IconButton>
+
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <Card
               sx={{
@@ -134,11 +133,10 @@ function Carousel({ items }) {
               </Card>
             </Slide>
           )}
-          {filteredDish.length > 3 && (
-            <IconButton onClick={goToNext}>
-              <NavigateNextIcon />
-            </IconButton>
-          )}
+
+          <IconButton onClick={goToNext}>
+            <NavigateNextIcon />
+          </IconButton>
         </>
       )}
       <Modal

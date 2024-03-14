@@ -1,10 +1,9 @@
 import axios from 'axios'
 
 const getDiscountedDish = async (dishId) => {
-
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`
+      `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`,
     )
     return response.data
   } catch (error) {

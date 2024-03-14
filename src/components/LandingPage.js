@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
+import { Divider } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { getFeaturedDishPagination } from 'apis/featured_dish'
 import Spinner from './SpinnerComponent'
@@ -37,13 +38,17 @@ function LandingPage() {
     try {
       setLoading(true)
       const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode)
-      if (dishes.length > 0){
-        const dishIds = dishes.map(dish => dish.id)
-        const discount = await Promise.all(dishIds.map(id => getDiscountedDish(id)))
-        const discountsWithData = discount.filter(data => data !== null && data !== undefined && data !== '');
+      if (dishes.length > 0) {
+        const dishIds = dishes.map((dish) => dish.id)
+        const discount = await Promise.all(
+          dishIds.map((id) => getDiscountedDish(id)),
+        )
+        const discountsWithData = discount.filter(
+          (data) => data !== null && data !== undefined && data !== '',
+        )
         const merge = mergeDishAndDiscountDish(dishes, discountsWithData)
         setDishes(merge)
-        
+
         setLoading(false)
         return
       }
@@ -64,10 +69,6 @@ function LandingPage() {
   const handleLoadMore = () => {
     setSkip((prevSkip) => prevSkip + 10) // Adjust the pagination limit as needed
   }
-
-  console.log(dishes)
-
-
 
   return (
     <Theme>
@@ -146,6 +147,25 @@ function LandingPage() {
         </Grid>
       </div>
       {/* Render Carousel only when featuredDishes is not empty */}
+
+      <div
+        style={{
+          marginTop: '20px',
+          textAlign: 'left',
+          paddingLeft: '20px',
+          align: 'left',
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h2"
+          style={{ fontWeight: 'bold' }}
+          align="left"
+        >
+          Featured Dishes
+        </Typography>
+        <Divider style={{ marginTop: '5px', marginBottom: '20px' }} />
+      </div>
       {featuredDishes.length > 0 && (
         <div style={{ marginTop: '50px', width: '70%' }}>
           <Carousel items={featuredDishes} />
@@ -153,6 +173,18 @@ function LandingPage() {
       )}
       {/* Search Results */}
       <div style={{ marginTop: '50px' }}>
+        <Typography
+          variant="h5"
+          component="h4"
+          align="left"
+          style={{ fontWeight: 'bold', paddingLeft: '20px' }}
+        >
+          Local Dishes
+        </Typography>
+        <Divider
+          style={{ marginTop: '5px', marginBottom: '20px', marginLeft: '20px' }}
+        />
+
         <DisplayPaginatedDishResults dishes={dishes} />
       </div>
       {dishes.length > 10 && (

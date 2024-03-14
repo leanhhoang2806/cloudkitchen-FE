@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Button,
-} from '@mui/material'
+import { Card, CardContent, CardMedia, Grid, Button } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'store/slices/userSlice'
 import PropTypes from 'prop-types'
@@ -20,15 +14,18 @@ function SearchResultCard({ imageUrl, price, dishId, percentage }) {
 
   return (
     <Card sx={{ width: '100%', height: '100%' }}>
-      {percentage === undefined ? <CardMedia
-        component="img"
-        height="240" // Increased height for bigger cards
-        image={imageUrl}
-        alt="Default Image"
-        sx={{ width: '100%' }}
-      /> :
-      <ImageWithOverlay  imagePath={imageUrl} percentage={percentage}/>
-    }
+      {percentage === undefined ? (
+        <CardMedia
+          component="img"
+          height="240" // Increased height for bigger cards
+          image={imageUrl}
+          alt="Default Image"
+          sx={{ width: '100%' }}
+          style={{ objectFit: 'cover' }}
+        />
+      ) : (
+        <ImageWithOverlay imagePath={imageUrl} percentage={percentage} />
+      )}
       <CardContent>
         <ProductPrice price={price} discountPercentage={percentage} />
         <Button
@@ -55,7 +52,7 @@ SearchResultCard.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   dishId: PropTypes.string.isRequired,
-  percentage: PropTypes.number
+  percentage: PropTypes.number,
 }
 
 function DisplayPaginatedDishResults({ dishes }) {

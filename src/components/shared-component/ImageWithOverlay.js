@@ -3,8 +3,14 @@ import PropTypes from 'prop-types'
 
 const ImageWithOverlay = ({ imagePath, percentage }) => {
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <img src={imagePath} alt="Product" style={{ maxWidth: '100%' }} />
+    <div
+      style={{ position: 'relative', display: 'inline-block', height: '240px' }}
+    >
+      <img
+        src={imagePath}
+        alt="Product"
+        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }}
+      />
       <div
         style={{
           position: 'absolute',
