@@ -18,4 +18,18 @@ const mergeLists = (list1, list2, idField1, idField2) => {
   return mergedList
 }
 
-export { mergeLists }
+const mergeDishAndDiscountDish = (dishes, discountedDishes) => {
+    const mergedList = []
+    const mapDiscountedDish = discountedDishes.reduce((acc, obj) => acc.set(obj.dish_id, obj), new Map());
+    for (const dish of dishes) {
+        const dishId = dish.id
+        if (mapDiscountedDish.has(dishId)) {
+            const mergeItem = { ...dish, ...mapDiscountedDish.get(dishId), dish_id: dish.id, discount_id: mapDiscountedDish.get(dishId).id}
+            mergedList.push(mergeItem)
+        }
+        mergedList.push(dish)
+    }
+    return mergedList
+}
+
+export { mergeLists, mergeDishAndDiscountDish }

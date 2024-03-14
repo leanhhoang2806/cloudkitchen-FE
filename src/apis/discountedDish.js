@@ -1,20 +1,10 @@
 import axios from 'axios'
 
-const getDiscountedDish = async (discountedDishId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
+const getDiscountedDish = async (dishId) => {
 
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/discounted-dish/dish/${discountedDishId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
+      `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`
     )
     return response.data
   } catch (error) {

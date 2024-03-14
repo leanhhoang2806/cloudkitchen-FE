@@ -53,7 +53,7 @@ export const DashboardComponent = () => {
     if (dishes.length > 0) {
       const dishIds = dishes.map((dish) => dish.id)
       const discountedDishes = await Promise.all(
-        dishIds.map((id) => getDiscountedDish(id, getAccessTokenSilently)),
+        dishIds.map((id) => getDiscountedDish(id)),
       )
       setDishes(mergeLists(dishes, discountedDishes, 'id', 'dish_id'))
     }

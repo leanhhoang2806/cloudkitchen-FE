@@ -10,6 +10,8 @@ import BackGroundImage from 'media/images/background_image.jpg'
 import Theme from 'components/Theme'
 import { searchDishesByNameOrZipcode } from 'apis/search'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
+import { getDiscountedDish } from 'apis/discountedDish'
+import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
@@ -35,6 +37,16 @@ function LandingPage() {
     try {
       setLoading(true)
       const dishes = await searchDishesByNameOrZipcode(searchTerm, zipCode)
+      if (dishes.length > 0){
+        const dishIds = dishes.map(dish => dish.id)
+        const discount = await Promise.all(dishIds.map(id => getDiscountedDish(id)))
+        const discountsWithData = discount.filter(data => data !== null && data !== undefined && data !== '');
+        const merge = mergeDishAndDiscountDish(dishes, discountsWithData)
+        setDishes(merge)
+        
+        setLoading(false)
+        return
+      }
       setDishes(dishes)
       setLoading(false)
     } catch (error) {
@@ -52,6 +64,10 @@ function LandingPage() {
   const handleLoadMore = () => {
     setSkip((prevSkip) => prevSkip + 10) // Adjust the pagination limit as needed
   }
+
+  console.log(dishes)
+
+
 
   return (
     <Theme>
