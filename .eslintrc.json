@@ -24,7 +24,8 @@
     "URL": "readonly",
     "localStorage": "readonly",
     "URLSearchParams": "readonly",
-    "Promise": "readonly"
+    "Promise": "readonly",
+    "Map": "readonly"
     
     // Add more global variables as needed
   }

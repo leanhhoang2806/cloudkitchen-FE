@@ -8,6 +8,7 @@ import {
   Avatar,
   Divider,
   Pagination,
+  Grid,
 } from '@mui/material'
 import Button from '@mui/material/Button'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
@@ -16,10 +17,20 @@ import { useSelector } from 'react-redux'
 import { getDishBySellerId } from 'apis/dish'
 import { postFeatureDish, deleteFeaturedDish } from 'apis/featured_dish'
 import { deleteDishBySeller } from 'apis/dish'
+import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
+import {
+  createDiscountedDish,
+  getDiscountedDish,
+  deleteDiscountedDish,
+} from 'apis/discountedDish'
+import Spinner from './SpinnerComponent'
+import { mergeLists } from 'utilities/CombinedListObjects'
 
 export const DashboardComponent = () => {
   const [dishes, setDishes] = useState([])
   const [page, setPage] = useState(1)
+
+  const [loading, setLoading] = useState(false)
 
   const mainUser = useSelector((state) => state.user)
 
@@ -34,13 +45,20 @@ export const DashboardComponent = () => {
   const endIndex = startIndex + itemsPerPage
 
   const getDish = async () => {
+    setLoading(true)
     const dishes = await getDishBySellerId(
       mainUser.sellerId,
       getAccessTokenSilently,
     )
-    if (dishes) {
-      setDishes(dishes)
+    if (dishes.length > 0) {
+      const dishIds = dishes.map((dish) => dish.id)
+      const discountedDishes = await Promise.all(
+        dishIds.map((id) => getDiscountedDish(id, getAccessTokenSilently)),
+      )
+      setDishes(mergeLists(dishes, discountedDishes, 'id', 'dish_id'))
     }
+
+    setLoading(false)
     return dishes
   }
 
@@ -71,12 +89,26 @@ export const DashboardComponent = () => {
     }
   }
 
+  const createDiscountOnClick = async (dishId, percentage) => {
+    await createDiscountedDish(
+      {
+        dish_id: dishId,
+        discounted_percentage: percentage,
+      },
+      getAccessTokenSilently,
+    )
+    await getDish()
+  }
+
+  const onRemoveDiscountClick = async (dishId) => {
+    await deleteDiscountedDish(dishId, getAccessTokenSilently)
+    await getDish()
+  }
+
   useEffect(() => {
     getDish()
     // eslint-disable-next-line
   }, [])
-
-  console.log(dishes)
 
   return (
     <div
@@ -88,6 +120,7 @@ export const DashboardComponent = () => {
         marginTop: '20px',
       }}
     >
+      <Spinner loading={loading} />
       <Typography variant="h4" gutterBottom>
         My Menu
       </Typography>
@@ -122,38 +155,104 @@ export const DashboardComponent = () => {
                     </Typography>
                   </React.Fragment>
                 }
-                style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
+                style={{ paddingLeft: '20px' }}
               />
               <ListItemSecondaryAction>
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="small"
-                  sx={{ marginRight: '10px' }}
-                  onClick={() => handleOnDeleteClick(dish.id)}
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="flex-end"
                 >
-                  DELETE
-                </Button>
-                {!dish.is_featured && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    onClick={() => handleFeatureClick(dish.id)}
-                  >
-                    FEATURE
-                  </Button>
-                )}
-                {dish.is_featured && (
-                  <Button
-                    variant="contained"
-                    color="inherit"
-                    size="small"
-                    onClick={() => handleUnfeatureClick(dish.id)}
-                  >
-                    UNFEATURE
-                  </Button>
-                )}
+                  <Grid item xs={1} />
+                  {dish.discounted_percentage && (
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        disabled
+                        size="small"
+                        sx={{ marginRight: '10px' }}
+                      >
+                        {`${dish.discounted_percentage}% OFF`}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        size="small"
+                        onClick={() => onRemoveDiscountClick(dish.id)}
+                      >
+                        Remove Discount
+                      </Button>
+                    </Grid>
+                  )}
+                  {!dish.discounted_percentage && (
+                    <>
+                      <Grid item>
+                        <YelloBackGroundBlackTextButton
+                          onClick={() => createDiscountOnClick(dish.id, 15)}
+                          size="small"
+                        >
+                          15% OFF
+                        </YelloBackGroundBlackTextButton>
+                      </Grid>
+                      <Grid item>
+                        <YelloBackGroundBlackTextButton
+                          onClick={() => createDiscountOnClick(dish.id, 25)}
+                          size="small"
+                        >
+                          25% OFF
+                        </YelloBackGroundBlackTextButton>
+                      </Grid>
+                      <Grid item>
+                        <YelloBackGroundBlackTextButton
+                          onClick={() => createDiscountOnClick(dish.id, 50)}
+                          size="small"
+                        >
+                          50% OFF
+                        </YelloBackGroundBlackTextButton>
+                      </Grid>
+                    </>
+                  )}
+                  {/* Grid container for Delete and Feature buttons */}
+                  <Grid item>
+                    <Grid container spacing={1}>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                          onClick={() => handleOnDeleteClick(dish.id)}
+                        >
+                          DELETE
+                        </Button>
+                      </Grid>
+                      {!dish.is_featured && (
+                        <Grid item>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => handleFeatureClick(dish.id)}
+                          >
+                            FEATURE
+                          </Button>
+                        </Grid>
+                      )}
+                      {dish.is_featured && (
+                        <Grid item>
+                          <Button
+                            variant="contained"
+                            color="inherit"
+                            size="small"
+                            onClick={() => handleUnfeatureClick(dish.id)}
+                          >
+                            UNFEATURE
+                          </Button>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Grid>
+                </Grid>
               </ListItemSecondaryAction>
             </ListItem>
             <Divider variant="inset" component="li" />
