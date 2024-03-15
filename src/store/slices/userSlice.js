@@ -35,7 +35,7 @@ export const userSlice = createSlice({
     },
     updateSearchResult: (state, action) => {
       state.searchResults = [...action.payload]
-    }
+    },
   },
 })
 
@@ -45,7 +45,7 @@ export const {
   addToCart,
   removeItemFromCart,
   clearCart,
-  updateSearchResult
+  updateSearchResult,
 } = userSlice.actions
 
 export default userSlice.reducer

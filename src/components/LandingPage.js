@@ -18,7 +18,9 @@ import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
-  const [dishes, setDishes] = useState(useSelector((state) => state.user.searchResults))
+  const [dishes, setDishes] = useState(
+    useSelector((state) => state.user.searchResults),
+  )
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
   // const [searchTerm, setSearchTerm] = useState('')
@@ -115,7 +117,7 @@ function LandingPage() {
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           {/* Search Bar Row */}
           {/* <Grid item xs={9} sm={6}> */}
-            {/* <TextField
+          {/* <TextField
               label="Restaurants"
               variant="outlined"
               size="small"
@@ -177,22 +179,27 @@ function LandingPage() {
         </div>
       )}
       {/* Search Results */}
-      {dishes.length > 0 && <div style={{ marginTop: '50px' }}>
-        <Typography
-          variant="h5"
-          component="h4"
-          align="left"
-          style={{ fontWeight: 'bold', paddingLeft: '20px' }}
-        >
-          Local Dishes
-        </Typography>
-        <Divider
-          style={{ marginTop: '5px', marginBottom: '20px', marginLeft: '20px' }}
-        />
+      {dishes.length > 0 && (
+        <div style={{ marginTop: '50px' }}>
+          <Typography
+            variant="h5"
+            component="h4"
+            align="left"
+            style={{ fontWeight: 'bold', paddingLeft: '20px' }}
+          >
+            Local Dishes
+          </Typography>
+          <Divider
+            style={{
+              marginTop: '5px',
+              marginBottom: '20px',
+              marginLeft: '20px',
+            }}
+          />
 
-        <DisplayPaginatedDishResults dishes={dishes} />
-      </div>
-}
+          <DisplayPaginatedDishResults dishes={dishes} />
+        </div>
+      )}
       {dishes.length > 10 && (
         <div style={{ marginTop: '20px', textAlign: 'center' }}>
           <YelloBackGroundBlackTextButton

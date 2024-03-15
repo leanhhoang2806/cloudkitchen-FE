@@ -27,12 +27,21 @@ const AllRoutes = () => {
   return (
     <Routes>
       <Route exact path="/" element={<LandingPage />} />
-      <Route exact path="/thanks" element={<ThankYouPage />} />
+      <Route
+        exact
+        path="/thanks"
+        element={
+          isAuthenticated && user.isSeller ? (
+            <ThankYouPage />
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
       <Route
         path="/profile"
         element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
       />
-      \\
       <Route
         path="/seller/dashboard"
         element={

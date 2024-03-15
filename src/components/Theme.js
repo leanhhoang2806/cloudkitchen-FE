@@ -15,7 +15,7 @@ import { useLocation } from 'react-router-dom'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PropTypes from 'prop-types'
 import { Badge } from '@mui/material'
-import StoreIcon from '@mui/icons-material/Store';
+import StoreIcon from '@mui/icons-material/Store'
 
 function Theme({ children }) {
   const navigate = useNavigate()

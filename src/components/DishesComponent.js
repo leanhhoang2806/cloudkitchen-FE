@@ -7,6 +7,7 @@ import uploadFile from 'apis/mediaUpload'
 import Spinner from './SpinnerComponent'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
+import StripeBuyButton from './shared-component/SubscriptionButton'
 
 const dropzoneStyles = {
   width: '100%',
@@ -32,6 +33,8 @@ export const DishesComponent = ({ setSelectedItem }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(null)
   const [uploadedS3Path, setUploadedS3Path] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [displaySubscriptionButton, setDisplaySubscriptionButton] =
+    useState(false)
 
   const mainUser = useSelector((state) => state.user)
 
@@ -59,6 +62,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
       setThumbnailUrl(fileUrl)
     } catch (error) {
       setErrorMessage(error.response?.data?.detail || 'Failed to upload file')
+      setDisplaySubscriptionButton(true)
     }
     setLoading(false)
   }
@@ -102,61 +106,73 @@ export const DishesComponent = ({ setSelectedItem }) => {
             </Typography>
           </Grid>
         )}
-        <Grid item>
-          {thumbnailUrl && errorMessage.length === 0 ? (
-            <img
-              src={thumbnailUrl}
-              alt="Thumbnail"
-              style={{ maxWidth: '100%', maxHeight: '200px' }}
-            />
-          ) : (
-            <div {...getRootProps()} style={dropzoneStyles}>
-              <input {...getInputProps()} />
-              {isDragActive ? (
-                <Typography variant="subtitle1">Drop the image here</Typography>
+        {displaySubscriptionButton ? (
+          <StripeBuyButton />
+        ) : (
+          <>
+            <Grid item>
+              {thumbnailUrl && errorMessage.length === 0 ? (
+                <img
+                  src={thumbnailUrl}
+                  alt="Thumbnail"
+                  style={{ maxWidth: '100%', maxHeight: '200px' }}
+                />
               ) : (
-                <Typography variant="subtitle1">
-                  Drag and drop an image here, or click to select a file
-                </Typography>
+                <div {...getRootProps()} style={dropzoneStyles}>
+                  <input {...getInputProps()} />
+                  {isDragActive ? (
+                    <Typography variant="subtitle1">
+                      Drop the image here
+                    </Typography>
+                  ) : (
+                    <Typography variant="subtitle1">
+                      Drag and drop an image here, or click to select a file
+                    </Typography>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-        </Grid>
-        <Grid item>
-          <TextField
-            name="dishName"
-            label="Dish Name"
-            value={dishName}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            name="description"
-            label="Description"
-            value={description}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            name="price"
-            label="Price"
-            value={price}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Grid>
+            </Grid>
+            <Grid item>
+              <TextField
+                name="dishName"
+                label="Dish Name"
+                value={dishName}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                name="description"
+                label="Description"
+                value={description}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                name="price"
+                label="Price"
+                value={price}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </>
+        )}
       </Grid>
     </Box>
   )
