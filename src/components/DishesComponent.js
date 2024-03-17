@@ -8,6 +8,7 @@ import Spinner from './SpinnerComponent'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import StripeBuyButton from './shared-component/SubscriptionButton'
+import { putStripePaymentUpdate } from 'apis/stripe'
 
 const dropzoneStyles = {
   width: '100%',
@@ -61,6 +62,8 @@ export const DishesComponent = ({ setSelectedItem }) => {
       const fileUrl = URL.createObjectURL(acceptedFiles[0])
       setThumbnailUrl(fileUrl)
     } catch (error) {
+      const status = await putStripePaymentUpdate(mainUser.email, getAccessTokenSilently)
+      if (status === 202) { return }
       setErrorMessage(error.response?.data?.detail || 'Failed to upload file')
       setDisplaySubscriptionButton(true)
     }
