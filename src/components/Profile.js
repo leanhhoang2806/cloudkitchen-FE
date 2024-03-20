@@ -9,7 +9,6 @@ import {
   Divider,
   Pagination,
 } from '@mui/material'
-// import Button from '@mui/material/Button'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { getBuyerByEmail } from 'apis/buyer'
@@ -22,6 +21,10 @@ import { updateSeller } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import { getDishById } from 'apis/dish'
 import { ENUMS } from 'utilities/EnumsConversions'
+import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
+import { postChatRoom } from 'apis/chatRoom'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const ProfilePage = () => {
   const [page, setPage] = useState(1)
@@ -29,6 +32,8 @@ const ProfilePage = () => {
   const [orders, setOrders] = useState([])
   const [orderDetails, setOrderDetails] = useState([])
   const dispatch = useDispatch()
+  const mainUser = useSelector((state) => state.user)
+  const navigate = useNavigate()
 
   const { getAccessTokenSilently, user } = useAuth0()
 
@@ -38,6 +43,11 @@ const ProfilePage = () => {
 
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
+
+  const handleChatButtonClick = async (sellerId) => {
+    await postChatRoom(mainUser.buyerId, sellerId, getAccessTokenSilently)
+    navigate(`/chat/${sellerId}`)
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -94,7 +104,7 @@ const ProfilePage = () => {
         )}
         <List>
           {orderDetails.slice(startIndex, endIndex).map((order, index) => (
-            <React.Fragment key={order.order_id}>
+            <React.Fragment key={`${index}_${order.order_id}`}>
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar
@@ -134,9 +144,13 @@ const ProfilePage = () => {
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />
                 <ListItemSecondaryAction>
-                  {/* <Button variant="contained" color="error" size="small">
-                    DELETE
-                  </Button> */}
+                  <YelloBackGroundBlackTextButton
+                    variant="contained"
+                    size="small"
+                    onClick={() => handleChatButtonClick(order.seller_id)}
+                  >
+                    Chat
+                  </YelloBackGroundBlackTextButton>
                 </ListItemSecondaryAction>
               </ListItem>
               <Divider variant="inset" component="li" />

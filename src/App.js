@@ -16,6 +16,7 @@ import SellerRegistration from 'components/SellerRegister'
 import { useSelector } from 'react-redux'
 import CheckoutOrdersPage from 'components/CheckoutPage'
 import ThankYouPage from 'components/CompleteCheckoutStaticPage'
+import ChatInterface from 'components/ChatInterface'
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0()
@@ -55,6 +56,10 @@ const AllRoutes = () => {
       <Route
         path="/buyer/:buyer_id/cart"
         element={isAuthenticated ? <CheckoutOrdersPage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/chat/:seller_id"
+        element={isAuthenticated ? <ChatInterface /> : <Navigate to="/" />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

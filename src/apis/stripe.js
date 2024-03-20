@@ -46,5 +46,4 @@ const putStripePaymentUpdate = async (email, authToken) => {
   return response.data
 }
 
-
 export { postStripePayment, putStripePaymentUpdate }
