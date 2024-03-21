@@ -28,7 +28,7 @@ const ChatList = styled(List)({
 const ChatContainer = styled('div')({
   display: 'flex',
   paddingTop: '20px',
-  width: '80%',
+  width: '100%',
 })
 
 const SellerChatInterface = () => {
@@ -109,11 +109,6 @@ const SellerChatInterface = () => {
 
     // eslint-disable-next-line
   }, [])
-
-  console.log('sellerChatRoom')
-  console.log(sellerChatRoom)
-  console.log('buyer names')
-  console.log(buyerNames)
 
   return (
     <>

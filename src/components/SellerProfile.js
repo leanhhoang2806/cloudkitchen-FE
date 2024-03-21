@@ -47,15 +47,7 @@ function SellerInfoUpdateForm({ setSelectedItem }) {
   }
 
   return (
-    <div
-      style={{
-        width: '80%',
-        margin: 'auto',
-        backgroundColor: 'white',
-        padding: '20px',
-        marginTop: '20px',
-      }}
-    >
+    <>
       <Typography variant="h4" gutterBottom>
         Update Seller Information
       </Typography>
@@ -89,16 +81,13 @@ function SellerInfoUpdateForm({ setSelectedItem }) {
           fullWidth
           margin="normal"
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          style={{ marginTop: '20px' }}
-        >
-          Update
-        </Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+          <Button type="submit" variant="contained" color="primary">
+            Update
+          </Button>
+        </div>
       </form>
-    </div>
+    </>
   )
 }
 

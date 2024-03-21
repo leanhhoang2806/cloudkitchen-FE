@@ -73,7 +73,7 @@ function DisplayPaginatedDishResults({ dishes }) {
   }
 
   return (
-    <Grid container spacing={4} style={{ paddingLeft: 200, paddingRight: 200 }}>
+    <Grid container spacing={4} style={{ paddingLeft: 200, paddingRight: 200, paddingBottom: '56px' }}>
       {filterdDishes.map((item, index) => (
         <Grid item {...gridProps} key={index}>
           <SearchResultCard

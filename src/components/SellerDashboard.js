@@ -91,6 +91,15 @@ const Dashboard = () => {
 
   return (
     <Theme>
+            <div
+        style={{
+          width: '80%',
+          margin: 'auto',
+          backgroundColor: 'white',
+          padding: '20px',
+          marginTop: '20px',
+        }}
+      >
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Drawer variant="permanent" open={open}>
@@ -129,7 +138,7 @@ const Dashboard = () => {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '85vh',
+            height: '100%',
             overflow: 'auto',
             width: '70vw',
           }}
@@ -157,7 +166,8 @@ const Dashboard = () => {
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: '100vh',
+                    height: '100%',
+                    paddingBottom: '10px'
                   }}
                 >
                   {renderComponent()}
@@ -167,6 +177,7 @@ const Dashboard = () => {
           </Container>
         </Box>
       </Box>
+      </div>
     </Theme>
   )
 }

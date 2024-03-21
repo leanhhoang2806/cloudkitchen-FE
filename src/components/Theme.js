@@ -43,7 +43,7 @@ function Theme({ children }) {
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
         backgroundColor: '#f0f0f0',
-        minHeight: '100vh',
+        minHeight: '100vh'
       }}
     >
       <AppBar
@@ -159,17 +159,18 @@ function Theme({ children }) {
           )}
         </Toolbar>
       </AppBar>
-
+      {/* <main style={{ flexGrow: 1, paddingBottom: '20px' }}> */}
       {children}
-
+      {/* </main> */}
       <AppBar
         position="relative"
         sx={{
           backgroundColor: 'hsl(50, 85%, 75%)',
           boxShadow: 'none',
           top: 'auto',
+          // bottom: 'auto',
           bottom: 0,
-          marginTop: '20px',
+          marginTop: '10px',
         }}
       >
         <Toolbar>
