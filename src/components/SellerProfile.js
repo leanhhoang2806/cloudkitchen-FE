@@ -81,7 +81,13 @@ function SellerInfoUpdateForm({ setSelectedItem }) {
           fullWidth
           margin="normal"
         />
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginTop: '20px',
+          }}
+        >
           <Button type="submit" variant="contained" color="primary">
             Update
           </Button>

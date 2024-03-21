@@ -43,7 +43,7 @@ function Theme({ children }) {
         alignItems: 'center',
         fontFamily: 'Roboto, sans-serif',
         backgroundColor: '#f0f0f0',
-        minHeight: '100vh'
+        minHeight: '100vh',
       }}
     >
       <AppBar

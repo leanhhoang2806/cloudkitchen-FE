@@ -1,8 +1,5 @@
-
-
 // import React from 'react';
 // import { AppBar, Toolbar, Typography } from '@mui/material';
-
 
 // export const NotFoundPage = () => {
 //   return (
@@ -33,9 +30,6 @@
 //     </div>
 //   );
 // };
-
-
-
 
 import React from 'react'
 
