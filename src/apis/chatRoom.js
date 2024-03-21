@@ -111,10 +111,34 @@ const postChatMessage = async (
   return response.data
 }
 
+// ====== Seller =========
+
+const getChatListBySellerId = async (sellerId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/chat/seller/${sellerId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+}
+
 export {
   postChatRoom,
   getChatRoomByBuyer,
   getAllChatRoomByBuyer,
   getConversationByConversationId,
   postChatMessage,
+
+  // ===== Seller ======
+  getChatListBySellerId,
 }

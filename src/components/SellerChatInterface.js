@@ -11,16 +11,14 @@ import {
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/system'
-import Theme from './Theme'
-import {
-  getAllChatRoomByBuyer,
-  getConversationByConversationId,
-} from 'apis/chatRoom'
-import { useParams } from 'react-router-dom'
+import { getConversationByConversationId } from 'apis/chatRoom'
 import { useAuth0 } from '@auth0/auth0-react'
-import { getSellerById } from 'apis/sellerRegister'
+// import { getSellerById } from 'apis/sellerRegister'
 import { getBuyerById } from 'apis/buyer'
 import { postChatMessage } from 'apis/chatRoom'
+import { useSelector } from 'react-redux'
+import { getChatListBySellerId } from 'apis/chatRoom'
+import { getSellerById } from 'apis/sellerRegister'
 
 const ChatList = styled(List)({
   maxHeight: 'calc(100vh - 100px)',
@@ -33,7 +31,7 @@ const ChatContainer = styled('div')({
   width: '80%',
 })
 
-const ChatInterface = () => {
+const SellerChatInterface = () => {
   const [selectedConversation, setSelectedConversation] = useState({
     buyer_id: '',
     seller_id: '',
@@ -41,11 +39,12 @@ const ChatInterface = () => {
   })
   const [selectedConversationId, setSelectedConversationId] = useState('')
   const [messageInput, setMessageInput] = useState('')
-  const [buyerChatRoom, setBuyerChatRoom] = useState([])
-  const [sellerNames, setSellerNames] = useState([])
+  const [sellerChatRoom, setSetBuyerChatRoom] = useState([])
+  const [buyerNames, setBuyerNames] = useState([])
   const [sender, setSender] = useState('')
   const [receiver, setReceiver] = useState('')
-  const { buyer_id } = useParams()
+
+  const sellerId = useSelector((state) => state.user.sellerId)
 
   const { getAccessTokenSilently } = useAuth0()
 
@@ -56,9 +55,7 @@ const ChatInterface = () => {
     )
     setSelectedConversationId(conversationId)
     setSelectedConversation({ ...conversation })
-    setReceiver(
-      sellerNames.find((seller) => seller.id === conversation.seller_id),
-    )
+    setReceiver(buyerNames.find((buyer) => buyer.id === conversation.buyer_id))
   }
 
   const handleInputChange = (event) => {
@@ -84,28 +81,28 @@ const ChatInterface = () => {
     }
   }
 
-  const getAllChatRoomByBuyerHandler = async (buyer_id) => {
-    const chatRooms = await getAllChatRoomByBuyer(
-      buyer_id,
+  const getAllChatRoomBySellerIdHandler = async (sellerId) => {
+    const chatRooms = await getChatListBySellerId(
+      sellerId,
       getAccessTokenSilently,
     )
-    setBuyerChatRoom(chatRooms)
+    setSetBuyerChatRoom(chatRooms)
     if (chatRooms.length > 0) {
-      const sellerIds = chatRooms.map((room) => room.seller_id)
-      const sellers = await Promise.all(
-        sellerIds.map((sellerId) =>
-          getSellerById(sellerId, getAccessTokenSilently),
+      const buyerIds = chatRooms.map((room) => room.buyer_id)
+      const buyer_info = await Promise.all(
+        buyerIds.map((buyerId) =>
+          getBuyerById(buyerId, getAccessTokenSilently),
         ),
       )
-      setSellerNames(sellers)
+      setBuyerNames(buyer_info)
     }
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAllChatRoomByBuyerHandler(buyer_id)
-      const buyer = await getBuyerById(buyer_id, getAccessTokenSilently)
-      setSender(buyer.email)
+      await getAllChatRoomBySellerIdHandler(sellerId)
+      const seller = await getSellerById(sellerId, getAccessTokenSilently)
+      setSender(seller.email)
     }
 
     fetchData()
@@ -113,24 +110,29 @@ const ChatInterface = () => {
     // eslint-disable-next-line
   }, [])
 
+  console.log('sellerChatRoom')
+  console.log(sellerChatRoom)
+  console.log('buyer names')
+  console.log(buyerNames)
+
   return (
-    <Theme>
+    <>
       <ChatContainer>
         <Paper style={{ width: '20%' }}>
           <ChatList style={{ width: '100%' }}>
-            {sellerNames.map((seller, index) => (
-              <React.Fragment key={seller.id}>
+            {buyerNames.map((buyer, index) => (
+              <React.Fragment key={buyer.id}>
                 <ListItemButton
                   onClick={() =>
                     handleConversationClick(
-                      buyerChatRoom[index].conversation_id,
+                      sellerChatRoom[index].conversation_id,
                     )
                   }
                   style={{ width: '100%' }}
                 >
-                  <ListItemText primary={seller.name} />
+                  <ListItemText primary={buyer.email} />
                 </ListItemButton>
-                {index < sellerNames.length - 1 && <Divider />}
+                {index < buyerNames.length - 1 && <Divider />}
               </React.Fragment>
             ))}
           </ChatList>
@@ -185,8 +187,8 @@ const ChatInterface = () => {
           </Paper>
         )}
       </ChatContainer>
-    </Theme>
+    </>
   )
 }
 
-export default ChatInterface
+export default SellerChatInterface

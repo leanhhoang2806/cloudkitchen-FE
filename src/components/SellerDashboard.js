@@ -18,11 +18,13 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import RestaurantIcon from '@mui/icons-material/Restaurant'
 import PeopleIcon from '@mui/icons-material/People'
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { DashboardComponent } from './DashboardComponent'
 import { OrdersComponent } from './SellerOrders'
 import { DishesComponent } from './DishesComponent'
 import SellerInfoUpdateForm from './SellerProfile'
 import { styled } from '@mui/material/styles'
+import SellerChatInterface from './SellerChatInterface'
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -54,6 +56,7 @@ const mainListItems = [
   { icon: <DashboardIcon />, text: 'Dashboard' },
   { icon: <ShoppingCartIcon />, text: 'Orders' },
   { icon: <RestaurantIcon />, text: 'Dishes' },
+  { icon: <QuestionAnswerIcon />, text: 'Chat' },
   { icon: <PeopleIcon />, text: 'Profile' },
 ]
 
@@ -79,6 +82,8 @@ const Dashboard = () => {
         return <DishesComponent setSelectedItem={setSelectedItem} />
       case 'Profile':
         return <SellerInfoUpdateForm setSelectedItem={setSelectedItem} />
+      case 'Chat':
+        return <SellerChatInterface />
       default:
         return null
     }
