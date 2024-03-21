@@ -58,7 +58,7 @@ const AllRoutes = () => {
         element={isAuthenticated ? <CheckoutOrdersPage /> : <Navigate to="/" />}
       />
       <Route
-        path="/chat/:seller_id"
+        path="/chat/:buyer_id"
         element={isAuthenticated ? <ChatInterface /> : <Navigate to="/" />}
       />
       <Route path="*" element={<NotFoundPage />} />

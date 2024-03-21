@@ -46,7 +46,7 @@ const ProfilePage = () => {
 
   const handleChatButtonClick = async (sellerId) => {
     await postChatRoom(mainUser.buyerId, sellerId, getAccessTokenSilently)
-    navigate(`/chat/${sellerId}`)
+    navigate(`/chat/${mainUser.buyerId}`)
   }
 
   useEffect(() => {

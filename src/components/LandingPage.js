@@ -23,7 +23,6 @@ function LandingPage() {
   )
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
-  // const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
 
