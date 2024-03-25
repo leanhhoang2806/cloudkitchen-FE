@@ -59,6 +59,10 @@ const gerDishReviewByBuyerIdAndDishId = async (dishId, buyerId, authToken) => {
   )
 
   return response.data
-
 }
-export { postDishReview, getDishReviewByDishId, getDishRatingByDishId, gerDishReviewByBuyerIdAndDishId }
+export {
+  postDishReview,
+  getDishReviewByDishId,
+  getDishRatingByDishId,
+  gerDishReviewByBuyerIdAndDishId,
+}

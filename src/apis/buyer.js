@@ -39,7 +39,6 @@ const getBuyerById = async (buyerId, authToken) => {
 }
 
 const getBuyerByIdNoValidation = async (buyerId) => {
-
   const response = await axios.get(
     `http://localhost:8000/api/v1/buyer/no-validation/${buyerId}`,
   )

@@ -45,54 +45,67 @@ function SellerRegistration() {
 
   return (
     <Theme>
-      <Typography variant="h4" sx={{ marginBottom: '20px', marginTop: '20px' }}>
-        Seller Registration
-      </Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
-        <TextField
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          fullWidth
-          sx={{ marginBottom: '20px' }}
-        />
-        <TextField
-          label="Phone (Optional)"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          fullWidth
-          sx={{ marginBottom: '20px' }}
-        />
-        <TextField
-          label="Address (Optional)"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          fullWidth
-          sx={{ marginBottom: '20px' }}
-        />
-        <TextField
-          label="Zipcode (This is how the customer find you)"
-          name="zipcode"
-          value={formData.zipcode}
-          onChange={handleChange}
-          fullWidth
-          required
-          sx={{ marginBottom: '20px' }}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          style={{ marginTop: '20px' }}
+      <div
+        style={{
+          width: '80%',
+          margin: 'auto',
+          backgroundColor: 'white',
+          padding: '20px',
+          marginTop: '20px',
+        }}
+      >
+        <Typography
+          variant="h4"
+          sx={{ marginBottom: '20px', marginTop: '20px' }}
         >
-          Register
-        </Button>
-      </form>
+          Seller Registration
+        </Typography>
+        {error && <Typography color="error">{error}</Typography>}
+        <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
+          <TextField
+            label="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            fullWidth
+            sx={{ marginBottom: '20px' }}
+          />
+          <TextField
+            label="Phone (Optional)"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            fullWidth
+            sx={{ marginBottom: '20px' }}
+          />
+          <TextField
+            label="Address (Optional)"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            fullWidth
+            sx={{ marginBottom: '20px' }}
+          />
+          <TextField
+            label="Zipcode (This is how the customer find you)"
+            name="zipcode"
+            value={formData.zipcode}
+            onChange={handleChange}
+            fullWidth
+            required
+            sx={{ marginBottom: '20px' }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: '20px' }}
+          >
+            Register
+          </Button>
+        </form>
+      </div>
     </Theme>
   )
 }

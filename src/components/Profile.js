@@ -30,8 +30,10 @@ import { postChatRoom } from 'apis/chatRoom'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import StarIcon from '@mui/icons-material/Star'
-import { postDishReview, gerDishReviewByBuyerIdAndDishId} from 'apis/dishReview'
-
+import {
+  postDishReview,
+  gerDishReviewByBuyerIdAndDishId,
+} from 'apis/dishReview'
 
 const style = {
   position: 'absolute',
@@ -94,7 +96,6 @@ const ProfilePage = () => {
     closeModalHandler()
   }
 
-
   useEffect(() => {
     const fetchUser = async () => {
       const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
@@ -109,12 +110,18 @@ const ProfilePage = () => {
         )
 
         const possibleReviewId = await Promise.all(
-          dishesByOrder.map(dish => gerDishReviewByBuyerIdAndDishId(dish.id, mainUser.buyerId, getAccessTokenSilently))
+          dishesByOrder.map((dish) =>
+            gerDishReviewByBuyerIdAndDishId(
+              dish.id,
+              mainUser.buyerId,
+              getAccessTokenSilently,
+            ),
+          ),
         )
-        for (var i =0; i < dishesByOrder.length; i++) {
+        for (var i = 0; i < dishesByOrder.length; i++) {
           dishesByOrder[i] = {
             ...dishesByOrder[i],
-            review: possibleReviewId[i]
+            review: possibleReviewId[i],
           }
         }
         setOrderDetails(dishesByOrder)
@@ -207,26 +214,28 @@ const ProfilePage = () => {
                   >
                     Chat
                   </YelloBackGroundBlackTextButton>
-                  {orders[index].status === StatusEnumsGraph.ORDER_COMPLETE && order.review === '' && (
-                    <ListItem
-                      alignItems="flex-start"
-                      onClick={() => handleWriteReview(order)}
-                    >
-                      <ListItemText
-                        primary={
-                          <span
-                            style={{
-                              color: 'blue',
-                              textDecoration: 'underline',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Write a Review
-                          </span>
-                        }
-                      />
-                    </ListItem>
-                  )}
+
+                  {orders[index].status === StatusEnumsGraph.ORDER_COMPLETE &&
+                    order.review === '' && (
+                      <ListItem
+                        alignItems="flex-start"
+                        onClick={() => handleWriteReview(order)}
+                      >
+                        <ListItemText
+                          primary={
+                            <span
+                              style={{
+                                color: 'blue',
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Write a Review
+                            </span>
+                          }
+                        />
+                      </ListItem>
+                    )}
                 </ListItemSecondaryAction>
               </ListItem>
               <Divider variant="inset" component="li" />

@@ -79,7 +79,6 @@ const getSellerById = async (sellerId, authToken) => {
 }
 
 const getSellerNameByDishId = async (dishId) => {
-
   const response = await axios.get(
     `http://localhost:8000/api/v1/seller_info/name-only/${dishId}`,
   )
@@ -87,4 +86,10 @@ const getSellerNameByDishId = async (dishId) => {
   return response.data
 }
 
-export { sellerPost, getSellerByEmail, updateSeller, getSellerById, getSellerNameByDishId }
+export {
+  sellerPost,
+  getSellerByEmail,
+  updateSeller,
+  getSellerById,
+  getSellerNameByDishId,
+}

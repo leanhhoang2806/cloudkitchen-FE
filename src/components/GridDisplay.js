@@ -22,12 +22,7 @@ import { timeFromGivenTime } from 'utilities/DateTimeConversion'
 import { getDishRatingByDishId } from 'apis/dishReview'
 import { getBuyerByIdNoValidation } from 'apis/buyer'
 
-function SearchResultCard({
-  imageUrl,
-  price,
-  dishId,
-  percentage
-}) {
+function SearchResultCard({ imageUrl, price, dishId, percentage }) {
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
@@ -39,13 +34,15 @@ function SearchResultCard({
 
   const handleRatingClick = async () => {
     const reviews = await getDishReviewByDishId(dishId)
-    const buyerNames = await Promise.all(reviews.map(review => getBuyerByIdNoValidation(review.buyer_id)))
+    const buyerNames = await Promise.all(
+      reviews.map((review) => getBuyerByIdNoValidation(review.buyer_id)),
+    )
     for (var i = 0; i < reviews.length; i++) {
       reviews[i] = {
         ...reviews[i],
-        names: buyerNames[i]
+        names: buyerNames[i],
       }
-  }
+    }
     setReviews(reviews)
     setOpenModal(true)
   }
@@ -55,8 +52,8 @@ function SearchResultCard({
   }
 
   useEffect(() => {
-    getDishRatingByDishId(dishId).then(data => setRating(data.rating))
-  },[])
+    getDishRatingByDishId(dishId).then((data) => setRating(data.rating))
+  }, [])
 
   console.log(reviews)
 
@@ -160,7 +157,9 @@ function SearchResultCard({
                   <div key={review.id}>
                     <Grid container wrap="nowrap" spacing={2}>
                       <Grid justifyContent="left" item xs zeroMinWidth>
-                        <h4 style={{ margin: 0, textAlign: "left" }}>{review.name}</h4>
+                        <h4 style={{ margin: 0, textAlign: 'left' }}>
+                          {review.name}
+                        </h4>
                         <p style={{ textAlign: 'left' }}>{review.content}</p>
                         <p style={{ textAlign: 'left', color: 'gray' }}>
                           {timeFromGivenTime(review.created_at)}
@@ -183,7 +182,7 @@ SearchResultCard.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   dishId: PropTypes.string.isRequired,
-  percentage: PropTypes.number
+  percentage: PropTypes.number,
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
