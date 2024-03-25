@@ -35,4 +35,30 @@ const getDishReviewByDishId = async (dishId) => {
   return response.data
 }
 
-export { postDishReview, getDishReviewByDishId }
+const getDishRatingByDishId = async (dishId) => {
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/dish-review/rating/${dishId}`,
+  )
+
+  return response.data
+}
+
+const gerDishReviewByBuyerIdAndDishId = async (dishId, buyerId, authToken) => {
+  if (!authToken) {
+    throw new Error('No authentication token found')
+  }
+
+  const accessToken = await authToken()
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/dish-review/dish/${dishId}/buyer/${buyerId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+
+  return response.data
+
+}
+export { postDishReview, getDishReviewByDishId, getDishRatingByDishId, gerDishReviewByBuyerIdAndDishId }

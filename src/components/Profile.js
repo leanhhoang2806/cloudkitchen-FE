@@ -24,13 +24,14 @@ import { getSellerByEmail } from 'apis/sellerRegister'
 import { updateSeller } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import { getDishById } from 'apis/dish'
-import { ENUMS } from 'utilities/EnumsConversions'
+import { ENUMS, StatusEnumsGraph } from 'utilities/EnumsConversions'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 import { postChatRoom } from 'apis/chatRoom'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import StarIcon from '@mui/icons-material/Star'
-import { postDishReview } from 'apis/dish_review'
+import { postDishReview, gerDishReviewByBuyerIdAndDishId} from 'apis/dishReview'
+
 
 const style = {
   position: 'absolute',
@@ -50,6 +51,7 @@ const ProfilePage = () => {
   const [orders, setOrders] = useState([])
   const [orderDetails, setOrderDetails] = useState([])
   const [showModal, setShowModal] = useState(false)
+  // const [isReviewExist, setIsReviewExist] = useState(false)
   const [reviewContent, setReviewContent] = useState('')
   const [rating, setRating] = useState(0)
 
@@ -92,6 +94,7 @@ const ProfilePage = () => {
     closeModalHandler()
   }
 
+
   useEffect(() => {
     const fetchUser = async () => {
       const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
@@ -104,6 +107,16 @@ const ProfilePage = () => {
         const dishesByOrder = await Promise.all(
           orderIds.map((id) => getDishById(id, getAccessTokenSilently)),
         )
+
+        const possibleReviewId = await Promise.all(
+          dishesByOrder.map(dish => gerDishReviewByBuyerIdAndDishId(dish.id, mainUser.buyerId, getAccessTokenSilently))
+        )
+        for (var i =0; i < dishesByOrder.length; i++) {
+          dishesByOrder[i] = {
+            ...dishesByOrder[i],
+            review: possibleReviewId[i]
+          }
+        }
         setOrderDetails(dishesByOrder)
       }
       setOrders(getOrders)
@@ -194,7 +207,7 @@ const ProfilePage = () => {
                   >
                     Chat
                   </YelloBackGroundBlackTextButton>
-                  {order.status === ENUMS.RECEIVED && (
+                  {orders[index].status === StatusEnumsGraph.ORDER_COMPLETE && order.review === '' && (
                     <ListItem
                       alignItems="flex-start"
                       onClick={() => handleWriteReview(order)}

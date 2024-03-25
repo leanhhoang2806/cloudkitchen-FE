@@ -38,4 +38,13 @@ const getBuyerById = async (buyerId, authToken) => {
   return response.data
 }
 
-export { getBuyerByEmail, getBuyerById }
+const getBuyerByIdNoValidation = async (buyerId) => {
+
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/buyer/no-validation/${buyerId}`,
+  )
+
+  return response.data
+}
+
+export { getBuyerByEmail, getBuyerById, getBuyerByIdNoValidation }
