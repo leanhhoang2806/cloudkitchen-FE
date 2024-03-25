@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from '@mui/material'
 import PropTypes from 'prop-types'
 
+// On calling this button, do not passin sx ={} because it will reset the object in THIS component sx
 function YelloBackGroundBlackTextButton({ onClick, children, ...props }) {
   return (
     <Button

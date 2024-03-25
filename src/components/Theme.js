@@ -73,7 +73,7 @@ function Theme({ children }) {
                 }}
               >
                 <Badge badgeContent={mainUser.cart.length} color="secondary">
-                  <ShoppingCartIcon />
+                  <ShoppingCartIcon sx={{ color: 'black' }} />
                 </Badge>
               </IconButton>
 
@@ -144,7 +144,7 @@ function Theme({ children }) {
               style={{ fontSize: '2rem', color: 'darkgray' }}
               onClick={handleLogout}
             >
-              <ExitToAppIcon sx={{ fontSize: '80%' }} />
+              <ExitToAppIcon sx={{ fontSize: '80%', color: 'black' }} />
             </IconButton>
           )}
 
