@@ -1,34 +1,25 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+// ErrorPage.js
+import React from 'react'
+import { Container, Typography, Button } from '@mui/material'
 
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { hasError: false }
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('Error caught by ErrorBoundary:', error, errorInfo)
-    // Optionally, you can log this error to a service for tracking
-  }
-
-  render() {
-    if (this.state.hasError) {
-      // Render the error page
-      return (
-        <div>
-          <h1>Oops! Something went wrong.</h1>
-          <p>We apologize for the inconvenience. Please try again later.</p>
-        </div>
-      )
-    }
-
-    // If no error, render the children
-    return this.props.children
-  }
+const ErrorPage = () => {
+  return (
+    <Container maxWidth="sm" style={{ marginTop: '64px' }}>
+      <Typography variant="h1" align="center" gutterBottom>
+        Oops! Something went wrong.
+      </Typography>
+      <Typography variant="body1" align="center" paragraph>
+        We apologize for the inconvenience. Please try again later.
+      </Typography>
+      <Button
+        variant="contained"
+        onClick={() => (window.location.href = '/')}
+        color="primary"
+      >
+        Go Back
+      </Button>
+    </Container>
+  )
 }
 
-ErrorBoundary.propTypes = {
-  children: PropTypes.node,
-}
-export default ErrorBoundary
+export default ErrorPage

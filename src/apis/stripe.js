@@ -1,26 +1,12 @@
 import axios from 'axios'
+import { postRequestWithToken } from './GenericRequest'
 
 const postStripePayment = async (dishIds, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
+  const url = `http://localhost:8000/api/v1/stripe-payment/`
   const payload = {
     dish_ids: dishIds,
   }
-
-  const response = await axios.post(
-    `http://localhost:8000/api/v1/stripe-payment/`,
-    { ...payload },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  return postRequestWithToken(url, payload, authToken)
 }
 
 const putStripePaymentUpdate = async (email, authToken) => {

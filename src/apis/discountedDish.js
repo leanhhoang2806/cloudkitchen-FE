@@ -1,38 +1,13 @@
 import axios from 'axios'
+import { getRequestWithoutToken, postRequestWithToken } from './GenericRequest'
 
 const getDiscountedDish = async (dishId) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`,
-    )
-    return response.data
-  } catch (error) {
-    console.error('Error fetching discounted dish:', error)
-    return null
-  }
+  const url = `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`
+  return getRequestWithoutToken(url)
 }
 const createDiscountedDish = async (discountedDishData, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  try {
-    const response = await axios.post(
-      'http://localhost:8000/api/v1/discounted-dish/',
-      { ...discountedDishData },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    )
-    return response.data
-  } catch (error) {
-    console.error('Error creating discounted dish:', error)
-    return null
-  }
+  const url = `http://localhost:8000/api/v1/discounted-dish/`
+  return postRequestWithToken(url, discountedDishData, authToken)
 }
 
 const updateDiscountedDish = async (

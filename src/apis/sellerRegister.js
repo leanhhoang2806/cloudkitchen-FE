@@ -1,42 +1,22 @@
 import axios from 'axios'
+import {
+  getRequestWithToken,
+  getRequestWithoutToken,
+  postRequestWithToken,
+} from './GenericRequest'
 
 const sellerPost = async (data, authToken, userEmail) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.post(
-    'http://localhost:8000/api/v1/seller_info',
-    { ...data, email: userEmail },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/seller_info`
+  const payload = { ...data, email: userEmail }
+  return postRequestWithToken(url, payload, authToken)
 }
 
 const getSellerByEmail = async (email, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
+  const url = `http://localhost:8000/api/v1/seller_info`
+  const params = {
+    email: email,
   }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(`http://localhost:8000/api/v1/seller_info`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    params: {
-      email: email,
-    },
-  })
-
-  return response.data
+  return getRequestWithToken(url, authToken, params)
 }
 
 const updateSeller = async (sellerId, formData, authToken) => {
@@ -60,30 +40,13 @@ const updateSeller = async (sellerId, formData, authToken) => {
 }
 
 const getSellerById = async (sellerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/seller_info/${sellerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/seller_info/${sellerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const getSellerNameByDishId = async (dishId) => {
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/seller_info/name-only/${dishId}`,
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/seller_info/name-only/${dishId}`
+  return getRequestWithoutToken(url)
 }
 
 export {

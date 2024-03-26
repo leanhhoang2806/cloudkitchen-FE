@@ -1,65 +1,33 @@
 import axios from 'axios'
+import { getRequestWithToken, postRequestWithToken } from './GenericRequest'
 
 const getOrderBySellerId = async (sellerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/order/seller/${sellerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/order/seller/${sellerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const getOrderByBuyerId = async (buyerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/order/buyer/${buyerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/order/buyer/${buyerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const postOrderByBuyer = async (buyerId, orders, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
+  const url = `http://localhost:8000/api/v1/order/`
   const payload = {
     buyer_id: buyerId,
     dish_id: orders,
   }
+  return postRequestWithToken(url, payload, authToken)
+}
 
-  const response = await axios.post(
-    `http://localhost:8000/api/v1/order/`,
-    { ...payload },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
+const getOrderDetailsByOrderId = async (orderId, authToken) => {
+  const url = `http://localhost:8000/api/v1/order/${orderId}/dish`
+  return getRequestWithToken(url, authToken)
+}
 
-  return response.data
+const getOrderByOrderId = async (orderId, authToken) => {
+  const url = `http://localhost:8000/api/v1/order/${orderId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const updateOrderStatusById = async (updatedOrder, authToken) => {
@@ -76,44 +44,6 @@ const updateOrderStatusById = async (updatedOrder, authToken) => {
   const response = await axios.put(
     `http://localhost:8000/api/v1/order/${updatedOrder.id}/status`,
     { ...payload },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
-}
-
-const getOrderDetailsByOrderId = async (orderId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/order/${orderId}/dish`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
-}
-
-const getOrderByOrderId = async (orderId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/order/${orderId}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,

@@ -1,83 +1,26 @@
-import axios from 'axios'
+import { getRequestWithToken, postRequestWithToken } from './GenericRequest'
 
 const getConversationByConversationId = async (conversationid, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/chat/${conversationid}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/chat/${conversationid}`
+  return getRequestWithToken(url, authToken)
 }
 const postChatRoom = async (buyerId, sellerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
+  const url = `http://localhost:8000/api/v1/chat/`
   const payload = {
     seller_id: sellerId,
     buyer_id: buyerId,
   }
-
-  const response = await axios.post(
-    `http://localhost:8000/api/v1/chat/`,
-    { ...payload },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  return postRequestWithToken(url, payload, authToken)
 }
 
 const getChatRoomByBuyer = async (buyerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/chat/${buyerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/chat/${buyerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const getAllChatRoomByBuyer = async (buyerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/chat/buyer/${buyerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/chat/buyer/${buyerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const postChatMessage = async (
@@ -87,49 +30,20 @@ const postChatMessage = async (
   content,
   authToken,
 ) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
+  const url = `http://localhost:8000/api/v1/chat/${chatId}`
   const payload = {
     sender,
     receiver,
     content,
   }
-
-  const response = await axios.post(
-    `http://localhost:8000/api/v1/chat/${chatId}`,
-    { ...payload },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  return postRequestWithToken(url, payload, authToken)
 }
 
 // ====== Seller =========
 
 const getChatListBySellerId = async (sellerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/chat/seller/${sellerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/chat/seller/${sellerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 export {

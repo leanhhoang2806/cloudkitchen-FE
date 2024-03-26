@@ -1,49 +1,21 @@
-import axios from 'axios'
+import { getRequestWithToken, getRequestWithoutToken } from './GenericRequest'
 
 const getBuyerByEmail = async (authToken, email) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
+  const url = `http://localhost:8000/api/v1/buyer/`
+  const params = {
+    email: email,
   }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(`http://localhost:8000/api/v1/buyer/`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    params: {
-      email: email,
-    },
-  })
-
-  return response.data
+  return getRequestWithToken(url, authToken, params)
 }
 
 const getBuyerById = async (buyerId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
-  }
-
-  const accessToken = await authToken()
-
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/buyer/${buyerId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/buyer/${buyerId}`
+  return getRequestWithToken(url, authToken)
 }
 
 const getBuyerByIdNoValidation = async (buyerId) => {
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/buyer/no-validation/${buyerId}`,
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/buyer/no-validation/${buyerId}`
+  return getRequestWithoutToken(url)
 }
 
 export { getBuyerByEmail, getBuyerById, getBuyerByIdNoValidation }

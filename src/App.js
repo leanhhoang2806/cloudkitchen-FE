@@ -16,8 +16,8 @@ import SellerRegistration from 'components/SellerRegister'
 import { useSelector } from 'react-redux'
 import CheckoutOrdersPage from 'components/CheckoutPage'
 import ThankYouPage from 'components/CompleteCheckoutStaticPage'
-import ChatInterface from 'components/ChatInterface'
-import ErrorBoundary from 'components/ErrorPage'
+import ChatInterface from 'components/BuyerChatInterface'
+import ErrorPage from 'components/ErrorPage'
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0()
@@ -27,53 +27,44 @@ const AllRoutes = () => {
     return <LoadingOverlay />
   }
   return (
-    <ErrorBoundary>
-      <Routes>
-        <Route exact path="/" element={<LandingPage />} />
-        <Route
-          exact
-          path="/thanks"
-          element={
-            isAuthenticated && user.isSeller ? (
-              <ThankYouPage />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/profile"
-          element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/seller/dashboard"
-          element={
-            isAuthenticated && user.isSeller ? (
-              <Dashboard />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/seller/register"
-          element={
-            isAuthenticated ? <SellerRegistration /> : <Navigate to="/" />
-          }
-        />
-        <Route
-          path="/buyer/:buyer_id/cart"
-          element={
-            isAuthenticated ? <CheckoutOrdersPage /> : <Navigate to="/" />
-          }
-        />
-        <Route
-          path="/chat/:buyer_id"
-          element={isAuthenticated ? <ChatInterface /> : <Navigate to="/" />}
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </ErrorBoundary>
+    <Routes>
+      <Route exact path="/" element={<LandingPage />} />
+      <Route exact path="/error-page" element={<ErrorPage />} />
+      <Route
+        exact
+        path="/thanks"
+        element={
+          isAuthenticated && user.isSeller ? (
+            <ThankYouPage />
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route
+        path="/profile"
+        element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/seller/dashboard"
+        element={
+          isAuthenticated && user.isSeller ? <Dashboard /> : <Navigate to="/" />
+        }
+      />
+      <Route
+        path="/seller/register"
+        element={isAuthenticated ? <SellerRegistration /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/buyer/:buyer_id/cart"
+        element={isAuthenticated ? <CheckoutOrdersPage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/chat/:buyer_id"
+        element={isAuthenticated ? <ChatInterface /> : <Navigate to="/" />}
+      />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   )
 }
 function App() {

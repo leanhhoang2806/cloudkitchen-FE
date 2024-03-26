@@ -44,7 +44,7 @@ function LandingPage() {
     getLastZipcodeSearch()
 
     setLoading(false)
-  }, [mainUser])
+  }, [skip])
 
   const handleSearch = async (zipCode) => {
     try {

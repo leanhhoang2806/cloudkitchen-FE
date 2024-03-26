@@ -1,14 +1,12 @@
-import axios from 'axios'
+import { getRequestWithoutToken } from './GenericRequest'
 
 const searchDishesByNameOrZipcode = async (zipcode, sellerName) => {
-  const response = await axios.get(`http://localhost:8000/api/v1/search`, {
-    params: {
-      seller_name: sellerName,
-      zip_code: zipcode,
-    },
-  })
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/search`
+  const params = {
+    seller_name: sellerName,
+    zip_code: zipcode,
+  }
+  return getRequestWithoutToken(url, params)
 }
 
 export { searchDishesByNameOrZipcode }

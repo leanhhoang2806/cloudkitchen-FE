@@ -1,39 +1,21 @@
 import axios from 'axios'
+import { getRequestWithoutToken, postRequestWithToken } from './GenericRequest'
 
 const getFeaturedDishPagination = async (skip) => {
-  const response = await axios.get(
-    `http://localhost:8000/api/v1/featured-dish/`,
-    {
-      params: {
-        skip: skip,
-        limit: 20,
-      },
-    },
-  )
-
-  return response.data
+  const url = `http://localhost:8000/api/v1/featured-dish/`
+  const params = {
+    skip: skip,
+    limit: 20,
+  }
+  return getRequestWithoutToken(url, params)
 }
 
 const postFeatureDish = async (dishId, authToken) => {
-  if (!authToken) {
-    throw new Error('No authentication token found')
+  const url = `http://localhost:8000/api/v1/featured-dish/`
+  const payload = {
+    dish_id: dishId,
   }
-
-  const accessToken = await authToken()
-
-  const response = await axios.post(
-    `http://localhost:8000/api/v1/featured-dish/`,
-    {
-      dish_id: dishId,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  )
-
-  return response.data
+  return postRequestWithToken(url, payload, authToken)
 }
 
 const deleteFeaturedDish = async (dishId, authToken) => {
