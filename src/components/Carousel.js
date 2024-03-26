@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'store/slices/userSlice'
 
-function Carousel({ items }) {
+function Carousel({ items = [] }) {
   const isImageEndInJpgOrPng = (path) => {
     const regex = /\.(jpg|png)$/i
     return regex.test(path)

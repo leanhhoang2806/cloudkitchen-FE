@@ -6,7 +6,7 @@ const initialState = {
   isSeller: false,
   sellerId: '',
   cart: [],
-  searchResults: [],
+  searchedZipcode: '',
 }
 
 export const userSlice = createSlice({
@@ -33,8 +33,8 @@ export const userSlice = createSlice({
     clearCart: (state, action) => {
       state.cart = action.payload
     },
-    updateSearchResult: (state, action) => {
-      state.searchResults = [...action.payload]
+    updateSearchZipcode: (state, action) => {
+      state.searchedZipcode = action.payload
     },
   },
 })
@@ -45,7 +45,7 @@ export const {
   addToCart,
   removeItemFromCart,
   clearCart,
-  updateSearchResult,
+  updateSearchZipcode,
 } = userSlice.actions
 
 export default userSlice.reducer

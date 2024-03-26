@@ -55,8 +55,6 @@ function SearchResultCard({ imageUrl, price, dishId, percentage }) {
     getDishRatingByDishId(dishId).then((data) => setRating(data.rating))
   }, [])
 
-  console.log(reviews)
-
   return (
     <Card sx={{ width: '100%', height: '100%' }}>
       {percentage === undefined ? (

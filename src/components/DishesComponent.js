@@ -66,8 +66,6 @@ export const DishesComponent = ({ setSelectedItem }) => {
         mainUser.email,
         getAccessTokenSilently,
       )
-      console.log('status')
-      console.log(status)
 
       if (status === 202) {
         return

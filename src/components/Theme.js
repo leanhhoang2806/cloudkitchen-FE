@@ -163,7 +163,7 @@ function Theme({ children }) {
       {children}
       {/* </main> */}
       <AppBar
-        position="inherit"
+        position="relative"
         sx={{
           backgroundColor: 'hsl(50, 85%, 75%)',
           boxShadow: 'none',

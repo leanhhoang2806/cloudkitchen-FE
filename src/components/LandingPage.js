@@ -12,22 +12,28 @@ import Theme from 'components/Theme'
 import { searchDishesByNameOrZipcode } from 'apis/search'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateSearchResult } from 'store/slices/userSlice'
+import { updateSearchZipcode } from 'store/slices/userSlice'
 import { getDiscountedDish } from 'apis/discountedDish'
 import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
-  const [dishes, setDishes] = useState(
-    useSelector((state) => state.user.searchResults),
-  )
+  const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
 
+  const mainUser = useSelector((state) => state.user)
+
   useEffect(() => {
     setLoading(true)
+    const getLastZipcodeSearch = async () => {
+      if (mainUser.searchedZipcode !== '') {
+        await handleSearch(mainUser.searchedZipcode)
+      }
+    }
+
     const getFeaturedDishes = async () => {
       const dishes = await getFeaturedDishPagination(skip)
       if (dishes) {
@@ -35,11 +41,12 @@ function LandingPage() {
       }
     }
     getFeaturedDishes()
+    getLastZipcodeSearch()
 
     setLoading(false)
-  }, [skip])
+  }, [mainUser])
 
-  const handleSearch = async () => {
+  const handleSearch = async (zipCode) => {
     try {
       setLoading(true)
       const dishes = await searchDishesByNameOrZipcode(zipCode, '')
@@ -53,12 +60,12 @@ function LandingPage() {
         )
         const merge = mergeDishAndDiscountDish(dishes, discountsWithData)
         setDishes(merge)
-        dispatch(updateSearchResult(merge))
+        dispatch(updateSearchZipcode(zipCode))
         setLoading(false)
         return
       }
       setDishes(dishes)
-      dispatch(updateSearchResult(dishes))
+      dispatch(updateSearchZipcode(zipCode))
       setLoading(false)
     } catch (error) {
       console.error('Error searching for dishes:', error)
@@ -145,7 +152,7 @@ function LandingPage() {
               color="primary"
               size="small"
               sx={{ borderRadius: '20px' }}
-              onClick={handleSearch}
+              onClick={() => handleSearch(zipCode)}
             >
               Search
             </YelloBackGroundBlackTextButton>
