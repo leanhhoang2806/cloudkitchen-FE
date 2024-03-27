@@ -36,7 +36,7 @@ function ThankYouPage() {
         onClick={handleNavigate} // Call handleNavigate when the button is clicked
         style={{ marginTop: '20px' }}
       >
-        Dashboard
+        Seller Dashboard
       </YelloBackGroundBlackTextButton>
     </div>
   )

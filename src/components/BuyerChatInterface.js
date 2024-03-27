@@ -151,7 +151,7 @@ const ChatInterface = () => {
             </ChatList>
           </Paper>
 
-          {selectedConversation > 0 && (
+          {selectedConversation && (
             <Paper style={{ flex: 1, marginLeft: '20px', padding: '20px' }}>
               <div>
                 <h3>{receiver.name}</h3>
