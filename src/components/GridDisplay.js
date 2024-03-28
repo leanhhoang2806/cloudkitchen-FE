@@ -24,7 +24,7 @@ import { getBuyerByIdNoValidation } from 'apis/buyer'
 import { getSellerById } from 'apis/sellerRegister'
 import { useAuth0 } from '@auth0/auth0-react'
 
-function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName }) {
+function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName, dishName }) {
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
@@ -55,7 +55,8 @@ function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName }) {
 
   useEffect(() => {
     getDishRatingByDishId(dishId).then((data) => setRating(data.rating))
-  }, [])
+  }, [dishId])
+
 
   return (
     <Card sx={{ width: '100%', height: '100%' }}>
@@ -84,6 +85,7 @@ function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName }) {
           price={price}
           discountPercentage={percentage}
           sellerName={sellerName}
+          dishName={dishName}
         />
         <div onClick={handleRatingClick} style={{ cursor: 'pointer' }}>
           <Rating
@@ -156,6 +158,11 @@ function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName }) {
               Reviews
             </Typography>
             <Paper style={{ padding: '40px 20px', width: '100%' }}>
+            {reviews.length === 0 && 
+            <Typography variant="h6" gutterBottom>
+              No Review
+            </Typography>
+            }
               {reviews.map((review) => {
                 return (
                   <div key={review.id}>
@@ -188,6 +195,7 @@ SearchResultCard.propTypes = {
   dishId: PropTypes.string.isRequired,
   percentage: PropTypes.number,
   sellerName: PropTypes.string.isRequired,
+  dishName: PropTypes.string.isRequired
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
@@ -205,8 +213,8 @@ function DisplayPaginatedDishResults({ dishes }) {
   const gridProps = {
     xs: 12,
     sm: 6,
-    lg: numItems === 1 ? 12 : 4, // Set to 12 for single item, otherwise 4
-    xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
+    lg: numItems === 1 ? 12 : 6, // Set to 12 for single item, otherwise 4
+    xl: numItems === 1 ? 12 : 6, // Set to 12 for single item, otherwise 3
   }
 
   useEffect(() => {
@@ -217,12 +225,18 @@ function DisplayPaginatedDishResults({ dishes }) {
     ).then((data) => {
       for (var i = 0; i < dishes.length; i++) {
         dishes[i] = {
+          dishName: dishes[i].name,
+          sellerName : data[i].name,
           ...dishes[i],
           ...data[i],
         }
       }
     })
   })
+
+  console.log(dishes)
+
+
 
   return (
     <Grid
@@ -237,7 +251,8 @@ function DisplayPaginatedDishResults({ dishes }) {
             price={item.price}
             dishId={item.id}
             percentage={item.discounted_percentage}
-            sellerName={item.name}
+            sellerName={item.sellerName}
+            dishName = {item.dishName}
           />
         </Grid>
       ))}

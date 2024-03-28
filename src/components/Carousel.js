@@ -10,6 +10,7 @@ import { getAllFeaturedDish } from 'apis/dish'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'store/slices/userSlice'
+import ProductPrice from './shared-component/ProductPrice'
 
 function Carousel({ items = [] }) {
   const isImageEndInJpgOrPng = (path) => {
@@ -162,6 +163,12 @@ function Carousel({ items = [] }) {
             image={selectedImage}
             alt=""
             sx={{ width: '100%' }}
+          /> 
+          <ProductPrice
+            price={11}
+            discountPercentage={11}
+            sellerName={"test"}
+            dishName={"test"}
           />
           <Button
             variant="contained"

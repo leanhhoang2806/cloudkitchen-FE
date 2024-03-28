@@ -73,9 +73,6 @@ function LandingPage() {
     }
   }
 
-  // const handleChange = (event) => {
-  //   setSearchTerm(event.target.value)
-  // }
   const handleZipCodeChange = (event) => {
     setZipCode(event.target.value)
   }
