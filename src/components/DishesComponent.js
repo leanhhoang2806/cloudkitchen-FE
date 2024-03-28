@@ -46,7 +46,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
     } else if (name === 'description') {
       setDescription(value)
     } else if (name === 'price') {
-      setPrice(parseFloat(value))
+      setPrice(value)
     }
   }
 
@@ -72,6 +72,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
       }
       setErrorMessage(error.response?.data?.detail || 'Failed to upload file')
       setDisplaySubscriptionButton(true)
+      setLoading(false)
     }
     setLoading(false)
   }
@@ -169,6 +170,13 @@ export const DishesComponent = ({ setSelectedItem }) => {
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
+                error={price > 100}
+                helperText={price > 100 ? 'Price cannot be more than 100' : ''}
+                InputProps={{
+                  inputProps: {
+                    maxLength: 5,
+                  },
+                }}
               />
             </Grid>
             <Grid item>

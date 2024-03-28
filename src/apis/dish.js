@@ -6,6 +6,12 @@ import {
 } from './GenericRequest'
 
 const postDish = async (data, s3Path, authToken, sellerId) => {
+  if (data.price > 100) {
+    data.price = parseFloat(data.price)
+    if (isNaN(data.price)) {
+      throw new Error('Invalid price format')
+    }
+  }
   const url = `http://localhost:8000/api/v1/dish`
   const payload = {
     ...data,

@@ -21,8 +21,10 @@ import { getDishReviewByDishId } from 'apis/dishReview'
 import { timeFromGivenTime } from 'utilities/DateTimeConversion'
 import { getDishRatingByDishId } from 'apis/dishReview'
 import { getBuyerByIdNoValidation } from 'apis/buyer'
+import { getSellerById } from 'apis/sellerRegister'
+import { useAuth0 } from '@auth0/auth0-react'
 
-function SearchResultCard({ imageUrl, price, dishId, percentage }) {
+function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName }) {
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
@@ -78,7 +80,11 @@ function SearchResultCard({ imageUrl, price, dishId, percentage }) {
           flexGrow: 1,
         }}
       >
-        <ProductPrice price={price} discountPercentage={percentage} />
+        <ProductPrice
+          price={price}
+          discountPercentage={percentage}
+          sellerName={sellerName}
+        />
         <div onClick={handleRatingClick} style={{ cursor: 'pointer' }}>
           <Rating
             name="simple-controlled"
@@ -181,9 +187,11 @@ SearchResultCard.propTypes = {
   price: PropTypes.number.isRequired,
   dishId: PropTypes.string.isRequired,
   percentage: PropTypes.number,
+  sellerName: PropTypes.string.isRequired,
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
+  const { getAccessTokenSilently } = useAuth0()
   const isImageEndInJpgOrPng = (path) => {
     const regex = /\.(jpg|png)$/i
     return regex.test(path)
@@ -191,6 +199,7 @@ function DisplayPaginatedDishResults({ dishes }) {
   const filterdDishes = dishes.filter((item) =>
     isImageEndInJpgOrPng(item.s3_path),
   )
+
   const numItems = filterdDishes.length
 
   const gridProps = {
@@ -199,6 +208,21 @@ function DisplayPaginatedDishResults({ dishes }) {
     lg: numItems === 1 ? 12 : 4, // Set to 12 for single item, otherwise 4
     xl: numItems === 1 ? 12 : 3, // Set to 12 for single item, otherwise 3
   }
+
+  useEffect(() => {
+    Promise.all(
+      dishes.map((dish) =>
+        getSellerById(dish.seller_id, getAccessTokenSilently),
+      ),
+    ).then((data) => {
+      for (var i = 0; i < dishes.length; i++) {
+        dishes[i] = {
+          ...dishes[i],
+          ...data[i],
+        }
+      }
+    })
+  })
 
   return (
     <Grid
@@ -213,6 +237,7 @@ function DisplayPaginatedDishResults({ dishes }) {
             price={item.price}
             dishId={item.id}
             percentage={item.discounted_percentage}
+            sellerName={item.name}
           />
         </Grid>
       ))}

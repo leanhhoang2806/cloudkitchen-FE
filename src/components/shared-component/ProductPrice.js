@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Typography } from '@mui/material'
 
-const ProductPrice = ({ price, discountPercentage }) => {
+const ProductPrice = ({ price, discountPercentage, sellerName }) => {
   if (discountPercentage) {
     const discountedPrice = price * (1 - discountPercentage / 100)
     return (
@@ -17,9 +17,14 @@ const ProductPrice = ({ price, discountPercentage }) => {
     )
   } else {
     return (
-      <Typography variant="body2" color="text.secondary" align="center">
-        Price: ${price.toFixed(2)}
-      </Typography>
+      <>
+        <Typography variant="body2" color="text.secondary" align="center">
+          Price: ${price.toFixed(2)}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" align="center">
+          Seller: {sellerName}
+        </Typography>
+      </>
     )
   }
 }
@@ -27,6 +32,7 @@ const ProductPrice = ({ price, discountPercentage }) => {
 ProductPrice.propTypes = {
   price: PropTypes.number.isRequired,
   discountPercentage: PropTypes.number,
+  sellerName: PropTypes.string.isRequired,
 }
 
 export default ProductPrice

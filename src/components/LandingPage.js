@@ -93,7 +93,7 @@ function LandingPage() {
           backgroundImage: `url(${BackGroundImage})`,
           backgroundSize: 'cover',
           width: '90%',
-          height: '200px',
+          height: '400px',
           marginTop: '20px',
           display: 'flex',
           justifyContent: 'center',
@@ -141,7 +141,14 @@ function LandingPage() {
               size="small"
               fullWidth
               sx={{ borderRadius: '20px', bgcolor: 'white' }}
-              InputProps={{ sx: { borderRadius: '20px' } }}
+              InputProps={{
+                sx: { borderRadius: '20px' },
+                inputProps: {
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 5, // Limit to 5 digits
+                },
+              }}
               value={zipCode}
               onChange={handleZipCodeChange}
             />

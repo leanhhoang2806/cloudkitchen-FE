@@ -120,37 +120,39 @@ function Theme({ children }) {
                   style={{
                     fontSize: '0.8rem',
                     color: 'black',
-                    border: isButtonHovered('login')
+                    border: isButtonHovered('sellerRegister')
                       ? '2px solid black'
                       : 'none',
                   }}
                   onClick={onRegisterHandler}
-                  onMouseEnter={() => handleButtonHover('login')}
+                  onMouseEnter={() => handleButtonHover('sellerRegister')}
                   onMouseLeave={handleButtonLeave}
                 >
                   <StoreIcon />
                 </Button>
               </>
             )}
-          {isAuthenticated && mainUser.isSeller && (
-            <>
-              <Button
-                color="inherit"
-                style={{
-                  fontSize: '0.8rem',
-                  color: 'black',
-                  border: isButtonHovered('sellerDashboard')
-                    ? '2px solid black'
-                    : 'none',
-                }}
-                onClick={() => navigate('/seller/dashboard')}
-                onMouseEnter={() => handleButtonHover('sellerDashboard')}
-                onMouseLeave={handleButtonLeave}
-              >
-                Seller
-              </Button>
-            </>
-          )}
+          {isAuthenticated &&
+            mainUser.isSeller &&
+            location.pathname === '/profile' && (
+              <>
+                <Button
+                  color="inherit"
+                  style={{
+                    fontSize: '0.8rem',
+                    color: 'black',
+                    border: isButtonHovered('sellerDashboard')
+                      ? '2px solid black'
+                      : 'none',
+                  }}
+                  onClick={() => navigate('/seller/dashboard')}
+                  onMouseEnter={() => handleButtonHover('sellerDashboard')}
+                  onMouseLeave={handleButtonLeave}
+                >
+                  Seller
+                </Button>
+              </>
+            )}
 
           {isAuthenticated && (
             <IconButton
