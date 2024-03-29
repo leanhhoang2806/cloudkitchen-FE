@@ -7,31 +7,32 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+// import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import Button from '@mui/material/Button'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PropTypes from 'prop-types'
 import { Badge } from '@mui/material'
-import StoreIcon from '@mui/icons-material/Store'
+import DropdownMenu from './Dropdown'
+// import StoreIcon from '@mui/icons-material/Store'
 
 function Theme({ children }) {
   const [hoveredButton, setHoveredButton] = useState(null)
   const navigate = useNavigate()
-  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0()
+  const { loginWithRedirect, isAuthenticated, user } = useAuth0()
   const location = useLocation()
   const regexBuyerCart =
     /^\/buyer\/[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}\/cart$/i
 
-  const onRegisterHandler = () => {
-    navigate('/seller/register')
-  }
+  // const onRegisterHandler = () => {
+  //   navigate('/seller/register')
+  // }
 
-  const handleLogout = () => {
-    logout({ returnTo: window.location.origin })
-    navigate('/')
-  }
+  // const handleLogout = () => {
+  //   logout({ returnTo: window.location.origin })
+  //   navigate('/')
+  // }
 
   const handleButtonHover = (buttonName) => {
     setHoveredButton(buttonName)
@@ -111,7 +112,7 @@ function Theme({ children }) {
             </Button>
           )}
 
-          {isAuthenticated &&
+          {/* {isAuthenticated &&
             !mainUser.isSeller &&
             location.pathname === '/profile' && (
               <>
@@ -131,8 +132,8 @@ function Theme({ children }) {
                   <StoreIcon />
                 </Button>
               </>
-            )}
-          {isAuthenticated &&
+            )} */}
+          {/* {isAuthenticated &&
             mainUser.isSeller &&
             location.pathname === '/profile' && (
               <>
@@ -152,9 +153,9 @@ function Theme({ children }) {
                   Seller
                 </Button>
               </>
-            )}
+            )} */}
 
-          {isAuthenticated && (
+          {/* {isAuthenticated && (
             <IconButton
               color="inherit"
               style={{
@@ -168,7 +169,7 @@ function Theme({ children }) {
             >
               <ExitToAppIcon sx={{ fontSize: '80%', color: 'black' }} />
             </IconButton>
-          )}
+          )} */}
 
           {!isAuthenticated && (
             <IconButton
@@ -179,6 +180,13 @@ function Theme({ children }) {
               <AccountCircleIcon sx={{ fontSize: '100%' }} />
             </IconButton>
           )}
+          { isAuthenticated && location.pathname === '/profile' && 
+          <DropdownMenu 
+          showSeller={isAuthenticated &&
+            !mainUser.isSeller}
+            showSignOut={isAuthenticated}
+            showSellerDashboard={isAuthenticated &&
+              mainUser.isSeller}/>}
         </Toolbar>
       </AppBar>
       {/* <main style={{ flexGrow: 1, paddingBottom: '20px' }}> */}

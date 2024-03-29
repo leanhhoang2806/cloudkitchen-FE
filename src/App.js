@@ -18,6 +18,7 @@ import CheckoutOrdersPage from 'components/CheckoutPage'
 import ThankYouPage from 'components/CompleteCheckoutStaticPage'
 import ChatInterface from 'components/BuyerChatInterface'
 import ErrorPage from 'components/ErrorPage'
+import BuyerInfoUpdateForm from 'components/BuyerProfileUpdate'
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0()
@@ -44,6 +45,10 @@ const AllRoutes = () => {
       <Route
         path="/profile"
         element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/profile/update"
+        element={isAuthenticated ? <BuyerInfoUpdateForm /> : <Navigate to="/" />}
       />
       <Route
         path="/seller/dashboard"
