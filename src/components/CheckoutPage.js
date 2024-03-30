@@ -24,6 +24,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import CheckoutForm from './CheckoutForm'
 import { Elements } from '@stripe/react-stripe-js'
 import { getDishById } from 'apis/dish'
+import { getDiscountedDish } from 'apis/discountedDish';
 
 const stripePromise = loadStripe(
   'pk_test_51OrlfSJDu1ygRJcYQYwCOhk8qGe1uioqkaDoeAPwNAPvpVzeowySDjfuJFjN75wmB1LZqieLBDze9ymBX0fCqp9j00L4pVYKeQ',
@@ -31,6 +32,7 @@ const stripePromise = loadStripe(
 
 function CheckoutOrdersPage() {
   const [displayOrders, setDisplayOrders] = useState([])
+  const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const [clientSecret, setClientSecret] = useState('')
   const [loadPaymentPlatform, setLoadPaymentPlatform] = useState(false)
@@ -89,6 +91,17 @@ function CheckoutOrdersPage() {
 
       try {
         const responses = await Promise.all(requests)
+        const discount = await Promise.all(
+          responses.map((res) => getDiscountedDish(res.id)),
+        )
+
+        const dishToDiscountMapping = {};
+        discount.forEach(element => {
+          dishToDiscountMapping[element.dish_id] = element.discounted_percentage
+        });
+
+        const calculate_total = responses.map(res => res.price * (1 - dishToDiscountMapping[res.id]/100)).reduce((accumulator, currentVal) => accumulator + currentVal, 0)
+        setTotal(calculate_total)
         setDisplayOrders(responses)
       } catch (error) {
         console.error('Error fetching orders:', error)
@@ -97,6 +110,7 @@ function CheckoutOrdersPage() {
 
     fetchOrders()
   }, [orders, getAccessTokenSilently])
+
 
   return (
     <Theme>
@@ -140,7 +154,7 @@ function CheckoutOrdersPage() {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        Price: $ {order.price}
+                        Price: $ {order.price} 
                       </Typography>
                     </React.Fragment>
                   }
@@ -162,6 +176,14 @@ function CheckoutOrdersPage() {
             </React.Fragment>
           ))}
         </List>
+        <Divider
+            variant="inset"
+            sx={{ marginTop: '20px', marginBottom: '20px' }}
+          />
+      <Typography variant="h6" align="right" sx={{ marginTop: '10px' }}>
+        <span style={{ color: 'black' }}>Total: </span>
+        <span style={{ color: 'red', fontWeight: 'bold' }}>{total.toFixed(2)} USD</span>
+      </Typography>
         {orders.length !== 0 && !loadPaymentPlatform && (
           <Button
             variant="contained"

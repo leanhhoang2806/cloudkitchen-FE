@@ -234,7 +234,6 @@ function DisplayPaginatedDishResults({ dishes }) {
     })
   })
 
-  console.log(filterdDishes)
 
 
   return (

@@ -68,7 +68,6 @@ function LandingPage() {
       dispatch(updateSearchZipcode(zipCode))
       setLoading(false)
     } catch (error) {
-      console.error('Error searching for dishes:', error)
       setLoading(false)
     }
   }
