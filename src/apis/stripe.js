@@ -1,12 +1,17 @@
 import axios from 'axios'
 import { postRequestWithToken } from './GenericRequest'
 
-const postStripePayment = async (dishIds, authToken) => {
-  const url = `http://localhost:8000/api/v1/stripe-payment/`
-  const payload = {
-    dish_ids: dishIds,
+const postStripePayment = async (buyerId, dishIds, authToken) => {
+  try{
+    const url = `http://localhost:8000/api/v1/stripe-payment/`
+    const payload = {
+      buyer_id: buyerId,
+      dish_ids: dishIds,
+    }
+    return postRequestWithToken(url, payload, authToken)
+  } catch (error) {
+    console.log(error)
   }
-  return postRequestWithToken(url, payload, authToken)
 }
 
 const putStripePaymentUpdate = async (email, authToken) => {

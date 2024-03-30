@@ -234,8 +234,7 @@ function DisplayPaginatedDishResults({ dishes }) {
     })
   })
 
-  console.log(dishes)
-
+  console.log(filterdDishes)
 
 
   return (
@@ -249,7 +248,7 @@ function DisplayPaginatedDishResults({ dishes }) {
           <SearchResultCard
             imageUrl={item.s3_path}
             price={item.price}
-            dishId={item.id}
+            dishId={item.dish_id}
             percentage={item.discounted_percentage}
             sellerName={item.sellerName}
             dishName = {item.dishName}

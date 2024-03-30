@@ -30,7 +30,6 @@ function BuyerInfoUpdateForm() {
   }, [])
 
   const handleSubmit = (e) => {
-    console.log("handleSubmit")
     e.preventDefault()
     const formData = {
       name,
@@ -46,11 +45,10 @@ function BuyerInfoUpdateForm() {
     <div
       style={{
         width: '30%',
-        margin: 'ato',
+        margin: 'auto',
         backgroundColor: 'white',
         padding: '20px',
-        marginTop: '20px',
-        height: '100vh'
+        marginTop: '20px'
       }}
     >
       <Typography variant="h4" gutterBottom>
