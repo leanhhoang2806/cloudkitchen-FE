@@ -20,6 +20,8 @@ import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton
 import { getBuyerById } from 'apis/buyer'
 import { updateOrderStatusById } from 'apis/orders'
 import { getDishById } from 'apis/dish'
+import { useDispatch } from 'react-redux'
+import { updateUseSpinner } from 'store/slices/userSlice'
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState([])
@@ -27,10 +29,13 @@ export const OrdersComponent = () => {
   const mainUser = useSelector((state) => state.user)
   const [page, setPage] = useState(1)
   const itemsPerPage = 10
+  const dispatch = useDispatch()
 
   const { getAccessTokenSilently } = useAuth0()
 
   const getOrders = async () => {
+
+    dispatch(updateUseSpinner(true))
     const orders = await getOrderBySellerId(
       mainUser.sellerId,
       getAccessTokenSilently,
@@ -59,6 +64,8 @@ export const OrdersComponent = () => {
         })),
       )
       setOrders(orders)
+
+      dispatch(updateUseSpinner(false))
     }
     return orders
   }

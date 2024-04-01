@@ -14,7 +14,7 @@ import {
   Box,
   Modal
 } from '@mui/material'
-import { removeItemFromCart, clearCart } from 'store/slices/userSlice'
+import { removeItemFromCart, clearCart, updateUseSpinner } from 'store/slices/userSlice'
 import Theme from './Theme'
 import { postOrderByBuyer } from 'apis/orders'
 import Spinner from './SpinnerComponent'
@@ -84,6 +84,7 @@ function CheckoutOrdersPage() {
     }
 
     const fetchOrders = async () => {
+      dispatch(updateUseSpinner(true))
       // Make multiple requests concurrently
       const requests = orders.map((orderId) =>
         getDishById(orderId, getAccessTokenSilently),
@@ -102,13 +103,19 @@ function CheckoutOrdersPage() {
         const calculate_total = responses.map(res => res.price * (1 - (dishToDiscountMapping[res.id] ?? 0)/100)).reduce((accumulator, currentVal) => accumulator + currentVal, 0)
         setTotal(calculate_total)
         setDisplayOrders(responses)
+
+        dispatch(updateUseSpinner(false))
       } catch (error) {
         console.error('Error fetching orders:', error)
+
+        dispatch(updateUseSpinner(false))
       }
     }
 
     fetchOrders()
-  }, [orders, getAccessTokenSilently])
+
+    // eslint-disable-next-line
+  }, [orders])
 
 
   return (

@@ -21,7 +21,7 @@ import { useDispatch } from 'react-redux'
 import { changeEmail } from 'store/slices/userSlice'
 import { getOrderByBuyerId } from 'apis/orders'
 import { getSellerByEmail } from 'apis/sellerRegister'
-import { updateSeller } from 'store/slices/userSlice'
+import { updateSeller, updateUseSpinner } from 'store/slices/userSlice'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import { getDishById } from 'apis/dish'
 import { ENUMS, StatusEnumsGraph } from 'utilities/EnumsConversions'
@@ -97,6 +97,8 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
+
+    dispatch(updateUseSpinner(true))
     const fetchUser = async () => {
       const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
       const getOrders = await getOrderByBuyerId(
@@ -134,6 +136,8 @@ const ProfilePage = () => {
       if (seller) {
         dispatch(updateSeller(seller.id))
       }
+
+      dispatch(updateUseSpinner(false))
     }
     fetchUser()
     getPossibleSeller()

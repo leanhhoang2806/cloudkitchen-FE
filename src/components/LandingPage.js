@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField'
 import { Divider } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { getFeaturedDishPagination } from 'apis/featured_dish'
-import Spinner from './SpinnerComponent'
 import Carousel from 'components/Carousel'
 import DisplayPaginatedDishResults from 'components/GridDisplay'
 import BackGroundImage from 'media/images/background_image.jpg'
@@ -15,19 +14,54 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateSearchZipcode } from 'store/slices/userSlice'
 import { getDiscountedDish } from 'apis/discountedDish'
 import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
+import { updateUseSpinner } from 'store/slices/userSlice'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
   const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
-  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
 
   const mainUser = useSelector((state) => state.user)
 
+  const handleSearch = async (zipCode) => {
+    try {
+      dispatch(updateUseSpinner(true))
+      const dishes = await searchDishesByNameOrZipcode(zipCode, '')
+      if (dishes.length > 0) {
+        const dishIds = dishes.map((dish) => dish.id)
+        const discount = await Promise.all(
+          dishIds.map((id) => getDiscountedDish(id)),
+        )
+        const discountsWithData = discount.filter(
+          (data) => data !== null && data !== undefined && data !== '',
+        )
+        const merge = mergeDishAndDiscountDish(dishes, discountsWithData)
+        setDishes(merge)
+        dispatch(updateSearchZipcode(zipCode))
+        dispatch(updateUseSpinner(false))
+        return
+      }
+      setDishes(dishes)
+      dispatch(updateSearchZipcode(zipCode))
+      
+      dispatch(updateUseSpinner(false))
+    } catch (error) {
+      
+      dispatch(updateUseSpinner(false))
+    }
+  }
+
+  const handleZipCodeChange = (event) => {
+    setZipCode(event.target.value)
+  }
+  const handleLoadMore = () => {
+    setSkip((prevSkip) => prevSkip + 10) // Adjust the pagination limit as needed
+  }
+
+
   useEffect(() => {
-    setLoading(true)
     const getLastZipcodeSearch = async () => {
       if (mainUser.searchedZipcode !== '') {
         await handleSearch(mainUser.searchedZipcode)
@@ -43,45 +77,11 @@ function LandingPage() {
     getFeaturedDishes()
     getLastZipcodeSearch()
 
-    setLoading(false)
+    // eslint-disable-next-line
   }, [skip])
-
-  const handleSearch = async (zipCode) => {
-    try {
-      setLoading(true)
-      const dishes = await searchDishesByNameOrZipcode(zipCode, '')
-      if (dishes.length > 0) {
-        const dishIds = dishes.map((dish) => dish.id)
-        const discount = await Promise.all(
-          dishIds.map((id) => getDiscountedDish(id)),
-        )
-        const discountsWithData = discount.filter(
-          (data) => data !== null && data !== undefined && data !== '',
-        )
-        const merge = mergeDishAndDiscountDish(dishes, discountsWithData)
-        setDishes(merge)
-        dispatch(updateSearchZipcode(zipCode))
-        setLoading(false)
-        return
-      }
-      setDishes(dishes)
-      dispatch(updateSearchZipcode(zipCode))
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-    }
-  }
-
-  const handleZipCodeChange = (event) => {
-    setZipCode(event.target.value)
-  }
-  const handleLoadMore = () => {
-    setSkip((prevSkip) => prevSkip + 10) // Adjust the pagination limit as needed
-  }
 
   return (
     <Theme>
-      <Spinner loading={loading} />
 
       {/* Background Image with Title */}
       <div

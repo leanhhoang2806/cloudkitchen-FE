@@ -238,10 +238,9 @@ function DisplayPaginatedDishResults({ dishes }) {
       .then((updatedDishes) => {
         setDisplayDishes(updatedDishes);
       })
-  }, [dishes])
 
-  console.log("displayDIshes")
-  console.log(displayDishes)
+    // eslint-disable-next-line
+  }, [dishes])
 
   return (
     <Grid

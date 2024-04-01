@@ -19,6 +19,7 @@ import ThankYouPage from 'components/CompleteCheckoutStaticPage'
 import ChatInterface from 'components/BuyerChatInterface'
 import ErrorPage from 'components/ErrorPage'
 import BuyerInfoUpdateForm from 'components/BuyerProfileUpdate'
+import Spinner from 'components/SpinnerComponent'
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0()
@@ -72,10 +73,16 @@ const AllRoutes = () => {
     </Routes>
   )
 }
+
+
 function App() {
+
+  const user = useSelector((state) => state.user)
   return (
     <Router>
       <Auth0ProviderWithNavigate>
+
+        <Spinner loading={user.useSpinner} />
         <AllRoutes />
       </Auth0ProviderWithNavigate>
     </Router>
