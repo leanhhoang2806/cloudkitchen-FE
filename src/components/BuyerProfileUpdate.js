@@ -20,9 +20,9 @@ function BuyerInfoUpdateForm() {
   const { getAccessTokenSilently } = useAuth0()
   useEffect(() => {
     getBuyerById(mainUser.buyerId, getAccessTokenSilently).then((response) => {
-      setName(response.name || 'Please Add Name')
-      setPhone(response.phone || 'Please add phone number')
-      setAddress(response.address || 'Please add delivery address')
+      setName(response.name || '')
+      setPhone(response.phone || '')
+      setAddress(response.address || '')
     })
     // eslint-disable-next-line
   }, [])
