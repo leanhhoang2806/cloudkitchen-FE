@@ -2,7 +2,7 @@ import axios from 'axios'
 import { postRequestWithToken } from './GenericRequest'
 
 const postStripePayment = async (buyerId, dishIds, authToken) => {
-  try{
+  try {
     const url = `http://localhost:8000/api/v1/stripe-payment/`
     const payload = {
       buyer_id: buyerId,

@@ -45,10 +45,9 @@ function LandingPage() {
       }
       setDishes(dishes)
       dispatch(updateSearchZipcode(zipCode))
-      
+
       dispatch(updateUseSpinner(false))
     } catch (error) {
-      
       dispatch(updateUseSpinner(false))
     }
   }
@@ -59,7 +58,6 @@ function LandingPage() {
   const handleLoadMore = () => {
     setSkip((prevSkip) => prevSkip + 10) // Adjust the pagination limit as needed
   }
-
 
   useEffect(() => {
     const getLastZipcodeSearch = async () => {
@@ -82,7 +80,6 @@ function LandingPage() {
 
   return (
     <Theme>
-
       {/* Background Image with Title */}
       <div
         style={{

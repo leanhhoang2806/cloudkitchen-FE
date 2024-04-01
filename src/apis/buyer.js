@@ -28,21 +28,21 @@ const updateBuyerInfo = async (buyerId, payload, authToken) => {
   const url = `http://localhost:8000/api/v1/buyer/${buyerId}`
 
   try {
-    const response = await axios.put(
-      url,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    const response = await axios.put(url, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    )
+    })
     return response.data
   } catch (error) {
     console.error('Error updating discounted dish:', error)
     return null
   }
-
 }
 
-export { getBuyerByEmail, getBuyerById, getBuyerByIdNoValidation, updateBuyerInfo }
+export {
+  getBuyerByEmail,
+  getBuyerById,
+  getBuyerByIdNoValidation,
+  updateBuyerInfo,
+}

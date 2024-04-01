@@ -163,12 +163,12 @@ function Carousel({ items = [] }) {
             image={selectedImage}
             alt=""
             sx={{ width: '100%' }}
-          /> 
+          />
           <ProductPrice
             price={11}
             discountPercentage={11}
-            sellerName={"test"}
-            dishName={"test"}
+            sellerName={'test'}
+            dishName={'test'}
           />
           <Button
             variant="contained"

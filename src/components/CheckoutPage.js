@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import {
   Typography,
   Divider,
@@ -12,9 +12,13 @@ import {
   Avatar,
   Button,
   Box,
-  Modal
+  Modal,
 } from '@mui/material'
-import { removeItemFromCart, clearCart, updateUseSpinner } from 'store/slices/userSlice'
+import {
+  removeItemFromCart,
+  clearCart,
+  updateUseSpinner,
+} from 'store/slices/userSlice'
 import Theme from './Theme'
 import { postOrderByBuyer } from 'apis/orders'
 import Spinner from './SpinnerComponent'
@@ -24,7 +28,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import CheckoutForm from './CheckoutForm'
 import { Elements } from '@stripe/react-stripe-js'
 import { getDishById } from 'apis/dish'
-import { getDiscountedDish } from 'apis/discountedDish';
+import { getDiscountedDish } from 'apis/discountedDish'
 
 const stripePromise = loadStripe(
   'pk_test_51OrlfSJDu1ygRJcYQYwCOhk8qGe1uioqkaDoeAPwNAPvpVzeowySDjfuJFjN75wmB1LZqieLBDze9ymBX0fCqp9j00L4pVYKeQ',
@@ -37,7 +41,7 @@ function CheckoutOrdersPage() {
   const [clientSecret, setClientSecret] = useState('')
   const [loadPaymentPlatform, setLoadPaymentPlatform] = useState(false)
   const [error, setError] = useState('')
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false)
   const orders = useSelector((state) => state.user.cart) // Get orders from Redux state
   const user = useSelector((state) => state.user)
   const appearance = {
@@ -49,7 +53,7 @@ function CheckoutOrdersPage() {
   }
 
   const dispatch = useDispatch()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // Function to handle deletion of an order
   const handleDelete = (index) => {
@@ -69,18 +73,17 @@ function CheckoutOrdersPage() {
   }
 
   const handleNavigateToUpdateProfile = () => {
-    navigate('/profile/update');
-  };
+    navigate('/profile/update')
+  }
 
   useEffect(() => {
     if (orders.length > 0) {
-      postStripePayment(user.buyerId, orders, getAccessTokenSilently).then((data) =>
-      
-      setClientSecret(data.client_secret)
-      ).catch(error => {
-        setError(error)
-        setOpenModal(true)
-      })
+      postStripePayment(user.buyerId, orders, getAccessTokenSilently)
+        .then((data) => setClientSecret(data.client_secret))
+        .catch((error) => {
+          setError(error)
+          setOpenModal(true)
+        })
     }
 
     const fetchOrders = async () => {
@@ -96,11 +99,16 @@ function CheckoutOrdersPage() {
           responses.map((res) => getDiscountedDish(res.id)),
         )
 
-        const dishToDiscountMapping = {};
-        discount.forEach(element => {
+        const dishToDiscountMapping = {}
+        discount.forEach((element) => {
           dishToDiscountMapping[element.dish_id] = element.discounted_percentage
-        });
-        const calculate_total = responses.map(res => res.price * (1 - (dishToDiscountMapping[res.id] ?? 0)/100)).reduce((accumulator, currentVal) => accumulator + currentVal, 0)
+        })
+        const calculate_total = responses
+          .map(
+            (res) =>
+              res.price * (1 - (dishToDiscountMapping[res.id] ?? 0) / 100),
+          )
+          .reduce((accumulator, currentVal) => accumulator + currentVal, 0)
         setTotal(calculate_total)
         setDisplayOrders(responses)
 
@@ -116,7 +124,6 @@ function CheckoutOrdersPage() {
 
     // eslint-disable-next-line
   }, [orders])
-
 
   return (
     <Theme>
@@ -160,7 +167,7 @@ function CheckoutOrdersPage() {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        Price: $ {order.price} 
+                        Price: $ {order.price}
                       </Typography>
                     </React.Fragment>
                   }
@@ -183,13 +190,15 @@ function CheckoutOrdersPage() {
           ))}
         </List>
         <Divider
-            variant="inset"
-            sx={{ marginTop: '20px', marginBottom: '20px' }}
-          />
-      <Typography variant="h6" align="right" sx={{ marginTop: '10px' }}>
-        <span style={{ color: 'black' }}>Total: </span>
-        <span style={{ color: 'red', fontWeight: 'bold' }}>{total.toFixed(2)} USD</span>
-      </Typography>
+          variant="inset"
+          sx={{ marginTop: '20px', marginBottom: '20px' }}
+        />
+        <Typography variant="h6" align="right" sx={{ marginTop: '10px' }}>
+          <span style={{ color: 'black' }}>Total: </span>
+          <span style={{ color: 'red', fontWeight: 'bold' }}>
+            {total.toFixed(2)} USD
+          </span>
+        </Typography>
         {orders.length !== 0 && !loadPaymentPlatform && (
           <Button
             variant="contained"
@@ -211,28 +220,30 @@ function CheckoutOrdersPage() {
             <CheckoutForm handleCheckout={handleCheckout} />
           </Elements>
         )}
-               <Modal
-        open={openModal}
-        aria-labelledby="error-modal"
-        aria-describedby="error-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-          }}
+        <Modal
+          open={openModal}
+          aria-labelledby="error-modal"
+          aria-describedby="error-description"
         >
-          <p id="error-description">{error}</p>
-          <Button onClick={handleNavigateToUpdateProfile}>Update Profile</Button>
-        </Box>
-      </Modal>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 400,
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <p id="error-description">{error}</p>
+            <Button onClick={handleNavigateToUpdateProfile}>
+              Update Profile
+            </Button>
+          </Box>
+        </Modal>
       </div>
     </Theme>
   )

@@ -180,13 +180,13 @@ function Theme({ children }) {
               <AccountCircleIcon sx={{ fontSize: '100%' }} />
             </IconButton>
           )}
-          { isAuthenticated && location.pathname === '/profile' && 
-          <DropdownMenu 
-          showSeller={isAuthenticated &&
-            !mainUser.isSeller}
-            showSignOut={isAuthenticated}
-            showSellerDashboard={isAuthenticated &&
-              mainUser.isSeller}/>}
+          {isAuthenticated && location.pathname === '/profile' && (
+            <DropdownMenu
+              showSeller={isAuthenticated && !mainUser.isSeller}
+              showSignOut={isAuthenticated}
+              showSellerDashboard={isAuthenticated && mainUser.isSeller}
+            />
+          )}
         </Toolbar>
       </AppBar>
       {/* <main style={{ flexGrow: 1, paddingBottom: '20px' }}> */}

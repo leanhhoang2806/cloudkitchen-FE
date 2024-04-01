@@ -26,8 +26,8 @@ import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import { getDishById } from 'apis/dish'
 import { ENUMS, StatusEnumsGraph } from 'utilities/EnumsConversions'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
-import { postChatRoom } from 'apis/chatRoom'
-import { useNavigate } from 'react-router-dom'
+// import { postChatRoom } from 'apis/chatRoom'
+// import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import StarIcon from '@mui/icons-material/Star'
 import {
@@ -60,7 +60,7 @@ const ProfilePage = () => {
   const [selectedOrder, setSelectedOrder] = useState(null)
   const dispatch = useDispatch()
   const mainUser = useSelector((state) => state.user)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const { getAccessTokenSilently, user } = useAuth0()
 
@@ -75,10 +75,12 @@ const ProfilePage = () => {
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
 
-  const handleChatButtonClick = async (sellerId) => {
-    await postChatRoom(mainUser.buyerId, sellerId, getAccessTokenSilently)
-    navigate(`/chat/${mainUser.buyerId}`)
-  }
+  // Disabled Chat for now
+  // const handleChatButtonClick = async (sellerId) => {
+  //   await postChatRoom(mainUser.buyerId, sellerId, getAccessTokenSilently)
+  //   navigate(`/chat/${mainUser.buyerId}`)
+  // }
+
   const closeModalHandler = () => {
     setRating(0)
     setReviewContent('')
@@ -97,7 +99,6 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
-
     dispatch(updateUseSpinner(true))
     const fetchUser = async () => {
       const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
@@ -211,13 +212,14 @@ const ProfilePage = () => {
                   style={{ paddingLeft: '20px' }} // Add left padding to the ListItemText
                 />
                 <ListItemSecondaryAction>
-                  <YelloBackGroundBlackTextButton
+                  {/* Disable Chat for Not */}
+                  {/* <YelloBackGroundBlackTextButton
                     variant="contained"
                     size="small"
                     onClick={() => handleChatButtonClick(order.seller_id)}
                   >
                     Chat
-                  </YelloBackGroundBlackTextButton>
+                  </YelloBackGroundBlackTextButton> */}
 
                   {orders[index].status === StatusEnumsGraph.ORDER_COMPLETE &&
                     order.review === '' && (

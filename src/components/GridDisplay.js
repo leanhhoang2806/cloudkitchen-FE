@@ -24,8 +24,14 @@ import { getBuyerByIdNoValidation } from 'apis/buyer'
 import { getSellerById } from 'apis/sellerRegister'
 import { useAuth0 } from '@auth0/auth0-react'
 
-function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName, dishName }) {
-
+function SearchResultCard({
+  imageUrl,
+  price,
+  dishId,
+  percentage,
+  sellerName,
+  dishName,
+}) {
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
@@ -57,7 +63,6 @@ function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName, dis
   useEffect(() => {
     getDishRatingByDishId(dishId).then((data) => setRating(data.rating))
   }, [dishId])
-
 
   return (
     <Card sx={{ width: '100%', height: '100%' }}>
@@ -159,11 +164,11 @@ function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName, dis
               Reviews
             </Typography>
             <Paper style={{ padding: '40px 20px', width: '100%' }}>
-            {reviews.length === 0 && 
-            <Typography variant="h6" gutterBottom>
-              No Review
-            </Typography>
-            }
+              {reviews.length === 0 && (
+                <Typography variant="h6" gutterBottom>
+                  No Review
+                </Typography>
+              )}
               {reviews.map((review) => {
                 return (
                   <div key={review.id}>
@@ -196,7 +201,7 @@ SearchResultCard.propTypes = {
   dishId: PropTypes.string.isRequired,
   percentage: PropTypes.number,
   sellerName: PropTypes.string.isRequired,
-  dishName: PropTypes.string.isRequired
+  dishName: PropTypes.string.isRequired,
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
@@ -223,8 +228,8 @@ function DisplayPaginatedDishResults({ dishes }) {
   useEffect(() => {
     Promise.all(
       dishes.map((dish) =>
-        getSellerById(dish.seller_id, getAccessTokenSilently)
-      )
+        getSellerById(dish.seller_id, getAccessTokenSilently),
+      ),
     )
       .then((data) => {
         const updatedDishes = dishes.map((dish, index) => ({
@@ -232,11 +237,11 @@ function DisplayPaginatedDishResults({ dishes }) {
           dishName: filterdDishes[index].name,
           sellerName: data[index].name,
           ...data[index],
-        }));
-        return updatedDishes;
+        }))
+        return updatedDishes
       })
       .then((updatedDishes) => {
-        setDisplayDishes(updatedDishes);
+        setDisplayDishes(updatedDishes)
       })
 
     // eslint-disable-next-line
@@ -256,8 +261,8 @@ function DisplayPaginatedDishResults({ dishes }) {
             dishId={item.dish_id}
             percentage={item.discounted_percentage}
             sellerName={item.sellerName}
-            dishName = {item.dishName}
-            item = {item}
+            dishName={item.dishName}
+            item={item}
           />
         </Grid>
       ))}

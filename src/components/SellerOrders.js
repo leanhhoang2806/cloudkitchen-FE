@@ -34,7 +34,6 @@ export const OrdersComponent = () => {
   const { getAccessTokenSilently } = useAuth0()
 
   const getOrders = async () => {
-
     dispatch(updateUseSpinner(true))
     const orders = await getOrderBySellerId(
       mainUser.sellerId,

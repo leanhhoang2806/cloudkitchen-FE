@@ -8,7 +8,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 import { NotFoundPage } from 'components/NotFound'
-import ProfilePage from 'components/Profile'
+import ProfilePage from 'components/BuyerProfile'
 import { useAuth0 } from '@auth0/auth0-react'
 import LoadingOverlay from 'components/Loading'
 import Dashboard from 'components/SellerDashboard'
@@ -49,7 +49,9 @@ const AllRoutes = () => {
       />
       <Route
         path="/profile/update"
-        element={isAuthenticated ? <BuyerInfoUpdateForm /> : <Navigate to="/" />}
+        element={
+          isAuthenticated ? <BuyerInfoUpdateForm /> : <Navigate to="/" />
+        }
       />
       <Route
         path="/seller/dashboard"
@@ -74,14 +76,11 @@ const AllRoutes = () => {
   )
 }
 
-
 function App() {
-
   const user = useSelector((state) => state.user)
   return (
     <Router>
       <Auth0ProviderWithNavigate>
-
         <Spinner loading={user.useSpinner} />
         <AllRoutes />
       </Auth0ProviderWithNavigate>

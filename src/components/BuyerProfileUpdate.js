@@ -6,7 +6,7 @@ import { getBuyerById } from 'apis/buyer'
 import Theme from './Theme'
 import { updateBuyerInfo } from 'apis/buyer'
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 // import PropTypes from 'prop-types'
 
 function BuyerInfoUpdateForm() {
@@ -19,13 +19,11 @@ function BuyerInfoUpdateForm() {
 
   const { getAccessTokenSilently } = useAuth0()
   useEffect(() => {
-    getBuyerById(mainUser.buyerId, getAccessTokenSilently).then(
-      response => {
-        setName(response.name || 'Please Add Name')
-        setPhone(response.phone || 'Please add phone number')
-        setAddress(response.address || 'Please add delivery address')
-      },
-    )
+    getBuyerById(mainUser.buyerId, getAccessTokenSilently).then((response) => {
+      setName(response.name || 'Please Add Name')
+      setPhone(response.phone || 'Please add phone number')
+      setAddress(response.address || 'Please add delivery address')
+    })
     // eslint-disable-next-line
   }, [])
 
@@ -35,61 +33,63 @@ function BuyerInfoUpdateForm() {
       name,
       phone,
       address,
-      
     }
-    updateBuyerInfo(mainUser.buyerId, {...formData}, getAccessTokenSilently).then(navigate("/profile"))
+    updateBuyerInfo(
+      mainUser.buyerId,
+      { ...formData },
+      getAccessTokenSilently,
+    ).then(navigate('/profile'))
   }
 
   return (
     <Theme>
-    <div
-      style={{
-        width: '30%',
-        margin: 'auto',
-        backgroundColor: 'white',
-        padding: '20px',
-        marginTop: '20px'
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        Update Buyer Information
-      </Typography>
-      <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginTop: '20px',
-          }}
-        >
-          <Button type="submit" variant="contained" color="primary">
-            Update
-          </Button>
-        </div>
-      </form>
-   
+      <div
+        style={{
+          width: '30%',
+          margin: 'auto',
+          backgroundColor: 'white',
+          padding: '20px',
+          marginTop: '20px',
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Update Buyer Information
+        </Typography>
+        <Divider sx={{ bgcolor: 'grey.600', height: 3 }} />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginTop: '20px',
+            }}
+          >
+            <Button type="submit" variant="contained" color="primary">
+              Update
+            </Button>
+          </div>
+        </form>
       </div>
     </Theme>
   )

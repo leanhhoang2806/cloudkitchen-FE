@@ -18,7 +18,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import RestaurantIcon from '@mui/icons-material/Restaurant'
 import PeopleIcon from '@mui/icons-material/People'
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
+// import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { DashboardComponent } from './DashboardComponent'
 import { OrdersComponent } from './SellerOrders'
 import { DishesComponent } from './DishesComponent'
@@ -56,7 +56,7 @@ const mainListItems = [
   { icon: <DashboardIcon />, text: 'Dashboard' },
   { icon: <ShoppingCartIcon />, text: 'Orders' },
   { icon: <RestaurantIcon />, text: 'Dishes' },
-  { icon: <QuestionAnswerIcon />, text: 'Chat' },
+  // { icon: <QuestionAnswerIcon />, text: 'Chat' },
   { icon: <PeopleIcon />, text: 'Profile' },
 ]
 
