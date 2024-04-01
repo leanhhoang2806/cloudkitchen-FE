@@ -25,6 +25,7 @@ import { getSellerById } from 'apis/sellerRegister'
 import { useAuth0 } from '@auth0/auth0-react'
 
 function SearchResultCard({ imageUrl, price, dishId, percentage, sellerName, dishName }) {
+
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
@@ -208,6 +209,8 @@ function DisplayPaginatedDishResults({ dishes }) {
     isImageEndInJpgOrPng(item.s3_path),
   )
 
+  const [displayDishes, setDisplayDishes] = useState([])
+
   const numItems = filterdDishes.length
 
   const gridProps = {
@@ -220,21 +223,25 @@ function DisplayPaginatedDishResults({ dishes }) {
   useEffect(() => {
     Promise.all(
       dishes.map((dish) =>
-        getSellerById(dish.seller_id, getAccessTokenSilently),
-      ),
-    ).then((data) => {
-      for (var i = 0; i < dishes.length; i++) {
-        dishes[i] = {
-          dishName: dishes[i].name,
-          sellerName : data[i].name,
-          ...dishes[i],
-          ...data[i],
-        }
-      }
-    })
-  })
+        getSellerById(dish.seller_id, getAccessTokenSilently)
+      )
+    )
+      .then((data) => {
+        const updatedDishes = dishes.map((dish, index) => ({
+          ...dish,
+          dishName: filterdDishes[index].name,
+          sellerName: data[index].name,
+          ...data[index],
+        }));
+        return updatedDishes;
+      })
+      .then((updatedDishes) => {
+        setDisplayDishes(updatedDishes);
+      })
+  }, [dishes])
 
-
+  console.log("displayDIshes")
+  console.log(displayDishes)
 
   return (
     <Grid
@@ -242,7 +249,7 @@ function DisplayPaginatedDishResults({ dishes }) {
       spacing={4}
       style={{ paddingLeft: 200, paddingRight: 200, paddingBottom: '56px' }}
     >
-      {filterdDishes.map((item, index) => (
+      {displayDishes.map((item, index) => (
         <Grid item {...gridProps} key={index}>
           <SearchResultCard
             imageUrl={item.s3_path}
@@ -251,6 +258,7 @@ function DisplayPaginatedDishResults({ dishes }) {
             percentage={item.discounted_percentage}
             sellerName={item.sellerName}
             dishName = {item.dishName}
+            item = {item}
           />
         </Grid>
       ))}

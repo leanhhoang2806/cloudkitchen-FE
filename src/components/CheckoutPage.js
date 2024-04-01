@@ -99,8 +99,7 @@ function CheckoutOrdersPage() {
         discount.forEach(element => {
           dishToDiscountMapping[element.dish_id] = element.discounted_percentage
         });
-
-        const calculate_total = responses.map(res => res.price * (1 - dishToDiscountMapping[res.id]/100)).reduce((accumulator, currentVal) => accumulator + currentVal, 0)
+        const calculate_total = responses.map(res => res.price * (1 - (dishToDiscountMapping[res.id] ?? 0)/100)).reduce((accumulator, currentVal) => accumulator + currentVal, 0)
         setTotal(calculate_total)
         setDisplayOrders(responses)
       } catch (error) {

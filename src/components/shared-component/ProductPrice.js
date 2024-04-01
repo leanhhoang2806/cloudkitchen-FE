@@ -7,13 +7,22 @@ const ProductPrice = ({ price, discountPercentage, sellerName, dishName }) => {
   if (discountPercentage) {
     const discountedPrice = price * (1 - discountPercentage / 100)
     return (
-      <Typography variant="body2" color="text.secondary" align="center" sx={{color: 'black'}}>
-        <span style={{ textDecoration: 'line-through' }}>
+      <>
+      <Typography variant="body3"  align="center" style={{ fontSize: 'small', color: 'black' }}>
+      {dishName}
+    </Typography>
+    <Typography variant="body1"  align="center" style={{ fontWeight: 'bold', fontSize: 'larger', color: 'red' }}>
+        <span style={{ textDecoration: 'line-through' , color: 'black'}}>
           ${price.toFixed(2)}
         </span>
         &nbsp;
         <span style={{ color: 'red' }}> ${discountedPrice.toFixed(2)}</span>
       </Typography>
+
+  <Typography variant="body3"  align="center" style={{ fontSize: 'small' }}>
+    Seller: {sellerName}
+  </Typography>
+      </>
     )
   } else {
     return (
