@@ -66,8 +66,16 @@ export const DishesComponent = ({ setSelectedItem }) => {
         mainUser.email,
         getAccessTokenSilently,
       )
+      if (error.response.data.detail === 'NotAllowedToUploadThisImage') {
+
+        setErrorMessage('This file is not a valid image')
+        setLoading(false)
+        return
+      }
+
 
       if (status === 202) {
+        setLoading(false)
         return
       }
       setErrorMessage(error.response?.data?.detail || 'Failed to upload file')
