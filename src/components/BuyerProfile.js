@@ -56,6 +56,7 @@ const ProfilePage = () => {
   // const [isReviewExist, setIsReviewExist] = useState(false)
   const [reviewContent, setReviewContent] = useState('')
   const [rating, setRating] = useState(0)
+  const REVIEW_LIMIT = 100
 
   const [selectedOrder, setSelectedOrder] = useState(null)
   const dispatch = useDispatch()
@@ -279,8 +280,14 @@ const ProfilePage = () => {
               rows={4}
               value={reviewContent}
               onChange={(e) => setReviewContent(e.target.value)}
+
+              helperText={`${reviewContent.length}/${REVIEW_LIMIT}`}
               fullWidth
               sx={{ mt: 2 }}
+
+        inputProps={{
+          maxlength: REVIEW_LIMIT
+        }}
             />
             <YelloBackGroundBlackTextButton onClick={handleReviewSubmit}>
               Submit

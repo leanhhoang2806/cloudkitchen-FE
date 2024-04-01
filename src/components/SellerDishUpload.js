@@ -95,6 +95,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
       setSelectedItem('Dashboard')
     } catch (error) {
       setErrorMessage(error.response?.data?.message || 'Failed to submit dish')
+      setLoading(false)
     }
     setLoading(false)
   }
