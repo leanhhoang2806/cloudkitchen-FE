@@ -63,9 +63,9 @@ export const OrdersComponent = () => {
         })),
       )
       setOrders(orders)
-
-      dispatch(updateUseSpinner(false))
     }
+
+    dispatch(updateUseSpinner(false))
     return orders
   }
 

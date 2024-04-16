@@ -21,6 +21,7 @@ function LandingPage() {
   const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([])
   const [zipCode, setZipCode] = useState('')
+
   const dispatch = useDispatch()
 
   const mainUser = useSelector((state) => state.user)

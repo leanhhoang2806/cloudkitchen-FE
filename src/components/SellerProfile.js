@@ -19,11 +19,13 @@ function SellerInfoUpdateForm({ setSelectedItem }) {
   useEffect(() => {
     getSellerByEmail(mainUser.email, getAccessTokenSilently).then(
       (response) => {
-        setName(response.name || '')
-        setPhone(response.phone || '')
-        setAddress(response.address || '')
-        setZipcode(response.zipcode || '')
-        setSellerId(response.id)
+        if (response) {
+          setName(response.name || '')
+          setPhone(response.phone || '')
+          setAddress(response.address || '')
+          setZipcode(response.zipcode || '')
+          setSellerId(response.id)
+        }
       },
     )
     // eslint-disable-next-line

@@ -67,12 +67,10 @@ export const DishesComponent = ({ setSelectedItem }) => {
         getAccessTokenSilently,
       )
       if (error.response.data.detail === 'NotAllowedToUploadThisImage') {
-
         setErrorMessage('This file is not a valid image')
         setLoading(false)
         return
       }
-
 
       if (status === 202) {
         setLoading(false)
