@@ -46,6 +46,8 @@ export const OrdersComponent = () => {
           getBuyerById(buyerId, getAccessTokenSilently),
         ),
       )
+      console.log("buyerInfo")
+      console.log(buyerInfo)
       const dishIds = orders.map((order) => order.dish_id)
       const dishesInfo = await Promise.all(
         dishIds.map((id) => getDishById(id, getAccessTokenSilently)),
@@ -94,6 +96,7 @@ export const OrdersComponent = () => {
     // eslint-disable-next-line
   }, [])
 
+
   return (
     <div
       style={{
@@ -134,7 +137,7 @@ export const OrdersComponent = () => {
                       color="textPrimary"
                       style={{ paddingLeft: '10px' }}
                     >
-                      Time: {convertToHumanReadable(order.created_at)}
+                      Ordered at: {convertToHumanReadable(order.created_at)}
                     </Typography>
                     <br />
                     <Typography
@@ -143,7 +146,7 @@ export const OrdersComponent = () => {
                       color="textPrimary"
                       style={{ marginLeft: '10px' }}
                     >
-                      Price: {order.price}
+                      $ {order.price}
                     </Typography>
                     <br />
                     <Typography
@@ -152,7 +155,7 @@ export const OrdersComponent = () => {
                       color="textPrimary"
                       style={{ marginLeft: '10px' }}
                     >
-                      Buyer: {order.email}
+                      Address: {order.address}
                     </Typography>
                   </React.Fragment>
                 }
