@@ -3,9 +3,10 @@ import React from 'react'
 const StripeBuyButton = () => {
   return (
     <stripe-buy-button
-      buy-button-id="buy_btn_1OuL0tJDu1ygRJcYQTRKqKVz"
-      publishable-key="pk_test_51OrlfSJDu1ygRJcYQYwCOhk8qGe1uioqkaDoeAPwNAPvpVzeowySDjfuJFjN75wmB1LZqieLBDze9ymBX0fCqp9j00L4pVYKeQ"
-    />
+      buy-button-id="buy_btn_1P63SsJDu1ygRJcYAwQZqyv5"
+      publishable-key="pk_live_51OrlfSJDu1ygRJcYQEO2WdMyJdkVkfB6sCLDRmBHJNKBPsS5XlAb8hf5JpwM3BotDBqUQOWnDrhABzSqPIIKqpjS00S3RCHkCH"
+    >
+    </stripe-buy-button>
   )
 }
 
