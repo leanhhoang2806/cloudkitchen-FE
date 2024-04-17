@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { URL } from 'env/env'
 
 const uploadFile = async (file, sellerId, getAccessTokenSilently) => {
   try {
@@ -7,7 +8,7 @@ const uploadFile = async (file, sellerId, getAccessTokenSilently) => {
     formData.append('file', file)
 
     const response = await axios.post(
-      `http://localhost:8000/api/v1/s3/upload/${sellerId}`,
+      `${URL}/s3/upload/${sellerId}`,
       formData,
       {
         headers: {

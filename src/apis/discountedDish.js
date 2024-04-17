@@ -1,12 +1,13 @@
 import axios from 'axios'
 import { getRequestWithoutToken, postRequestWithToken } from './GenericRequest'
+import { URL } from 'env/env'
 
 const getDiscountedDish = async (dishId) => {
-  const url = `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`
+  const url = `${URL}/discounted-dish/dish/${dishId}`
   return getRequestWithoutToken(url)
 }
 const createDiscountedDish = async (discountedDishData, authToken) => {
-  const url = `http://localhost:8000/api/v1/discounted-dish/`
+  const url = `${URL}/discounted-dish/`
   return postRequestWithToken(url, discountedDishData, authToken)
 }
 
@@ -23,7 +24,7 @@ const updateDiscountedDish = async (
 
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/v1/discounted-dish/${discountedDishId}`,
+      `${URL}/discounted-dish/${discountedDishId}`,
       discountedDishData,
       {
         headers: {
@@ -47,7 +48,7 @@ const deleteDiscountedDish = async (discountedDishId, authToken) => {
 
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/v1/discounted-dish/${discountedDishId}`,
+      `${URL}/discounted-dish/${discountedDishId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -70,7 +71,7 @@ const deleteDiscountedDishbyDishId = async (dishId, authToken) => {
 
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/v1/discounted-dish/dish/${dishId}`,
+      `${URL}/discounted-dish/dish/${dishId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

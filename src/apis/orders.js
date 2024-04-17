@@ -1,18 +1,19 @@
 import axios from 'axios'
 import { getRequestWithToken, postRequestWithToken } from './GenericRequest'
+import { URL } from 'env/env'
 
 const getOrderBySellerId = async (sellerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/order/seller/${sellerId}`
+  const url = `${URL}/order/seller/${sellerId}`
   return getRequestWithToken(url, authToken)
 }
 
 const getOrderByBuyerId = async (buyerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/order/buyer/${buyerId}`
+  const url = `${URL}/order/buyer/${buyerId}`
   return getRequestWithToken(url, authToken)
 }
 
 const postOrderByBuyer = async (buyerId, orders, authToken) => {
-  const url = `http://localhost:8000/api/v1/order/`
+  const url = `${URL}/order/`
   const payload = {
     buyer_id: buyerId,
     dish_id: orders,
@@ -21,12 +22,12 @@ const postOrderByBuyer = async (buyerId, orders, authToken) => {
 }
 
 const getOrderDetailsByOrderId = async (orderId, authToken) => {
-  const url = `http://localhost:8000/api/v1/order/${orderId}/dish`
+  const url = `${URL}/order/${orderId}/dish`
   return getRequestWithToken(url, authToken)
 }
 
 const getOrderByOrderId = async (orderId, authToken) => {
-  const url = `http://localhost:8000/api/v1/order/${orderId}`
+  const url = `${URL}/order/${orderId}`
   return getRequestWithToken(url, authToken)
 }
 
@@ -42,7 +43,7 @@ const updateOrderStatusById = async (updatedOrder, authToken) => {
   }
 
   const response = await axios.put(
-    `http://localhost:8000/api/v1/order/${updatedOrder.id}/status`,
+    `${URL}/order/${updatedOrder.id}/status`,
     { ...payload },
     {
       headers: {

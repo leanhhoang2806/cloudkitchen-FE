@@ -1,11 +1,12 @@
 import { getRequestWithToken, postRequestWithToken } from './GenericRequest'
+import { URL } from 'env/env'
 
 const getConversationByConversationId = async (conversationid, authToken) => {
-  const url = `http://localhost:8000/api/v1/chat/${conversationid}`
+  const url = `${URL}/chat/${conversationid}`
   return getRequestWithToken(url, authToken)
 }
 const postChatRoom = async (buyerId, sellerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/chat/`
+  const url = `${URL}/chat/`
   const payload = {
     seller_id: sellerId,
     buyer_id: buyerId,
@@ -14,12 +15,12 @@ const postChatRoom = async (buyerId, sellerId, authToken) => {
 }
 
 const getChatRoomByBuyer = async (buyerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/chat/${buyerId}`
+  const url = `${URL}/chat/${buyerId}`
   return getRequestWithToken(url, authToken)
 }
 
 const getAllChatRoomByBuyer = async (buyerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/chat/buyer/${buyerId}`
+  const url = `${URL}/chat/buyer/${buyerId}`
   return getRequestWithToken(url, authToken)
 }
 
@@ -30,7 +31,7 @@ const postChatMessage = async (
   content,
   authToken,
 ) => {
-  const url = `http://localhost:8000/api/v1/chat/${chatId}`
+  const url = `${URL}/chat/${chatId}`
   const payload = {
     sender,
     receiver,
@@ -42,7 +43,7 @@ const postChatMessage = async (
 // ====== Seller =========
 
 const getChatListBySellerId = async (sellerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/chat/seller/${sellerId}`
+  const url = `${URL}/chat/seller/${sellerId}`
   return getRequestWithToken(url, authToken)
 }
 

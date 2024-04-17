@@ -4,6 +4,7 @@ import {
   getRequestWithoutToken,
   postRequestWithToken,
 } from './GenericRequest'
+import { URL } from 'env/env'
 
 const postDish = async (data, s3Path, authToken, sellerId) => {
   if (data.price > 100) {
@@ -12,7 +13,7 @@ const postDish = async (data, s3Path, authToken, sellerId) => {
       throw new Error('Invalid price format')
     }
   }
-  const url = `http://localhost:8000/api/v1/dish`
+  const url = `${URL}/dish`
   const payload = {
     ...data,
     seller_id: sellerId,
@@ -22,12 +23,12 @@ const postDish = async (data, s3Path, authToken, sellerId) => {
 }
 
 const getDishBySellerId = async (sellerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/dish/seller/${sellerId}`
+  const url = `${URL}/dish/seller/${sellerId}`
   return getRequestWithToken(url, authToken)
 }
 
 const getDishesPagination = async (skip) => {
-  const url = `http://localhost:8000/api/v1/dish/`
+  const url = `${URL}/dish/`
   const params = {
     skip: skip,
     limit: 20,
@@ -37,7 +38,7 @@ const getDishesPagination = async (skip) => {
 
 const getAllFeaturedDish = async (dishIds) => {
   const stringifiedIds = dishIds.join(',')
-  const url = `http://localhost:8000/api/v1/dish/featured/ids`
+  const url = `${URL}/dish/featured/ids`
   const params = { dish_ids: stringifiedIds }
   return getRequestWithoutToken(url, params)
 }
@@ -50,7 +51,7 @@ const deleteDishBySeller = async (dishId, authToken) => {
   const accessToken = await authToken()
 
   const response = await axios.delete(
-    `http://localhost:8000/api/v1/dish/${dishId}`,
+    `${URL}/dish/${dishId}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -62,7 +63,7 @@ const deleteDishBySeller = async (dishId, authToken) => {
 }
 
 const getDishById = async (dishId, authToken) => {
-  const url = `http://localhost:8000/api/v1/dish/${dishId}`
+  const url = `${URL}/dish/${dishId}`
   return getRequestWithToken(url, authToken)
 }
 

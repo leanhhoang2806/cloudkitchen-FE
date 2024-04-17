@@ -27,7 +27,8 @@
     "Promise": "readonly",
     "Map": "readonly",
     "navigator": "readonly",
-    "fetch": "readonly"
+    "fetch": "readonly",
+    "process": "readonly"
     
     // Add more global variables as needed
   }

@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { postRequestWithToken } from './GenericRequest'
+import { URL } from 'env/env'
 
 const postStripePayment = async (buyerId, dishIds, authToken) => {
   try {
-    const url = `http://localhost:8000/api/v1/stripe-payment/`
+    const url = `${URL}/stripe-payment/`
     const payload = {
       buyer_id: buyerId,
       dish_ids: dishIds,
@@ -25,7 +26,7 @@ const putStripePaymentUpdate = async (email, authToken) => {
   }
 
   const response = await axios.put(
-    `http://localhost:8000/api/v1/stripe-payment/update-limit`,
+    `${URL}/stripe-payment/update-limit`,
     { ...payload },
     {
       headers: {

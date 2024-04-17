@@ -1,8 +1,9 @@
 import { getRequestWithToken, getRequestWithoutToken } from './GenericRequest'
 import axios from 'axios'
+import { URL } from 'env/env'
 
 const getBuyerByEmail = async (authToken, email) => {
-  const url = `http://localhost:8000/api/v1/buyer/`
+  const url = `${URL}/buyer/`
   const params = {
     email: email,
   }
@@ -10,12 +11,12 @@ const getBuyerByEmail = async (authToken, email) => {
 }
 
 const getBuyerById = async (buyerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/buyer/${buyerId}`
+  const url = `${URL}/buyer/${buyerId}`
   return getRequestWithToken(url, authToken)
 }
 
 const getBuyerByIdNoValidation = async (buyerId) => {
-  const url = `http://localhost:8000/api/v1/buyer/no-validation/${buyerId}`
+  const url = `${URL}/buyer/no-validation/${buyerId}`
   return getRequestWithoutToken(url)
 }
 
@@ -25,7 +26,7 @@ const updateBuyerInfo = async (buyerId, payload, authToken) => {
   }
 
   const accessToken = await authToken()
-  const url = `http://localhost:8000/api/v1/buyer/${buyerId}`
+  const url = `${URL}/buyer/${buyerId}`
 
   try {
     const response = await axios.put(url, payload, {

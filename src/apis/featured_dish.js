@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { getRequestWithoutToken, postRequestWithToken } from './GenericRequest'
+import { URL } from 'env/env'
 
 const getFeaturedDishPagination = async (skip) => {
-  const url = `http://localhost:8000/api/v1/featured-dish/`
+  const url = `${URL}/featured-dish/`
   const params = {
     skip: skip,
     limit: 20,
@@ -11,7 +12,7 @@ const getFeaturedDishPagination = async (skip) => {
 }
 
 const postFeatureDish = async (dishId, authToken) => {
-  const url = `http://localhost:8000/api/v1/featured-dish/`
+  const url = `${URL}/featured-dish/`
   const payload = {
     dish_id: dishId,
   }
@@ -26,7 +27,7 @@ const deleteFeaturedDish = async (dishId, authToken) => {
   const accessToken = await authToken()
 
   const response = await axios.delete(
-    `http://localhost:8000/api/v1/featured-dish/${dishId}`,
+    `${URL}/featured-dish/${dishId}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,

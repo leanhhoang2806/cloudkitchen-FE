@@ -3,9 +3,10 @@ import {
   getRequestWithoutToken,
   postRequestWithToken,
 } from './GenericRequest'
+import { URL } from 'env/env'
 
 const postDishReview = async (buyerId, dishId, content, rating, authToken) => {
-  const url = `http://localhost:8000/api/v1/dish-review`
+  const url = `${URL}/dish-review`
   const payload = {
     buyer_id: buyerId,
     dish_id: dishId,
@@ -16,17 +17,17 @@ const postDishReview = async (buyerId, dishId, content, rating, authToken) => {
 }
 
 const getDishReviewByDishId = async (dishId) => {
-  const url = `http://localhost:8000/api/v1/dish-review/dish/${dishId}`
+  const url = `${URL}/dish-review/dish/${dishId}`
   return getRequestWithoutToken(url)
 }
 
 const getDishRatingByDishId = async (dishId) => {
-  const url = `http://localhost:8000/api/v1/dish-review/rating/${dishId}`
+  const url = `${URL}/dish-review/rating/${dishId}`
   return getRequestWithoutToken(url)
 }
 
 const gerDishReviewByBuyerIdAndDishId = async (dishId, buyerId, authToken) => {
-  const url = `http://localhost:8000/api/v1/dish-review/dish/${dishId}/buyer/${buyerId}`
+  const url = `${URL}/dish-review/dish/${dishId}/buyer/${buyerId}`
   return getRequestWithToken(url, authToken)
 }
 export {
