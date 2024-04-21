@@ -9,6 +9,8 @@ import {
   Divider,
   Pagination,
   Grid,
+  Modal,
+  Box
 } from '@mui/material'
 import Button from '@mui/material/Button'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
@@ -26,11 +28,24 @@ import {
 import Spinner from './SpinnerComponent'
 import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export const DashboardComponent = () => {
   const [dishes, setDishes] = useState([])
   const [page, setPage] = useState(1)
 
   const [loading, setLoading] = useState(false)
+  const [displayMaxFeatureReached, setDisplayMaxFeatureReached] = useState(false)
 
   const mainUser = useSelector((state) => state.user)
 
@@ -40,6 +55,10 @@ export const DashboardComponent = () => {
   const handlePageChange = (event, value) => {
     setPage(value)
   }
+
+  const handleCloseModal = () => {
+    setDisplayMaxFeatureReached(false);
+  };
 
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -72,7 +91,9 @@ export const DashboardComponent = () => {
       await postFeatureDish(dishId, getAccessTokenSilently)
       await getDish()
     } catch (error) {
-      console.error('Error featuring dish:', error)
+      if (error === "MaximumFeaturedLimit") {
+        setDisplayMaxFeatureReached(true)
+      }
     }
   }
 
@@ -277,6 +298,23 @@ export const DashboardComponent = () => {
         color="primary"
         style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
       />
+      <Modal
+  open={displayMaxFeatureReached}
+  onClose={handleCloseModal}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+<Box sx={style}>
+    {/* Your modal content here */}
+    <Typography id="modal-modal-title" variant="h6" component="h2">
+      Maximum Feature Limit Reached
+    </Typography>
+    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+      You have reached the maximum feature limit.
+    </Typography>
+    {/* You can add buttons or actions as needed */}
+  </Box>
+</Modal>
     </div>
   )
 }

@@ -20,7 +20,6 @@ import ChatInterface from 'components/BuyerChatInterface'
 import ErrorPage from 'components/ErrorPage'
 import BuyerInfoUpdateForm from 'components/BuyerProfileUpdate'
 import Spinner from 'components/SpinnerComponent'
-import GeolocationExample from 'components/Location'
 
 const AllRoutes = () => {
   const { isLoading, isAuthenticated } = useAuth0()
@@ -31,7 +30,6 @@ const AllRoutes = () => {
   }
   return (
     <Routes>
-      <Route exact path="/test" element={<GeolocationExample />} />
       <Route exact path="/" element={<LandingPage />} />
       <Route exact path="/error-page" element={<ErrorPage />} />
       <Route

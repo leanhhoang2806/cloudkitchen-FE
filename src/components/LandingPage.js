@@ -20,6 +20,7 @@ function LandingPage() {
   const [skip, setSkip] = useState(0)
   const [dishes, setDishes] = useState([])
   const [featuredDishes, setFeaturedDishes] = useState([])
+  const [displayNoResult, setDisplayNoResult] = useState(false)
   const [zipCode, setZipCode] = useState('')
 
   const dispatch = useDispatch()
@@ -43,6 +44,9 @@ function LandingPage() {
         dispatch(updateSearchZipcode(zipCode))
         dispatch(updateUseSpinner(false))
         return
+      }
+      else {
+        setDisplayNoResult(true)
       }
       setDishes(dishes)
       dispatch(updateSearchZipcode(zipCode))
@@ -184,6 +188,18 @@ function LandingPage() {
         <div style={{ marginTop: '50px', width: '70%' }}>
           <Carousel items={featuredDishes} />
         </div>
+      )}
+      {displayNoResult && (
+      <div style={{ marginTop: '50px' }}>
+          <Typography
+            variant="h5"
+            component="h4"
+            align="left"
+            style={{ fontWeight: 'bold', paddingLeft: '20px' }}
+          >
+            No seller is available in your area
+          </Typography>
+      </div>
       )}
       {/* Search Results */}
       {dishes.length > 0 && (

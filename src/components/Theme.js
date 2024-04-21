@@ -204,7 +204,7 @@ function Theme({ children }) {
       >
         <Toolbar>
           <Typography variant="body1" color="black" sx={{ flexGrow: 1 }}>
-            This is the footer.
+            Support: popo24@gmail.com
           </Typography>
         </Toolbar>
       </AppBar>

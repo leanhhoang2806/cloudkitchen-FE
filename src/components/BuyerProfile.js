@@ -144,6 +144,8 @@ const ProfilePage = () => {
     fetchUser()
     getPossibleSeller()
 
+    dispatch(updateUseSpinner(false))
+
     // eslint-disable-next-line
   }, [])
 
