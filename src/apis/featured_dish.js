@@ -26,14 +26,11 @@ const deleteFeaturedDish = async (dishId, authToken) => {
 
   const accessToken = await authToken()
 
-  const response = await axios.delete(
-    `${URL}/featured-dish/${dishId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const response = await axios.delete(`${URL}/featured-dish/${dishId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
     },
-  )
+  })
 
   return response.data
 }

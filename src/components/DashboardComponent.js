@@ -10,7 +10,7 @@ import {
   Pagination,
   Grid,
   Modal,
-  Box
+  Box,
 } from '@mui/material'
 import Button from '@mui/material/Button'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
@@ -38,14 +38,15 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-};
+}
 
 export const DashboardComponent = () => {
   const [dishes, setDishes] = useState([])
   const [page, setPage] = useState(1)
 
   const [loading, setLoading] = useState(false)
-  const [displayMaxFeatureReached, setDisplayMaxFeatureReached] = useState(false)
+  const [displayMaxFeatureReached, setDisplayMaxFeatureReached] =
+    useState(false)
 
   const mainUser = useSelector((state) => state.user)
 
@@ -57,8 +58,8 @@ export const DashboardComponent = () => {
   }
 
   const handleCloseModal = () => {
-    setDisplayMaxFeatureReached(false);
-  };
+    setDisplayMaxFeatureReached(false)
+  }
 
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -91,7 +92,7 @@ export const DashboardComponent = () => {
       await postFeatureDish(dishId, getAccessTokenSilently)
       await getDish()
     } catch (error) {
-      if (error === "MaximumFeaturedLimit") {
+      if (error === 'MaximumFeaturedLimit') {
         setDisplayMaxFeatureReached(true)
       }
     }
@@ -299,22 +300,22 @@ export const DashboardComponent = () => {
         style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
       />
       <Modal
-  open={displayMaxFeatureReached}
-  onClose={handleCloseModal}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-<Box sx={style}>
-    {/* Your modal content here */}
-    <Typography id="modal-modal-title" variant="h6" component="h2">
-      Maximum Feature Limit Reached
-    </Typography>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      You have reached the maximum feature limit.
-    </Typography>
-    {/* You can add buttons or actions as needed */}
-  </Box>
-</Modal>
+        open={displayMaxFeatureReached}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {/* Your modal content here */}
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Maximum Feature Limit Reached
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            You have reached the maximum feature limit.
+          </Typography>
+          {/* You can add buttons or actions as needed */}
+        </Box>
+      </Modal>
     </div>
   )
 }

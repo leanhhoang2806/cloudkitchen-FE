@@ -46,7 +46,7 @@ export const OrdersComponent = () => {
           getBuyerById(buyerId, getAccessTokenSilently),
         ),
       )
-      console.log("buyerInfo")
+      console.log('buyerInfo')
       console.log(buyerInfo)
       const dishIds = orders.map((order) => order.dish_id)
       const dishesInfo = await Promise.all(
@@ -95,7 +95,6 @@ export const OrdersComponent = () => {
     getOrders()
     // eslint-disable-next-line
   }, [])
-
 
   return (
     <div

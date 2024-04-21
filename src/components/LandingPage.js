@@ -44,8 +44,7 @@ function LandingPage() {
         dispatch(updateSearchZipcode(zipCode))
         dispatch(updateUseSpinner(false))
         return
-      }
-      else {
+      } else {
         setDisplayNoResult(true)
       }
       setDishes(dishes)
@@ -190,7 +189,7 @@ function LandingPage() {
         </div>
       )}
       {displayNoResult && (
-      <div style={{ marginTop: '50px' }}>
+        <div style={{ marginTop: '50px' }}>
           <Typography
             variant="h5"
             component="h4"
@@ -199,7 +198,7 @@ function LandingPage() {
           >
             No seller is available in your area
           </Typography>
-      </div>
+        </div>
       )}
       {/* Search Results */}
       {dishes.length > 0 && (
