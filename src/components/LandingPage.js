@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import { Divider } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { getFeaturedDishPagination } from 'apis/featured_dish'
-import Carousel from 'components/Carousel'
+// import Carousel from 'components/Carousel'
 import DisplayPaginatedDishResults from 'components/GridDisplay'
 import BackGroundImage from 'media/images/background_image.jpg'
 import Theme from 'components/Theme'
@@ -19,7 +19,7 @@ import { updateUseSpinner } from 'store/slices/userSlice'
 function LandingPage() {
   const [skip, setSkip] = useState(0)
   const [dishes, setDishes] = useState([])
-  const [featuredDishes, setFeaturedDishes] = useState([])
+  // const [featuredDishes, setFeaturedDishes] = useState([])
   const [displayNoResult, setDisplayNoResult] = useState(false)
   const [zipCode, setZipCode] = useState('')
 
@@ -73,7 +73,7 @@ function LandingPage() {
     const getFeaturedDishes = async () => {
       const dishes = await getFeaturedDishPagination(skip)
       if (dishes) {
-        setFeaturedDishes(dishes)
+        // setFeaturedDishes(dishes)
       }
     }
     getFeaturedDishes()
@@ -165,7 +165,7 @@ function LandingPage() {
       </div>
       {/* Render Carousel only when featuredDishes is not empty */}
 
-      <div
+      {/* <div
         style={{
           marginTop: '20px',
           textAlign: 'left',
@@ -187,7 +187,7 @@ function LandingPage() {
         <div style={{ marginTop: '50px', width: '70%' }}>
           <Carousel items={featuredDishes} />
         </div>
-      )}
+      )} */}
       {displayNoResult && (
         <div style={{ marginTop: '50px' }}>
           <Typography

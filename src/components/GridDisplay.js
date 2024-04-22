@@ -72,8 +72,8 @@ function SearchResultCard({
           height="240" // Increased height for bigger cards
           image={imageUrl}
           alt="Default Image"
-          sx={{ width: '100%' }}
-          style={{ objectFit: 'cover' }}
+          sx={{ width: '100%', position: 'relative' }}
+          style={{ objectPosition: 'center', backgroundSize: 'cover' }}
         />
       ) : (
         <ImageWithOverlay imagePath={imageUrl} percentage={percentage} />
@@ -146,18 +146,23 @@ function SearchResultCard({
           }}
         >
           {imageUrl && (
-            <CardMedia
-              component="img"
-              image={imageUrl}
-              alt=""
-              sx={{
-                height: '20%',
-                width: '20%',
-                maxHeight: '10%', // Set maximum height to 50% of modal's height
-                objectFit: 'contain', // Ensure image fits inside modal without cropping
-                marginBottom: '10px', // Add some space below the image
-              }}
-            />
+            <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+              <CardMedia
+                component="img"
+                image={imageUrl}
+                alt=""
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                }}
+              />
+            </div>
           )}
           <Box sx={{ mt: 2, width: '100%' }}>
             <Typography variant="h6" gutterBottom>
@@ -216,15 +221,6 @@ function DisplayPaginatedDishResults({ dishes }) {
 
   const [displayDishes, setDisplayDishes] = useState([])
 
-  const numItems = filterdDishes.length
-
-  const gridProps = {
-    xs: 12,
-    sm: 6,
-    lg: numItems === 1 ? 12 : 6, // Set to 12 for single item, otherwise 4
-    xl: numItems === 1 ? 12 : 6, // Set to 12 for single item, otherwise 3
-  }
-
   useEffect(() => {
     Promise.all(
       dishes.map((dish) =>
@@ -254,7 +250,7 @@ function DisplayPaginatedDishResults({ dishes }) {
       style={{ paddingLeft: 200, paddingRight: 200, paddingBottom: '56px' }}
     >
       {displayDishes.map((item, index) => (
-        <Grid item {...gridProps} key={index}>
+        <Grid item xs={6} sm={3} md={3} lg={3} xl={3} key={index}>
           <SearchResultCard
             imageUrl={item.s3_path}
             price={item.price}

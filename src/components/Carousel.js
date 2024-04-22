@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'store/slices/userSlice'
 import ProductPrice from './shared-component/ProductPrice'
+import AspectRatioBox from './shared-component/AspectRatioBox'
 
 function Carousel({ items = [] }) {
   const isImageEndInJpgOrPng = (path) => {
@@ -91,14 +92,22 @@ function Carousel({ items = [] }) {
                 height: cardHeight,
                 marginRight: '10rem',
                 cursor: 'pointer',
+                overflow: 'hidden',
               }}
               onClick={() => openModal(filteredDish[previousIndex])}
             >
-              <CardMedia
-                component="img"
-                image={filteredDish[previousIndex].s3_path}
-                alt={filteredDish[previousIndex].title}
-              />
+              <AspectRatioBox ratio={4 / 3}>
+                {' '}
+                {/* Set the aspect ratio (e.g., 4:3) */}
+                <CardMedia
+                  component="img"
+                  image={filteredDish[previousIndex].s3_path}
+                  alt="Default Image"
+                  sx={{ width: '100%', position: 'relative' }}
+                  style={{ objectPosition: 'center', backgroundSize: 'cover' }}
+                  height="240"
+                />
+              </AspectRatioBox>
             </Card>
           </Slide>
           {filteredDish.length >= 2 && (
