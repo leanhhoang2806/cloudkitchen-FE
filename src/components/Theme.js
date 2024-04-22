@@ -182,7 +182,11 @@ function Theme({ children }) {
           )}
           {isAuthenticated && location.pathname === '/profile' && (
             <DropdownMenu
-              showSeller={isAuthenticated && !mainUser.isSeller}
+              showSeller={
+                isAuthenticated &&
+                !mainUser.isSeller &&
+                mainUser.email === 'hoangtechacount@gmail.com'
+              }
               showSignOut={isAuthenticated}
               showSellerDashboard={isAuthenticated && mainUser.isSeller}
             />

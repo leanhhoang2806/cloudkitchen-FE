@@ -26,6 +26,8 @@ const DropdownMenu = ({ showSignOut, showSeller, showSellerDashboard }) => {
     navigate(value) // Navigate immediately upon item selection
   }
 
+  // Create seller register through API.
+
   return (
     <Select
       value={selectedItem}
