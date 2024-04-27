@@ -28,7 +28,8 @@
     "Map": "readonly",
     "navigator": "readonly",
     "fetch": "readonly",
-    "process": "readonly"
+    "process": "readonly",
+    "FileReader": "readonly"
     
     // Add more global variables as needed
   }

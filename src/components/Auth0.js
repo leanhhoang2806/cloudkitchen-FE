@@ -16,10 +16,11 @@ export const Auth0ProviderWithNavigate = ({ children }) => {
     )
   }
 
+  // Production credentials 
   // return (
   //   <Auth0Provider
   //     domain="dev-1wecvjynzqyw78g0.us.auth0.com"
-  //     clientId="NSaedQleuwPbqfdgR6RF5PTX9T7hvRS4" // prod client id
+  //     clientId="NSaedQleuwPbqfdgR6RF5PTX9T7hvRS4" 
   //     cacheLocation="localstorage"
   //     authorizationParams={{
   //       redirect_uri: redirectUri,
@@ -30,10 +31,12 @@ export const Auth0ProviderWithNavigate = ({ children }) => {
   //     {children}
   //   </Auth0Provider>
   // )
+
+  // Development credentials
   return (
     <Auth0Provider
       domain="dev-1wecvjynzqyw78g0.us.auth0.com"
-      clientId="PM3G9YAvqYvMEKGOP5htCpZd5iG8VIxz" // prod client id
+      clientId="PM3G9YAvqYvMEKGOP5htCpZd5iG8VIxz" 
       cacheLocation="localstorage"
       authorizationParams={{
         redirect_uri: redirectUri,

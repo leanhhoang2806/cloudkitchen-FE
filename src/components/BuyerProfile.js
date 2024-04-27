@@ -12,6 +12,7 @@ import {
   Box,
   TextField,
   Rating,
+  Input
 } from '@mui/material'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -55,6 +56,8 @@ const ProfilePage = () => {
   const [showModal, setShowModal] = useState(false)
   // const [isReviewExist, setIsReviewExist] = useState(false)
   const [reviewContent, setReviewContent] = useState('')
+
+  const [selectedImage, setSelectedImage] = useState(null);
   const [rating, setRating] = useState(0)
   const REVIEW_LIMIT = 100
 
@@ -72,6 +75,10 @@ const ProfilePage = () => {
     setSelectedOrder(order)
     setShowModal(true)
   }
+
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
 
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -94,6 +101,7 @@ const ProfilePage = () => {
       selectedOrder.id,
       reviewContent,
       rating,
+      selectedImage,
       getAccessTokenSilently,
     )
     closeModalHandler()
@@ -289,6 +297,12 @@ const ProfilePage = () => {
                 maxlength: REVIEW_LIMIT,
               }}
             />
+        <Input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          sx={{ mt: 2 }}
+        />
             <YelloBackGroundBlackTextButton onClick={handleReviewSubmit}>
               Submit
             </YelloBackGroundBlackTextButton>

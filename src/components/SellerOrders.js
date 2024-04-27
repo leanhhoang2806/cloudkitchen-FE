@@ -46,8 +46,6 @@ export const OrdersComponent = () => {
           getBuyerById(buyerId, getAccessTokenSilently),
         ),
       )
-      console.log('buyerInfo')
-      console.log(buyerInfo)
       const dishIds = orders.map((order) => order.dish_id)
       const dishesInfo = await Promise.all(
         dishIds.map((id) => getDishById(id, getAccessTokenSilently)),
