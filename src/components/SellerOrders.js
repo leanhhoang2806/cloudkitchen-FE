@@ -143,7 +143,7 @@ export const OrdersComponent = () => {
                       color="textPrimary"
                       style={{ marginLeft: '10px' }}
                     >
-                      $ {order.price}
+                     <Typography component="span" variant="body1" style={{ fontWeight: 'bold', color: 'green' }}>$ {order.price}</Typography>
                     </Typography>
                     <br />
                     <Typography

@@ -67,6 +67,7 @@ function SearchResultCard({
     getDishRatingByDishId(dishId).then((data) => setRating(data.rating))
   }, [dishId])
 
+
   return (
     <Card sx={{ width: '100%', height: '100%', borderRadius: '16px' }}>
       {percentage === undefined ? (
@@ -173,7 +174,7 @@ function SearchResultCard({
 
           <Box sx={{ mt: 2, width: '100%' }}>
             <Typography variant="h6" gutterBottom>
-              Reviews
+              Reviews ({reviews.length})
             </Typography>
             <Paper style={{ padding: '40px 20px', width: '100%' }}>
               {reviews.length === 0 && (
@@ -184,6 +185,17 @@ function SearchResultCard({
               {reviews.map((review) => {
                 return (
                   <div key={review.id}>
+                     {review.s3_path && (
+          <img
+            src={review.s3_path}
+            alt="Review Image"
+            style={{
+              width: '20%',
+              objectFit: 'contain',
+              marginBottom: '10px', // Add some space below the image
+            }}
+          />
+        )}
                     <Grid container wrap="nowrap" spacing={2}>
                       <Grid justifyContent="left" item xs zeroMinWidth>
                         <h4 style={{ margin: 0, textAlign: 'left' }}>

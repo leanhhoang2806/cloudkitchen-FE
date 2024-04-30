@@ -14,6 +14,7 @@ import {
   Rating,
   Input
 } from '@mui/material'
+
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
 import { useAuth0 } from '@auth0/auth0-react'
 import { getBuyerByEmail } from 'apis/buyer'
@@ -95,7 +96,49 @@ const ProfilePage = () => {
     setShowModal(false)
   }
 
+  const fetchUser = async () => {
+    const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
+    const getOrders = await getOrderByBuyerId(
+      getUser.id,
+      getAccessTokenSilently,
+    )
+    if (getOrders.length > 0) {
+      const orderIds = getOrders.map((order) => order.dish_id)
+      const dishesByOrder = await Promise.all(
+        orderIds.map((id) => getDishById(id, getAccessTokenSilently)),
+      )
+
+      const possibleReviewId = await Promise.all(
+        dishesByOrder.map((dish) =>
+          gerDishReviewByBuyerIdAndDishId(
+            dish.id,
+            mainUser.buyerId,
+            getAccessTokenSilently,
+          ),
+        ),
+      )
+      for (var i = 0; i < dishesByOrder.length; i++) {
+        dishesByOrder[i] = {
+          ...dishesByOrder[i],
+          review: possibleReviewId[i],
+        }
+      }
+      setOrderDetails(dishesByOrder)
+    }
+    setOrders(getOrders)
+    dispatch(changeEmail(getUser))
+  }
+  const getPossibleSeller = async () => {
+    const seller = await getSellerByEmail(user.email, getAccessTokenSilently)
+    if (seller) {
+      dispatch(updateSeller(seller.id))
+    }
+
+    dispatch(updateUseSpinner(false))
+  }
+
   const handleReviewSubmit = async () => {
+    dispatch(updateUseSpinner(true))
     await postDishReview(
       mainUser.buyerId,
       selectedOrder.id,
@@ -105,50 +148,13 @@ const ProfilePage = () => {
       getAccessTokenSilently,
     )
     closeModalHandler()
+    fetchUser()
+
+    dispatch(updateUseSpinner(false))
   }
 
   useEffect(() => {
     dispatch(updateUseSpinner(true))
-    const fetchUser = async () => {
-      const getUser = await getBuyerByEmail(getAccessTokenSilently, user.email)
-      const getOrders = await getOrderByBuyerId(
-        getUser.id,
-        getAccessTokenSilently,
-      )
-      if (getOrders.length > 0) {
-        const orderIds = getOrders.map((order) => order.dish_id)
-        const dishesByOrder = await Promise.all(
-          orderIds.map((id) => getDishById(id, getAccessTokenSilently)),
-        )
-
-        const possibleReviewId = await Promise.all(
-          dishesByOrder.map((dish) =>
-            gerDishReviewByBuyerIdAndDishId(
-              dish.id,
-              mainUser.buyerId,
-              getAccessTokenSilently,
-            ),
-          ),
-        )
-        for (var i = 0; i < dishesByOrder.length; i++) {
-          dishesByOrder[i] = {
-            ...dishesByOrder[i],
-            review: possibleReviewId[i],
-          }
-        }
-        setOrderDetails(dishesByOrder)
-      }
-      setOrders(getOrders)
-      dispatch(changeEmail(getUser))
-    }
-    const getPossibleSeller = async () => {
-      const seller = await getSellerByEmail(user.email, getAccessTokenSilently)
-      if (seller) {
-        dispatch(updateSeller(seller.id))
-      }
-
-      dispatch(updateUseSpinner(false))
-    }
     fetchUser()
     getPossibleSeller()
 

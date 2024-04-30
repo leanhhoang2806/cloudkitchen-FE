@@ -77,6 +77,7 @@ function CheckoutOrdersPage() {
   }
 
   useEffect(() => {
+    dispatch(updateUseSpinner(true))
     if (orders.length > 0) {
       postStripePayment(user.buyerId, orders, getAccessTokenSilently)
         .then((data) => setClientSecret(data.client_secret))
@@ -84,6 +85,8 @@ function CheckoutOrdersPage() {
           setError(error)
           setOpenModal(true)
         })
+      
+        dispatch(updateUseSpinner(false))
     }
 
     const fetchOrders = async () => {
@@ -167,7 +170,7 @@ function CheckoutOrdersPage() {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        Price: $ {order.price}
+                        Price: <Typography component="span" variant="body1" style={{ fontWeight: 'bold', color: 'green' }}>$</Typography> {order.price}
                       </Typography>
                     </React.Fragment>
                   }

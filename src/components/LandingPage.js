@@ -82,6 +82,7 @@ function LandingPage() {
     // eslint-disable-next-line
   }, [skip])
 
+  console.log(dishes)
   return (
     <Theme>
       {/* Background Image with Title */}
