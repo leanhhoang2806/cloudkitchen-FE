@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Button,
   Rating,
@@ -11,6 +10,7 @@ import {
   Typography,
   Paper,
   Divider,
+  CardMedia
 } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'store/slices/userSlice'
@@ -24,6 +24,8 @@ import { getBuyerByIdNoValidation } from 'apis/buyer'
 import { getSellerById } from 'apis/sellerRegister'
 import { useAuth0 } from '@auth0/auth0-react'
 
+
+
 function SearchResultCard({
   imageUrl,
   price,
@@ -35,6 +37,7 @@ function SearchResultCard({
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
+  
 
   const dispatch = useDispatch()
   const handleAddToCart = () => {
@@ -65,16 +68,26 @@ function SearchResultCard({
   }, [dishId])
 
   return (
-    <Card sx={{ width: '100%', height: '100%' }}>
+    <Card sx={{ width: '100%', height: '100%', borderRadius: '16px' }}>
       {percentage === undefined ? (
         <CardMedia
-          component="img"
-          height="240" // Increased height for bigger cards
-          image={imageUrl}
-          alt="Default Image"
-          sx={{ width: '100%', position: 'relative' }}
-          style={{ objectPosition: 'center', backgroundSize: 'cover' }}
-        />
+        component="img"
+        height="240" // Increased height for bigger cards
+        image={imageUrl}
+        alt="Default Image"
+        sx={{ 
+          width: '100%', 
+          position: 'relative',
+          objectFit: 'scale-down',
+          left: 0,
+          top: 0,
+          height: '70%',
+        }}
+        style={{ 
+          objectPosition: 'center', 
+          backgroundSize: 'cover',
+        }}
+      />
       ) : (
         <ImageWithOverlay imagePath={imageUrl} percentage={percentage} />
       )}
@@ -145,25 +158,19 @@ function SearchResultCard({
             width: '50%',
           }}
         >
-          {imageUrl && (
-            <div style={{ position: 'relative', paddingTop: '56.25%' }}>
-              <CardMedia
-                component="img"
-                image={imageUrl}
-                alt=""
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
-          )}
+    <div style={{ position: 'relative', width: '100%', height: '240px' }}>
+      <img
+        src={imageUrl}
+        alt=""
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+        }}
+      />
+    </div>
+
           <Box sx={{ mt: 2, width: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Reviews
@@ -250,7 +257,7 @@ function DisplayPaginatedDishResults({ dishes }) {
       style={{ paddingLeft: 200, paddingRight: 200, paddingBottom: '56px' }}
     >
       {displayDishes.map((item, index) => (
-        <Grid item xs={6} sm={3} md={3} lg={3} xl={3} key={index}>
+        <Grid item xs={3} key={index}>
           <SearchResultCard
             imageUrl={item.s3_path}
             price={item.price}
@@ -259,6 +266,7 @@ function DisplayPaginatedDishResults({ dishes }) {
             sellerName={item.sellerName}
             dishName={item.dishName}
             item={item}
+            style={{width: "100%"}}
           />
         </Grid>
       ))}

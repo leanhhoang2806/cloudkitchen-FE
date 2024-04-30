@@ -118,19 +118,6 @@ function LandingPage() {
       </div>
       <div style={{ marginTop: '50px' }}>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          {/* Search Bar Row */}
-          {/* <Grid item xs={9} sm={6}> */}
-          {/* <TextField
-              label="Restaurants"
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{ borderRadius: '20px', bgcolor: 'white' }}
-              InputProps={{ sx: { borderRadius: '20px' } }}
-              value={searchTerm}
-              onChange={handleChange}
-            /> */}
-          {/* </Grid> */}
           <Grid item xs={6} sm={6}>
             <TextField
               label="Zip Code"

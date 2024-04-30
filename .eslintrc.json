@@ -29,7 +29,8 @@
     "navigator": "readonly",
     "fetch": "readonly",
     "process": "readonly",
-    "FileReader": "readonly"
+    "FileReader": "readonly",
+    "Image": "readonly"
     
     // Add more global variables as needed
   }
