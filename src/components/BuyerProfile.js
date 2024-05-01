@@ -12,7 +12,7 @@ import {
   Box,
   TextField,
   Rating,
-  Input
+  Input,
 } from '@mui/material'
 
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
@@ -36,6 +36,7 @@ import {
   postDishReview,
   gerDishReviewByBuyerIdAndDishId,
 } from 'apis/dishReview'
+import { persistor } from 'store/store'
 
 const style = {
   position: 'absolute',
@@ -58,7 +59,7 @@ const ProfilePage = () => {
   // const [isReviewExist, setIsReviewExist] = useState(false)
   const [reviewContent, setReviewContent] = useState('')
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null)
   const [rating, setRating] = useState(0)
   const REVIEW_LIMIT = 100
 
@@ -71,18 +72,19 @@ const ProfilePage = () => {
 
   const checkTokenExpiration = async () => {
     try {
-      const idToken = await getIdTokenClaims();
-      const expirationTime = idToken.exp * 1000; // Convert expiration time to milliseconds
-      const currentTime = Date.now();
-      
+      const idToken = await getIdTokenClaims()
+      const expirationTime = idToken.exp * 1000 // Convert expiration time to milliseconds
+      const currentTime = Date.now()
+
       if (currentTime > expirationTime) {
+        persistor.purge() // remove all redux perists
         // Token has expired
-        logout({ returnTo: window.location.origin });
+        logout({ returnTo: window.location.origin })
       }
     } catch (error) {
-      console.error('Error checking token expiration:', error);
+      console.error('Error checking token expiration:', error)
     }
-  };
+  }
 
   const handlePageChange = (event, value) => {
     setPage(value)
@@ -93,8 +95,8 @@ const ProfilePage = () => {
   }
 
   const handleImageChange = (event) => {
-    setSelectedImage(event.target.files[0]);
-  };
+    setSelectedImage(event.target.files[0])
+  }
 
   const startIndex = (page - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -319,12 +321,12 @@ const ProfilePage = () => {
                 maxlength: REVIEW_LIMIT,
               }}
             />
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          sx={{ mt: 2 }}
-        />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              sx={{ mt: 2 }}
+            />
             <YelloBackGroundBlackTextButton onClick={handleReviewSubmit}>
               Submit
             </YelloBackGroundBlackTextButton>

@@ -85,8 +85,8 @@ function CheckoutOrdersPage() {
           setError(error)
           setOpenModal(true)
         })
-      
-        dispatch(updateUseSpinner(false))
+
+      dispatch(updateUseSpinner(false))
     }
 
     const fetchOrders = async () => {
@@ -170,7 +170,15 @@ function CheckoutOrdersPage() {
                         color="textPrimary"
                         style={{ paddingLeft: '10px' }}
                       >
-                        Price: <Typography component="span" variant="body1" style={{ fontWeight: 'bold', color: 'green' }}>$</Typography> {order.price}
+                        Price:{' '}
+                        <Typography
+                          component="span"
+                          variant="body1"
+                          style={{ fontWeight: 'bold', color: 'green' }}
+                        >
+                          $
+                        </Typography>{' '}
+                        {order.price}
                       </Typography>
                     </React.Fragment>
                   }

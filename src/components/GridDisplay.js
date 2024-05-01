@@ -10,7 +10,7 @@ import {
   Typography,
   Paper,
   Divider,
-  CardMedia
+  CardMedia,
 } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'store/slices/userSlice'
@@ -24,8 +24,6 @@ import { getBuyerByIdNoValidation } from 'apis/buyer'
 import { getSellerById } from 'apis/sellerRegister'
 import { useAuth0 } from '@auth0/auth0-react'
 
-
-
 function SearchResultCard({
   imageUrl,
   price,
@@ -37,7 +35,6 @@ function SearchResultCard({
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [rating, setRating] = useState(0)
-  
 
   const dispatch = useDispatch()
   const handleAddToCart = () => {
@@ -67,28 +64,27 @@ function SearchResultCard({
     getDishRatingByDishId(dishId).then((data) => setRating(data.rating))
   }, [dishId])
 
-
   return (
     <Card sx={{ width: '100%', height: '100%', borderRadius: '16px' }}>
       {percentage === undefined ? (
         <CardMedia
-        component="img"
-        height="240" // Increased height for bigger cards
-        image={imageUrl}
-        alt="Default Image"
-        sx={{ 
-          width: '100%', 
-          position: 'relative',
-          objectFit: 'scale-down',
-          left: 0,
-          top: 0,
-          height: '70%',
-        }}
-        style={{ 
-          objectPosition: 'center', 
-          backgroundSize: 'cover',
-        }}
-      />
+          component="img"
+          height="240" // Increased height for bigger cards
+          image={imageUrl}
+          alt="Default Image"
+          sx={{
+            width: '100%',
+            position: 'relative',
+            objectFit: 'scale-down',
+            left: 0,
+            top: 0,
+            height: '70%',
+          }}
+          style={{
+            objectPosition: 'center',
+            backgroundSize: 'cover',
+          }}
+        />
       ) : (
         <ImageWithOverlay imagePath={imageUrl} percentage={percentage} />
       )}
@@ -159,18 +155,18 @@ function SearchResultCard({
             width: '50%',
           }}
         >
-    <div style={{ position: 'relative', width: '100%', height: '240px' }}>
-      <img
-        src={imageUrl}
-        alt=""
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
-        }}
-      />
-    </div>
+          <div style={{ position: 'relative', width: '100%', height: '240px' }}>
+            <img
+              src={imageUrl}
+              alt=""
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
 
           <Box sx={{ mt: 2, width: '100%' }}>
             <Typography variant="h6" gutterBottom>
@@ -185,17 +181,17 @@ function SearchResultCard({
               {reviews.map((review) => {
                 return (
                   <div key={review.id}>
-                     {review.s3_path && (
-          <img
-            src={review.s3_path}
-            alt="Review Image"
-            style={{
-              width: '20%',
-              objectFit: 'contain',
-              marginBottom: '10px', // Add some space below the image
-            }}
-          />
-        )}
+                    {review.s3_path && (
+                      <img
+                        src={review.s3_path}
+                        alt="Review Image"
+                        style={{
+                          width: '20%',
+                          objectFit: 'contain',
+                          marginBottom: '10px', // Add some space below the image
+                        }}
+                      />
+                    )}
                     <Grid container wrap="nowrap" spacing={2}>
                       <Grid justifyContent="left" item xs zeroMinWidth>
                         <h4 style={{ margin: 0, textAlign: 'left' }}>
@@ -278,7 +274,7 @@ function DisplayPaginatedDishResults({ dishes }) {
             sellerName={item.sellerName}
             dishName={item.dishName}
             item={item}
-            style={{width: "100%"}}
+            style={{ width: '100%' }}
           />
         </Grid>
       ))}
