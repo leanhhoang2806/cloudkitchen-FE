@@ -67,7 +67,22 @@ const ProfilePage = () => {
   const mainUser = useSelector((state) => state.user)
   // const navigate = useNavigate()
 
-  const { getAccessTokenSilently, user } = useAuth0()
+  const { getAccessTokenSilently, user, getIdTokenClaims, logout } = useAuth0()
+
+  const checkTokenExpiration = async () => {
+    try {
+      const idToken = await getIdTokenClaims();
+      const expirationTime = idToken.exp * 1000; // Convert expiration time to milliseconds
+      const currentTime = Date.now();
+      
+      if (currentTime > expirationTime) {
+        // Token has expired
+        logout({ returnTo: window.location.origin });
+      }
+    } catch (error) {
+      console.error('Error checking token expiration:', error);
+    }
+  };
 
   const handlePageChange = (event, value) => {
     setPage(value)
@@ -154,6 +169,7 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
+    checkTokenExpiration()
     dispatch(updateUseSpinner(true))
     fetchUser()
     getPossibleSeller()
