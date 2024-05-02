@@ -12,11 +12,12 @@ const getOrderByBuyerId = async (buyerId, authToken) => {
   return getRequestWithToken(url, authToken)
 }
 
-const postOrderByBuyer = async (buyerId, orders, authToken) => {
+const postOrderByBuyer = async (buyerId, orders, quantities, authToken) => {
   const url = `${URL}/order/`
   const payload = {
     buyer_id: buyerId,
     dish_id: orders,
+    quantities
   }
   return postRequestWithToken(url, payload, authToken)
 }

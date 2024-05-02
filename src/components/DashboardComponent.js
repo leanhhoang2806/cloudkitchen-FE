@@ -172,14 +172,27 @@ export const DashboardComponent = () => {
                 }
                 secondary={
                   <React.Fragment>
-                    <Typography
-                      variant="body2"
-                      component="span"
-                      color="textPrimary"
-                      style={{ marginLeft: '20px' }}
-                    >
-                      Price: {dish.price}
-                    </Typography>
+                    <div>
+                      <Typography
+                        variant="body2"
+                        component="span"
+                        color="textPrimary"
+                        style={{ marginLeft: '20px' }}
+                      >
+                        Price: {dish.price}
+                      </Typography>
+                    </div>
+                    
+                    <div>
+                      <Typography
+                        variant="body2"
+                        component="span"
+                        color="textPrimary"
+                        style={{ marginLeft: '20px' }}
+                      >
+                        Remaining: {dish.quantities}
+                      </Typography>
+                    </div>
                   </React.Fragment>
                 }
                 style={{ paddingLeft: '20px' }}

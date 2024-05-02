@@ -31,6 +31,7 @@ function SearchResultCard({
   percentage,
   sellerName,
   dishName,
+  quantities
 }) {
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
@@ -102,6 +103,7 @@ function SearchResultCard({
           discountPercentage={percentage}
           sellerName={sellerName}
           dishName={dishName}
+          quantities={quantities}
         />
         <div onClick={handleRatingClick} style={{ cursor: 'pointer' }}>
           <Rating
@@ -222,6 +224,7 @@ SearchResultCard.propTypes = {
   percentage: PropTypes.number,
   sellerName: PropTypes.string.isRequired,
   dishName: PropTypes.string.isRequired,
+  quantities: PropTypes.number.isRequired,
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
@@ -235,6 +238,16 @@ function DisplayPaginatedDishResults({ dishes }) {
   )
 
   const [displayDishes, setDisplayDishes] = useState([])
+
+  const displayGrid = () => {
+    if (dishes.length == 1) {
+      return 12
+    } else if (dishes.length == 2) {
+      return 6
+    } else {
+      return 3
+    }
+  }
 
   useEffect(() => {
     Promise.all(
@@ -265,7 +278,7 @@ function DisplayPaginatedDishResults({ dishes }) {
       style={{ paddingLeft: 200, paddingRight: 200, paddingBottom: '56px' }}
     >
       {displayDishes.map((item, index) => (
-        <Grid item xs={3} key={index}>
+        <Grid item xs={displayGrid()} key={index}>
           <SearchResultCard
             imageUrl={item.s3_path}
             price={item.price}
@@ -275,6 +288,7 @@ function DisplayPaginatedDishResults({ dishes }) {
             dishName={item.dishName}
             item={item}
             style={{ width: '100%' }}
+            quantities={item.quantities}
           />
         </Grid>
       ))}

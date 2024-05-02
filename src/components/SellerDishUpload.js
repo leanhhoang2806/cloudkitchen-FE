@@ -28,6 +28,7 @@ const dropzoneStyles = {
 export const DishesComponent = ({ setSelectedItem }) => {
   const { getAccessTokenSilently } = useAuth0()
   const [dishName, setDishName] = useState('')
+  const [quantities, setQuantities] = useState(0)
   const [loading, setLoading] = useState(false)
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState(0)
@@ -47,6 +48,8 @@ export const DishesComponent = ({ setSelectedItem }) => {
       setDescription(value)
     } else if (name === 'price') {
       setPrice(value)
+    } else if (name === 'quantities'){
+      setQuantities(value)
     }
   }
 
@@ -90,6 +93,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
         name: dishName,
         description: description,
         price: price,
+        quantities
       }
 
       await postDish(
@@ -164,6 +168,16 @@ export const DishesComponent = ({ setSelectedItem }) => {
                 name="description"
                 label="Description"
                 value={description}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                name="quantities"
+                label="Quantities"
+                value={quantities}
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
