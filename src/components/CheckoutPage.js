@@ -63,7 +63,7 @@ function CheckoutOrdersPage() {
   const { getAccessTokenSilently } = useAuth0()
   const handleCheckout = async () => {
     setLoading(true)
-    const onesArray = new Array(orders.length).fill([1]);
+    const onesArray = new Array(orders.length).fill(1);
     await postOrderByBuyer(user.buyerId, orders, onesArray, getAccessTokenSilently)
     dispatch(clearCart([]))
     setLoading(false)

@@ -21,8 +21,6 @@ import { getDishReviewByDishId } from 'apis/dishReview'
 import { timeFromGivenTime } from 'utilities/DateTimeConversion'
 import { getDishRatingByDishId } from 'apis/dishReview'
 import { getBuyerByIdNoValidation } from 'apis/buyer'
-import { getSellerById } from 'apis/sellerRegister'
-import { useAuth0 } from '@auth0/auth0-react'
 
 function SearchResultCard({
   imageUrl,
@@ -228,17 +226,6 @@ SearchResultCard.propTypes = {
 }
 
 function DisplayPaginatedDishResults({ dishes }) {
-  const { getAccessTokenSilently } = useAuth0()
-  const isImageEndInJpgOrPng = (path) => {
-    const regex = /\.(jpg|png)$/i
-    return regex.test(path)
-  }
-  const filterdDishes = dishes.filter((item) =>
-    isImageEndInJpgOrPng(item.s3_path),
-  )
-
-  const [displayDishes, setDisplayDishes] = useState([])
-
   const displayGrid = () => {
     if (dishes.length == 1) {
       return 12
@@ -250,26 +237,7 @@ function DisplayPaginatedDishResults({ dishes }) {
   }
 
   useEffect(() => {
-    Promise.all(
-      dishes.map((dish) =>
-        getSellerById(dish.seller_id, getAccessTokenSilently),
-      ),
-    )
-      .then((data) => {
-        const updatedDishes = dishes.map((dish, index) => ({
-          ...dish,
-          dishName: filterdDishes[index].name,
-          sellerName: data[index].name,
-          ...data[index],
-        }))
-        return updatedDishes
-      })
-      .then((updatedDishes) => {
-        setDisplayDishes(updatedDishes)
-      })
-
-    // eslint-disable-next-line
-  }, [dishes])
+  }, [])
 
   return (
     <Grid
@@ -277,15 +245,15 @@ function DisplayPaginatedDishResults({ dishes }) {
       spacing={4}
       style={{ paddingLeft: 200, paddingRight: 200, paddingBottom: '56px' }}
     >
-      {displayDishes.map((item, index) => (
+      {dishes.map((item, index) => (
         <Grid item xs={displayGrid()} key={index}>
           <SearchResultCard
             imageUrl={item.s3_path}
             price={item.price}
             dishId={item.dish_id}
             percentage={item.discounted_percentage}
-            sellerName={item.sellerName}
-            dishName={item.dishName}
+            sellerName={item.seller_name}
+            dishName={item.name}
             item={item}
             style={{ width: '100%' }}
             quantities={item.quantities}

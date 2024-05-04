@@ -17,7 +17,7 @@ import { getOrderBySellerId } from 'apis/orders'
 import { ENUMS, StatusEnumsGraph } from 'utilities/EnumsConversions'
 import { convertToHumanReadable } from 'utilities/DateTimeConversion'
 import YelloBackGroundBlackTextButton from './shared-component/YellowBlackButton'
-import { getBuyerById } from 'apis/buyer'
+
 import { updateOrderStatusById } from 'apis/orders'
 import { getDishById } from 'apis/dish'
 import { useDispatch } from 'react-redux'
@@ -40,12 +40,6 @@ export const OrdersComponent = () => {
       getAccessTokenSilently,
     )
     if (orders.length > 0) {
-      const buyerIds = orders.map((order) => order.buyer_id)
-      const buyerInfo = await Promise.all(
-        buyerIds.map((buyerId) =>
-          getBuyerById(buyerId, getAccessTokenSilently),
-        ),
-      )
       const dishIds = orders.map((order) => order.dish_id)
       const dishesInfo = await Promise.all(
         dishIds.map((id) => getDishById(id, getAccessTokenSilently)),
@@ -55,7 +49,6 @@ export const OrdersComponent = () => {
         orders.map((object, index) => ({
           ...object,
           ...orders[index],
-          ...buyerInfo[index],
           ...dishesInfo[index],
           order_id: orders[index].id,
           buyer_id: orders[index].buyer_id,
