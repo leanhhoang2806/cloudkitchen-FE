@@ -29,7 +29,7 @@ function SearchResultCard({
   percentage,
   sellerName,
   dishName,
-  quantities
+  quantities,
 }) {
   const [openModal, setOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
@@ -236,8 +236,7 @@ function DisplayPaginatedDishResults({ dishes }) {
     }
   }
 
-  useEffect(() => {
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <Grid

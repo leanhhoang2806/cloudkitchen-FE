@@ -48,7 +48,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
       setDescription(value)
     } else if (name === 'price') {
       setPrice(value)
-    } else if (name === 'quantities'){
+    } else if (name === 'quantities') {
       setQuantities(value)
     }
   }
@@ -93,7 +93,7 @@ export const DishesComponent = ({ setSelectedItem }) => {
         name: dishName,
         description: description,
         price: price,
-        quantities
+        quantities,
       }
 
       await postDish(

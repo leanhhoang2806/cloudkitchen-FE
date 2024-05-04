@@ -15,6 +15,7 @@ import { updateSearchZipcode } from 'store/slices/userSlice'
 import { getDiscountedDish } from 'apis/discountedDish'
 import { mergeDishAndDiscountDish } from 'utilities/CombinedListObjects'
 import { updateUseSpinner } from 'store/slices/userSlice'
+import { setFooterPosition } from 'store/slices/appSlice'
 
 function LandingPage() {
   const [skip, setSkip] = useState(0)
@@ -32,6 +33,7 @@ function LandingPage() {
       dispatch(updateUseSpinner(true))
       const dishes = await searchDishesByNameOrZipcode(zipCode, '')
       if (dishes.length > 0) {
+        dispatch(setFooterPosition('relative'))
         const dishIds = dishes.map((dish) => dish.id)
         const discount = await Promise.all(
           dishIds.map((id) => getDiscountedDish(id)),

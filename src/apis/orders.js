@@ -17,7 +17,7 @@ const postOrderByBuyer = async (buyerId, orders, quantities, authToken) => {
   const payload = {
     buyer_id: buyerId,
     dish_id: orders,
-    quantities
+    quantities,
   }
   return postRequestWithToken(url, payload, authToken)
 }

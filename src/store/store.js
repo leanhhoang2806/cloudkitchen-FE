@@ -1,6 +1,7 @@
 // src/store/index.js
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from 'store/slices/userSlice'
+import appReducer from 'store/slices/appSlice'
 import {
   persistStore,
   persistReducer,
@@ -23,6 +24,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
+  app: appReducer,
   // Add other reducers here
 })
 

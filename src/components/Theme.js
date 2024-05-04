@@ -18,10 +18,19 @@ import DropdownMenu from './Dropdown'
 // import StoreIcon from '@mui/icons-material/Store'
 
 function Theme({ children }) {
+  const app = useSelector((state) => state.app)
   const [hoveredButton, setHoveredButton] = useState(null)
   const navigate = useNavigate()
   const { loginWithRedirect, isAuthenticated, user } = useAuth0()
   const location = useLocation()
+
+  const footerPosition = () => {
+    if (location.pathname === '/') {
+      return app.footerPosition
+    } else {
+      return 'relative'
+    }
+  }
   const regexBuyerCart =
     /^\/buyer\/[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}\/cart$/i
 
@@ -197,7 +206,7 @@ function Theme({ children }) {
       {children}
       {/* </main> */}
       <AppBar
-        position="relative"
+        position={footerPosition()}
         sx={{
           backgroundColor: 'hsl(50, 85%, 75%)',
           boxShadow: 'none',

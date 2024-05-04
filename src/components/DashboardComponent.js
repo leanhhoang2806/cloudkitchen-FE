@@ -182,7 +182,7 @@ export const DashboardComponent = () => {
                         Price: {dish.price}
                       </Typography>
                     </div>
-                    
+
                     <div>
                       <Typography
                         variant="body2"

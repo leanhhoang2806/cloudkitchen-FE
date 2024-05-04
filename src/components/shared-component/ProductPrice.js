@@ -3,7 +3,13 @@ import PropTypes from 'prop-types'
 
 import { Typography } from '@mui/material'
 
-const ProductPrice = ({ price, discountPercentage, sellerName, dishName, quantities }) => {
+const ProductPrice = ({
+  price,
+  discountPercentage,
+  sellerName,
+  dishName,
+  quantities,
+}) => {
   if (discountPercentage) {
     const discountedPrice = price * (1 - discountPercentage / 100)
     return (
@@ -13,7 +19,8 @@ const ProductPrice = ({ price, discountPercentage, sellerName, dishName, quantit
           align="center"
           style={{ fontSize: 'small', color: 'black' }}
         >
-          {dishName} - <span style={{ color: 'red' }}>{quantities}</span> available
+          {dishName} - <span style={{ color: 'red' }}>{quantities}</span>{' '}
+          available
         </Typography>
         <Typography
           variant="body1"
@@ -44,7 +51,9 @@ const ProductPrice = ({ price, discountPercentage, sellerName, dishName, quantit
           align="center"
           style={{ fontSize: 'small', color: 'black' }}
         >
-          {dishName} - <span style={{ color: 'red', fontWeight: 'bold' }}>{quantities}</span> available
+          {dishName} -{' '}
+          <span style={{ color: 'red', fontWeight: 'bold' }}>{quantities}</span>{' '}
+          available
         </Typography>
         <Typography
           variant="body1"
@@ -70,7 +79,7 @@ ProductPrice.propTypes = {
   discountPercentage: PropTypes.number,
   sellerName: PropTypes.string.isRequired,
   dishName: PropTypes.string.isRequired,
-  quantities: PropTypes.number.isRequired
+  quantities: PropTypes.number.isRequired,
 }
 
 export default ProductPrice
